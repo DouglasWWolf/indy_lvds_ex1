@@ -1,0 +1,47 @@
+# Fetch our register definitions
+source bash_registers fpga_reg.h
+
+# A fancy interface to pcireg that understands register names
+axi()
+{
+    local addr=$(($1))
+
+    if [[ ! "$1" =~ ^[0] ]] && [ $addr -eq 0 ]; then
+        echo ">>>> UNKNOWN FPGA REGISTER $1 <<<<"
+        return 1
+    fi
+
+    pcireg $addr $2 $3 $4    
+}
+
+
+
+# A fancy interface to pcireg that understands register names
+get()
+{
+    local addr=$(($1))
+
+    if [[ ! "$1" =~ ^[0] ]] && [ $addr -eq 0 ]; then
+        echo ">>>> UNKNOWN FPGA REGISTER $1 <<<<"
+        return 1
+    fi
+
+    pcireg -dec $addr $2 $3 $4    
+}
+
+
+# Handy method for reading/writing chip registers
+chip_reg()
+{
+    local addr=$(($1))
+
+    if [[ ! "$1" =~ ^[0] ]] && [ $addr -eq 0 ]; then
+        echo ">>>> UNKNOWN CHIP REGISTER $1 <<<<"
+        return 1
+    fi
+
+    pcireg REG_CHIPIO_ADDR $addr
+    pcireg REG_CHIPIO_DATA $2 $3 $4    
+}
+
+

@@ -1,0 +1,55 @@
+{
+   "ActiveEmotionalView":"No Loops",
+   "Default View_ScaleFactor":"1.0",
+   "Default View_TopLeft":"-450,-130",
+   "DisplayTieOff":"1",
+   "ExpandedHierarchyInLayout":"",
+   "No Loops_ExpandedHierarchyInLayout":"",
+   "No Loops_Layout":"# # String gsaved with Nlview 7.8.0 2024-04-26 e1825d835c VDI=44 GEI=38 GUI=JA:21.0 TLS
+#  -string -flagsOSRD
+preplace port S_AXI -pg 1 -lvl 3 -x 640 -y 60 -defaultsOSRD -right
+preplace port port-id_clk -pg 1 -lvl 0 -x 0 -y 60 -defaultsOSRD
+preplace port port-id_resetn -pg 1 -lvl 0 -x 0 -y 80 -defaultsOSRD
+preplace port port-id_UCI_ADC_SCK -pg 1 -lvl 0 -x 0 -y 200 -defaultsOSRD -left
+preplace port port-id_UCI_ADC_MOSI -pg 1 -lvl 0 -x 0 -y 220 -defaultsOSRD -left
+preplace port port-id_UCI_ADC_MISO -pg 1 -lvl 0 -x 0 -y 240 -defaultsOSRD
+preplace portBus UCI_ADC_CSN -pg 1 -lvl 0 -x 0 -y 180 -defaultsOSRD -left
+preplace inst axi_adc_bank -pg 1 -lvl 2 -x 500 -y 40 -defaultsOSRD -pinDir S_AXI right -pinY S_AXI 20R -pinDir clk left -pinY clk 20L -pinDir resetn left -pinY resetn 40L -pinBusDir adc left -pinBusY adc 100L
+preplace inst ltc1867l -pg 1 -lvl 1 -x 210 -y 120 -defaultsOSRD -pinDir clk left -pinY clk 20L -pinDir resetn left -pinY resetn 40L -pinBusDir slave_select left -pinBusY slave_select 60L -pinDir spi_sclk left -pinY spi_sclk 80L -pinDir spi_mosi left -pinY spi_mosi 100L -pinDir spi_miso left -pinY spi_miso 120L -pinBusDir adc_values right -pinBusY adc_values 20R
+preplace netloc UCI_ADC_MISO_1 1 0 1 NJ 240
+preplace netloc ltc1867l_adc_values 1 1 1 N 140
+preplace netloc ltc1867l_slave_select 1 0 1 NJ 180
+preplace netloc ltc1867l_spi_mosi 1 0 1 NJ 220
+preplace netloc ltc1867l_spi_sclk 1 0 1 NJ 200
+preplace netloc pcie_bridge_0_axi_aclk 1 0 2 40 60 NJ
+preplace netloc pcie_bridge_0_axi_aresetn 1 0 2 20 80 NJ
+preplace netloc smartconnect_M04_AXI 1 2 1 N 60
+levelinfo -pg 1 0 210 500 640
+pagesize -pg 1 -db -bbox -sgen -190 0 730 300
+",
+   "No Loops_ScaleFactor":"1.0",
+   "No Loops_TopLeft":"-476,-230",
+   "guistr":"# # String gsaved with Nlview 7.8.0 2024-04-26 e1825d835c VDI=44 GEI=38 GUI=JA:21.0 TLS
+#  -string -flagsOSRD
+preplace port S_AXI -pg 1 -lvl 0 -x 0 -y 100 -defaultsOSRD
+preplace port port-id_clk -pg 1 -lvl 0 -x 0 -y 120 -defaultsOSRD
+preplace port port-id_resetn -pg 1 -lvl 0 -x 0 -y 210 -defaultsOSRD
+preplace port port-id_UCI_ADC_SCK -pg 1 -lvl 3 -x 550 -y 40 -defaultsOSRD
+preplace port port-id_UCI_ADC_MOSI -pg 1 -lvl 3 -x 550 -y 220 -defaultsOSRD
+preplace port port-id_UCI_ADC_MISO -pg 1 -lvl 0 -x 0 -y 230 -defaultsOSRD
+preplace portBus UCI_ADC_CSN -pg 1 -lvl 3 -x 550 -y 20 -defaultsOSRD
+preplace inst axi_adc_bank -pg 1 -lvl 2 -x 430 -y 130 -defaultsOSRD
+preplace inst ltc1867l -pg 1 -lvl 1 -x 160 -y 210 -defaultsOSRD
+preplace netloc ltc1867l_adc_values 1 1 1 330 160n
+preplace netloc pcie_bridge_0_axi_aclk 1 0 2 20 90 330
+preplace netloc pcie_bridge_0_axi_aresetn 1 0 2 20 300 320J
+preplace netloc ltc1867l_slave_select 1 1 2 300J 20 NJ
+preplace netloc ltc1867l_spi_sclk 1 1 2 310J 40 NJ
+preplace netloc ltc1867l_spi_mosi 1 1 2 NJ 220 NJ
+preplace netloc UCI_ADC_MISO_1 1 0 1 NJ 230
+preplace netloc smartconnect_M04_AXI 1 0 2 NJ 100 NJ
+levelinfo -pg 1 0 160 430 550
+pagesize -pg 1 -db -bbox -sgen -140 0 720 310
+"
+}
+0

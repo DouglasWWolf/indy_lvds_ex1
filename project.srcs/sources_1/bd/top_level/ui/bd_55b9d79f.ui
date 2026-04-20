@@ -1,0 +1,61 @@
+{
+   "ActiveEmotionalView":"No Loops",
+   "Default View_ScaleFactor":"1.0",
+   "Default View_TopLeft":"-300,-66",
+   "Display-PortTypeClock":"true",
+   "Display-PortTypeOthers":"true",
+   "Display-PortTypeReset":"true",
+   "DisplayTieOff":"1",
+   "ExpandedHierarchyInLayout":"",
+   "No Loops_ExpandedHierarchyInLayout":"",
+   "No Loops_Layers":"/pcie_bridge/clock_buffer_IBUF_DS_ODIV2:true|/pcie_bridge/pcie_bridge_0_axi_aclk:true|/pcie_bridge/clock_buffer_IBUF_OUT:true|/pcie_bridge/pcie_bridge_0_axi_aresetn:true|",
+   "No Loops_Layout":"# # String gsaved with Nlview 7.8.0 2024-04-26 e1825d835c VDI=44 GEI=38 GUI=JA:21.0 TLS
+#  -string -flagsOSRD
+preplace port PCIE_REFCLK -pg 1 -lvl 0 -x -10 -y 350 -defaultsOSRD
+preplace port S00_AXI -pg 1 -lvl 0 -x -10 -y 110 -defaultsOSRD
+preplace port S01_AXI -pg 1 -lvl 0 -x -10 -y 130 -defaultsOSRD
+preplace port pcie_mgt -pg 1 -lvl 3 -x 720 -y 110 -defaultsOSRD
+preplace port M_AXI_B -pg 1 -lvl 3 -x 720 -y 90 -defaultsOSRD
+preplace port S02_AXI -pg 1 -lvl 0 -x -10 -y 90 -defaultsOSRD
+preplace port port-id_axi_aclk -pg 1 -lvl 3 -x 720 -y 130 -defaultsOSRD
+preplace port port-id_axi_aresetn -pg 1 -lvl 3 -x 720 -y 150 -defaultsOSRD
+preplace inst clock_buffer -pg 1 -lvl 1 -x 170 -y 330 -swap {0 1 2 4 3} -defaultsOSRD -pinDir CLK_IN_D left -pinY CLK_IN_D 20L -pinBusDir IBUF_OUT right -pinBusY IBUF_OUT 40R -pinBusDir IBUF_DS_ODIV2 right -pinBusY IBUF_DS_ODIV2 20R
+preplace inst smartconnect -pg 1 -lvl 1 -x 170 -y 50 -swap {38 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 76 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 70 71 72 73 74 75 0 77 78 79 80 81 82 83 84 85 86 87 88 89 90 91 92 93 94 95 96 97 98 99 100 101 102 103 104 105 106 107 108 109 110 111 112 113 114 115 116 117 118 119 120 121 122 123 124 125 126 127 128 129 130 131 132 133 134 135 136 137 138 139 140 141 142 143 144 145 146 147 148 149} -defaultsOSRD -pinDir S00_AXI left -pinY S00_AXI 40L -pinDir S01_AXI left -pinY S01_AXI 80L -pinDir S02_AXI left -pinY S02_AXI 20L -pinDir M00_AXI right -pinY M00_AXI 40R -pinDir aclk right -pinY aclk 60R -pinDir aresetn right -pinY aresetn 80R
+preplace inst axi4_lite_plug -pg 1 -lvl 1 -x 170 -y 210 -defaultsOSRD -pinDir M_AXI right -pinY M_AXI 20R -pinDir clk right -pinY clk 40R
+preplace inst pcie_bridge_0 -pg 1 -lvl 2 -x 520 -y 70 -swap {0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 70 71 72 73 74 75 76 77 78 79 80 81 82 83 84 85 86 87 88 89 90 91 92 94 95 101 98 99 96 97 100 93 102 103} -defaultsOSRD -pinDir S_AXI_B left -pinY S_AXI_B 20L -pinDir M_AXI_B right -pinY M_AXI_B 20R -pinDir S_AXI_LITE left -pinY S_AXI_LITE 160L -pinDir pcie_mgt right -pinY pcie_mgt 40R -pinDir sys_clk left -pinY sys_clk 280L -pinDir sys_clk_gt left -pinY sys_clk_gt 300L -pinDir sys_rst_n left -pinY sys_rst_n 400L -pinBusDir cfg_ltssm_state right -pinBusY cfg_ltssm_state 100R -pinDir user_lnk_up right -pinY user_lnk_up 120R -pinDir axi_aclk right -pinY axi_aclk 60R -pinDir axi_aresetn right -pinY axi_aresetn 80R -pinDir axi_ctl_aresetn right -pinY axi_ctl_aresetn 140R -pinBusDir usr_irq_req left -pinBusY usr_irq_req 180L -pinBusDir usr_irq_ack right -pinBusY usr_irq_ack 160R -pinDir interrupt_out right -pinY interrupt_out 180R
+preplace inst one -pg 1 -lvl 1 -x 170 -y 450 -defaultsOSRD -pinBusDir dout right -pinBusY dout 20R
+preplace netloc clock_buffer_IBUF_DS_ODIV2 1 1 1 N 350
+preplace netloc clock_buffer_IBUF_OUT 1 1 1 N 370
+preplace netloc one_dout 1 1 1 N 470
+preplace netloc pcie_bridge_0_axi_aclk 1 1 2 310 -10 700
+preplace netloc pcie_bridge_0_axi_aresetn 1 1 2 330J 30 680
+preplace netloc CLK_IN_D_0_1 1 0 1 NJ 350
+preplace netloc Conn1 1 2 1 NJ 110
+preplace netloc Conn2 1 2 1 NJ 90
+preplace netloc S00_AXI_1 1 0 1 30 90n
+preplace netloc S01_AXI_1 1 0 1 N 130
+preplace netloc S02_AXI_1 1 0 1 10J 70n
+preplace netloc axi4_lite_plug_M_AXI 1 1 1 N 230
+preplace netloc smartconnect_M00_AXI 1 1 1 N 90
+levelinfo -pg 1 -10 170 520 720
+pagesize -pg 1 -db -bbox -sgen -150 -20 850 530
+",
+   "No Loops_ScaleFactor":"1.0",
+   "No Loops_TopLeft":"-405,-127",
+   "guistr":"# # String gsaved with Nlview 7.0r4  2019-12-20 bk=1.5203 VDI=41 GEI=36 GUI=JA:10.0 TLS
+#  -string -flagsOSRD
+preplace port pcie_mgt_0 -pg 1 -lvl 3 -x 670 -y 70 -defaultsOSRD
+preplace port PCIE_REFCLK -pg 1 -lvl 0 -x -10 -y 80 -defaultsOSRD
+preplace port port-id_PCIE_PERST_LS_65 -pg 1 -lvl 0 -x -10 -y 150 -defaultsOSRD
+preplace inst xdma_0 -pg 1 -lvl 2 -x 490 -y 130 -defaultsOSRD
+preplace inst util_ds_buf_0 -pg 1 -lvl 1 -x 160 -y 80 -defaultsOSRD
+preplace netloc util_ds_buf_0_IBUF_DS_ODIV2 1 1 1 310 90n
+preplace netloc util_ds_buf_0_IBUF_OUT 1 1 1 320 70n
+preplace netloc sys_rst_n_0_1 1 0 2 NJ 150 NJ
+preplace netloc xdma_0_pcie_mgt 1 2 1 N 70
+preplace netloc CLK_IN_D_0_1 1 0 1 NJ 80
+levelinfo -pg 1 -10 160 490 670
+pagesize -pg 1 -db -bbox -sgen -200 -10 810 270
+"
+}
+0

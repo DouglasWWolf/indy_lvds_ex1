@@ -1,0 +1,58 @@
+{
+   "ActiveEmotionalView":"No Loops",
+   "Default View_ScaleFactor":"0.987675",
+   "Default View_TopLeft":"-187,-43",
+   "DisplayTieOff":"1",
+   "ExpandedHierarchyInLayout":"",
+   "No Loops_ExpandedHierarchyInLayout":"",
+   "No Loops_Layout":"# # String gsaved with Nlview 7.8.0 2024-04-26 e1825d835c VDI=44 GEI=38 GUI=JA:21.0 TLS
+#  -string -flagsOSRD
+preplace port qsfp_gt -pg 1 -lvl 3 -x 700 -y 190 -defaultsOSRD
+preplace port qsfp1_clk -pg 1 -lvl 3 -x 700 -y 210 -defaultsOSRD -right
+preplace port tx_in -pg 1 -lvl 0 -x 0 -y 90 -defaultsOSRD
+preplace port M_AXI -pg 1 -lvl 3 -x 700 -y 90 -defaultsOSRD
+preplace port port-id_sys_clk -pg 1 -lvl 0 -x 0 -y 110 -defaultsOSRD
+preplace port port-id_sys_resetn_in -pg 1 -lvl 0 -x 0 -y 130 -defaultsOSRD
+preplace portBus rx_aligned -pg 1 -lvl 3 -x 700 -y 230 -defaultsOSRD
+preplace inst eth -pg 1 -lvl 1 -x 180 -y 70 -swap {5 1 2 3 4 8 6 7 0 9 10 11 12 13 14 15 16 17 18 19 21 20 22} -defaultsOSRD -pinDir gt_serial_port right -pinY gt_serial_port 120R -pinDir gt_ref_clk right -pinY gt_ref_clk 140R -pinDir rx_out right -pinY rx_out 20R -pinDir tx_in left -pinY tx_in 20L -pinDir sys_resetn_in left -pinY sys_resetn_in 60L -pinDir sys_clk left -pinY sys_clk 40L -pinBusDir rx_aligned right -pinBusY rx_aligned 160R
+preplace inst rdmx_recv -pg 1 -lvl 2 -x 510 -y 70 -defaultsOSRD -pinDir AXIS_RDMX left -pinY AXIS_RDMX 20L -pinDir M_AXI right -pinY M_AXI 20R -pinDir clk left -pinY clk 40L -pinDir resetn left -pinY resetn 60L -pinBusDir packets_rcvd right -pinBusY packets_rcvd 40R
+preplace netloc eth_rx_aligned 1 1 2 NJ 230 NJ
+preplace netloc pcie_bridge_0_axi_aclk 1 0 2 20 10 340J
+preplace netloc pcie_bridge_0_axi_aresetn 1 0 2 40 30 320J
+preplace netloc eth0_gt_serial_port 1 1 2 NJ 190 NJ
+preplace netloc eth_rx_out 1 1 1 N 90
+preplace netloc gt_ref_clk_0_1 1 1 2 NJ 210 NJ
+preplace netloc rdmx_recv_0_M_AXI 1 2 1 NJ 90
+preplace netloc tx_in_1 1 0 1 NJ 90
+levelinfo -pg 1 0 180 510 700
+pagesize -pg 1 -db -bbox -sgen -150 0 860 280
+",
+   "No Loops_ScaleFactor":"1.0",
+   "No Loops_TopLeft":"-392,-256",
+   "guistr":"# # String gsaved with Nlview 7.0r4  2019-12-20 bk=1.5203 VDI=41 GEI=36 GUI=JA:10.0 TLS
+#  -string -flagsOSRD
+preplace port qsfp_gt -pg 1 -lvl 4 -x 850 -y 310 -defaultsOSRD
+preplace port qsfp1_clk -pg 1 -lvl 0 -x 0 -y 300 -defaultsOSRD
+preplace port port-id_sys_clk -pg 1 -lvl 0 -x 0 -y 320 -defaultsOSRD
+preplace port port-id_sys_resetn_in -pg 1 -lvl 0 -x 0 -y 340 -defaultsOSRD
+preplace port port-id_start -pg 1 -lvl 0 -x 0 -y 410 -defaultsOSRD
+preplace portBus max_packets -pg 1 -lvl 0 -x 0 -y 430 -defaultsOSRD
+preplace portBus link_status -pg 1 -lvl 4 -x 850 -y 350 -defaultsOSRD
+preplace inst packet_gen -pg 1 -lvl 1 -x 170 -y 400 -defaultsOSRD
+preplace inst system_ila_0 -pg 1 -lvl 3 -x 730 -y 80 -defaultsOSRD
+preplace inst data_consumer -pg 1 -lvl 3 -x 730 -y 230 -defaultsOSRD
+preplace inst eth0 -pg 1 -lvl 2 -x 470 -y 330 -defaultsOSRD
+preplace netloc pcie_bridge_0_axi_aclk 1 0 3 20 290 310 30 630
+preplace netloc pcie_bridge_0_axi_aresetn 1 0 3 30 310 330 40 610J
+preplace netloc axil_slave_start 1 0 1 NJ 410
+preplace netloc axil_slave_max_packets 1 0 1 NJ 430
+preplace netloc eth0_rx_aligned 1 2 2 NJ 350 NJ
+preplace netloc packet_gen_axis 1 1 2 320 50 N
+preplace netloc eth0_rx_out 1 2 1 620 70n
+preplace netloc eth0_gt_serial_port 1 2 2 NJ 310 NJ
+preplace netloc gt_ref_clk_0_1 1 0 2 NJ 300 NJ
+levelinfo -pg 1 0 170 470 730 850
+pagesize -pg 1 -db -bbox -sgen -180 0 1020 480
+"
+}
+0

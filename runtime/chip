@@ -1,0 +1,57 @@
+
+if [ -z $1 ]; then
+    echo ""
+    echo "Usage:"
+    echo "  chip on                - Turn the chip power rails on"
+    echo "  chip off               - Turn the chip power rails off"
+    echo "  chip power             - Display chip power rail ADC readings"
+    echo "  chip <address>         - Read and display chip register/SMEM at <address>"
+    echo "  chip <address> <value> - Store <value> to chip register/SMEM <address>"
+    echo ""
+    exit
+fi
+
+if [ "$1" == "on" ]; then
+    pcireg 0x4000 1
+    while [ $(pcireg -dec 0x4004) -ne 1 ]; do
+        sleep .1
+    done
+    echo "Chip is powered ON"
+    exit
+fi
+
+if [ "$1" == "off" ]; then
+    pcireg 0x4000 0
+    while [ $(pcireg -dec 0x4004) -ne 0 ]; do
+        sleep .1
+    done
+    echo "Chip is powered OFF"
+    exit
+fi
+
+
+fetch_adc()
+{
+    local adc=$1
+    local channel=$2
+    local address=$((0x5000 + $adc*32 + $channel*4))
+    pcireg -dec $address
+}
+
+
+if [ "$1" == "power" ]; then
+    printf "vdd_sense    : 0x%04X\n" $(fetch_adc 0 1)
+    printf "vdd_i        : 0x%04X\n" $(fetch_adc 0 2)
+    printf "vdda_sense   : 0x%04X\n" $(fetch_adc 1 1)
+    printf "vdda_i       : 0x%04X\n" $(fetch_adc 2 1)
+    printf "vddlvds_sense: 0x%04X\n" $(fetch_adc 1 2)
+    printf "vddlvds_i    : 0x%04X\n" $(fetch_adc 1 6)
+    printf "vdd33_chip   : 0x%04X\n" $(fetch_adc 1 3)
+    printf "vdd33_i      : 0x%04X\n" $(fetch_adc 1 4)
+    exit 0
+fi
+
+
+pcireg 0x1000  $1
+pcireg 0x1004  $2
+

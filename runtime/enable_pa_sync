@@ -1,0 +1,11 @@
+source api
+source bash_registers "chip_reg.h"
+
+
+#
+#  Enable the PA_SYNC output
+#
+chip_reg GPIO_CTRL         0x0FE0_07E0
+chip_reg GPIO_SYNC         0xF002
+chip_reg SRDWR_PA_MODE     0x0401
+chip_reg SRDWR_VLIQ_PERIOD 0
