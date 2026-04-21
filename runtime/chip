@@ -16,6 +16,7 @@ if [ "$1" == "on" ]; then
     while [ $(pcireg -dec 0x4004) -ne 1 ]; do
         sleep .1
     done
+    sleep 3
     echo "Chip is powered ON"
     exit
 fi

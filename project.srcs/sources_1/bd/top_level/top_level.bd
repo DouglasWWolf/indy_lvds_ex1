@@ -7,8 +7,7 @@
       "name": "top_level",
       "rev_ctrl_bd_flag": "RevCtrlBdOff",
       "synth_flow_mode": "Hierarchical",
-      "tool_version": "2024.2",
-      "validated": "true"
+      "tool_version": "2024.2"
     },
     "design_tree": {
       "pcie_bridge": {
@@ -27,7 +26,8 @@
         "chip_spi_ctl": "",
         "hsi_pclk": "",
         "clk_160mhz": "",
-        "async_resetn": ""
+        "async_resetn": "",
+        "chip_spi_extra_flops": ""
       },
       "indy_power_ctl": "",
       "sys_192mhz": {
@@ -39,7 +39,6 @@
       "lvds": {
         "lvds_ctl": "",
         "system_ila": "",
-        "pa_sync_cdc": "",
         "lvds_datapath": {
           "lvds_align_detect": "",
           "lvds_prbs15_check": "",
@@ -1782,6 +1781,58 @@
                 "value": "xpm_cdc_async_rst"
               }
             }
+          },
+          "chip_spi_extra_flops": {
+            "vlnv": "xilinx.com:module_ref:chip_spi_extra_flops:1.0",
+            "ip_revision": "1",
+            "xci_name": "top_level_chip_spi_extra_flops_0_0",
+            "xci_path": "ip/top_level_chip_spi_extra_flops_0_0/top_level_chip_spi_extra_flops_0_0.xci",
+            "inst_hier_path": "chip_spi/chip_spi_extra_flops",
+            "reference_info": {
+              "ref_type": "hdl",
+              "ref_name": "chip_spi_extra_flops",
+              "boundary_crc": "0x0"
+            },
+            "ports": {
+              "clk": {
+                "type": "clk",
+                "direction": "I",
+                "parameters": {
+                  "ASSOCIATED_RESET": {
+                    "value": "resetn",
+                    "value_src": "constant"
+                  }
+                }
+              },
+              "resetn": {
+                "type": "rst",
+                "direction": "I",
+                "parameters": {
+                  "POLARITY": {
+                    "value": "ACTIVE_LOW",
+                    "value_src": "constant"
+                  }
+                }
+              },
+              "spi_pclk": {
+                "direction": "I"
+              },
+              "spi_mosi": {
+                "direction": "I"
+              },
+              "spi_csn": {
+                "direction": "I"
+              },
+              "pin_spi_pclk": {
+                "direction": "O"
+              },
+              "pin_spi_mosi": {
+                "direction": "O"
+              },
+              "pin_spi_csn": {
+                "direction": "O"
+              }
+            }
           }
         },
         "interface_nets": {
@@ -1823,6 +1874,24 @@
               "chip_spi/wdata"
             ]
           },
+          "chip_spi_extra_flops_pin_spi_csn": {
+            "ports": [
+              "chip_spi_extra_flops/pin_spi_csn",
+              "CHIP_SPI_CSN"
+            ]
+          },
+          "chip_spi_extra_flops_pin_spi_mosi": {
+            "ports": [
+              "chip_spi_extra_flops/pin_spi_mosi",
+              "CHIP_SPI_MOSI"
+            ]
+          },
+          "chip_spi_extra_flops_pin_spi_pclk": {
+            "ports": [
+              "chip_spi_extra_flops/pin_spi_pclk",
+              "CHIP_SPI_CLK"
+            ]
+          },
           "chip_spi_rdata": {
             "ports": [
               "chip_spi/rdata",
@@ -1832,19 +1901,19 @@
           "chip_spi_spi_cs_n": {
             "ports": [
               "chip_spi/spi_cs_n",
-              "CHIP_SPI_CSN"
+              "chip_spi_extra_flops/spi_csn"
             ]
           },
           "chip_spi_spi_mosi": {
             "ports": [
               "chip_spi/spi_mosi",
-              "CHIP_SPI_MOSI"
+              "chip_spi_extra_flops/spi_mosi"
             ]
           },
           "chip_spi_spi_pclk": {
             "ports": [
               "chip_spi/spi_pclk",
-              "CHIP_SPI_CLK"
+              "chip_spi_extra_flops/spi_pclk"
             ]
           },
           "clk_1": {
@@ -1854,7 +1923,8 @@
               "chip_spi/clk",
               "chip_spi_ctl/clk",
               "clk_160",
-              "async_resetn/dest_clk"
+              "async_resetn/dest_clk",
+              "chip_spi_extra_flops/clk"
             ]
           },
           "hsi_pclk_hsi_pclk": {
@@ -1867,7 +1937,8 @@
             "ports": [
               "async_resetn/dest_arst",
               "chip_spi/resetn",
-              "chip_spi_ctl/resetn"
+              "chip_spi_ctl/resetn",
+              "chip_spi_extra_flops/resetn"
             ]
           },
           "sys_clk_1": {
@@ -2727,24 +2798,6 @@
               }
             }
           },
-          "pa_sync_cdc": {
-            "vlnv": "xilinx.com:ip:xpm_cdc_gen:1.0",
-            "ip_revision": "4",
-            "xci_name": "top_level_xpm_cdc_gen_0_2",
-            "xci_path": "ip/top_level_xpm_cdc_gen_0_2/top_level_xpm_cdc_gen_0_2.xci",
-            "inst_hier_path": "lvds/pa_sync_cdc",
-            "parameters": {
-              "CDC_TYPE": {
-                "value": "xpm_cdc_single"
-              },
-              "SIM_ASSERT_CHK": {
-                "value": "false"
-              },
-              "SRC_INPUT_REG": {
-                "value": "false"
-              }
-            }
-          },
           "lvds_datapath": {
             "ports": {
               "clk": {
@@ -3300,7 +3353,7 @@
           "CHIP_PA_SYNC_1": {
             "ports": [
               "CHIP_PA_SYNC",
-              "pa_sync_cdc/src_in"
+              "system_ila/probe0"
             ]
           },
           "LVDS_BANKA_clk_n_1": {
@@ -3355,8 +3408,6 @@
             "ports": [
               "clk",
               "system_ila/clk",
-              "pa_sync_cdc/dest_clk",
-              "pa_sync_cdc/src_clk",
               "lvds_datapath/clk",
               "lvds_ctl/clk"
             ]
@@ -3431,12 +3482,6 @@
             "ports": [
               "lvds_datapath/prbs_err",
               "lvds_ctl/prbs_err"
-            ]
-          },
-          "pa_sync_cdc_dest_out": {
-            "ports": [
-              "pa_sync_cdc/dest_out",
-              "system_ila/probe0"
             ]
           },
           "sys_192mhz_resetn_192": {
