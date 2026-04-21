@@ -161,10 +161,10 @@ set_property -dict {PACKAGE_PIN D12    IOSTANDARD LVCMOS18   SLEW SLOW } [get_po
 
 
 
-set_property -dict {PACKAGE_PIN C12    IOSTANDARD LVCMOS18   SLEW SLOW  } [get_ports GPIO12              ];  # IO Bank 94
-set_property -dict {PACKAGE_PIN B12    IOSTANDARD LVCMOS18   SLEW SLOW  } [get_ports GPIO13              ];  # IO Bank 94
-set_property -dict {PACKAGE_PIN A12    IOSTANDARD LVCMOS18   SLEW SLOW  } [get_ports GPIO14              ];  # IO Bank 94
-set_property -dict {PACKAGE_PIN D13    IOSTANDARD LVCMOS18   SLEW SLOW  } [get_ports GPIO15              ];  # IO Bank 94
+set_property -dict {PACKAGE_PIN C12    IOSTANDARD LVCMOS18   SLEW SLOW  } [get_ports rs0              ];  # GPIO12 - IO Bank 94
+set_property -dict {PACKAGE_PIN B12    IOSTANDARD LVCMOS18   SLEW SLOW  } [get_ports GPIO13           ];  # IO Bank 94
+set_property -dict {PACKAGE_PIN A12    IOSTANDARD LVCMOS18   SLEW SLOW  } [get_ports rs256            ];  # GPIO14 - IO Bank 94
+set_property -dict {PACKAGE_PIN D13    IOSTANDARD LVCMOS18   SLEW SLOW  } [get_ports GPIO15           ];  # IO Bank 94
  
 
 

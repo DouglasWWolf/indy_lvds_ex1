@@ -2,7 +2,7 @@
 //Copyright 2022-2024 Advanced Micro Devices, Inc. All Rights Reserved.
 //--------------------------------------------------------------------------------
 //Tool Version: Vivado v.2024.2 (lin64) Build 5239630 Fri Nov 08 22:34:34 MST 2024
-//Date        : Sun Apr 19 23:34:38 2026
+//Date        : Tue Apr 21 15:52:18 2026
 //Host        : wolf-super-server running 64-bit Ubuntu 20.04.6 LTS
 //Command     : generate_target top_level_wrapper.bd
 //Design      : top_level_wrapper
@@ -22,9 +22,7 @@ module top_level_wrapper
     CHIP_VDDA,
     CHIP_VDDIO,
     CHIP_VDDLVDS,
-    GPIO12,
     GPIO13,
-    GPIO14,
     GPIO15,
     LVDS_BANKA_clk_n,
     LVDS_BANKA_clk_p,
@@ -48,7 +46,9 @@ module top_level_wrapper
     pcie_mgt_txn,
     pcie_mgt_txp,
     pcie_refclk_clk_n,
-    pcie_refclk_clk_p);
+    pcie_refclk_clk_p,
+    rs0,
+    rs256);
   output CHIP_HSI_CLK;
   input CHIP_PA_SYNC;
   output CHIP_RESET_N;
@@ -60,9 +60,7 @@ module top_level_wrapper
   output CHIP_VDDA;
   output CHIP_VDDIO;
   output CHIP_VDDLVDS;
-  output [0:0]GPIO12;
   output [0:0]GPIO13;
-  output [0:0]GPIO14;
   output [0:0]GPIO15;
   input LVDS_BANKA_clk_n;
   input LVDS_BANKA_clk_p;
@@ -87,6 +85,8 @@ module top_level_wrapper
   output [15:0]pcie_mgt_txp;
   input [0:0]pcie_refclk_clk_n;
   input [0:0]pcie_refclk_clk_p;
+  output rs0;
+  output rs256;
 
   wire CHIP_HSI_CLK;
   wire CHIP_PA_SYNC;
@@ -99,9 +99,7 @@ module top_level_wrapper
   wire CHIP_VDDA;
   wire CHIP_VDDIO;
   wire CHIP_VDDLVDS;
-  wire [0:0]GPIO12;
   wire [0:0]GPIO13;
-  wire [0:0]GPIO14;
   wire [0:0]GPIO15;
   wire LVDS_BANKA_clk_n;
   wire LVDS_BANKA_clk_p;
@@ -126,6 +124,8 @@ module top_level_wrapper
   wire [15:0]pcie_mgt_txp;
   wire [0:0]pcie_refclk_clk_n;
   wire [0:0]pcie_refclk_clk_p;
+  wire rs0;
+  wire rs256;
 
   top_level top_level_i
        (.CHIP_HSI_CLK(CHIP_HSI_CLK),
@@ -139,9 +139,7 @@ module top_level_wrapper
         .CHIP_VDDA(CHIP_VDDA),
         .CHIP_VDDIO(CHIP_VDDIO),
         .CHIP_VDDLVDS(CHIP_VDDLVDS),
-        .GPIO12(GPIO12),
         .GPIO13(GPIO13),
-        .GPIO14(GPIO14),
         .GPIO15(GPIO15),
         .LVDS_BANKA_clk_n(LVDS_BANKA_clk_n),
         .LVDS_BANKA_clk_p(LVDS_BANKA_clk_p),
@@ -165,5 +163,7 @@ module top_level_wrapper
         .pcie_mgt_txn(pcie_mgt_txn),
         .pcie_mgt_txp(pcie_mgt_txp),
         .pcie_refclk_clk_n(pcie_refclk_clk_n),
-        .pcie_refclk_clk_p(pcie_refclk_clk_p));
+        .pcie_refclk_clk_p(pcie_refclk_clk_p),
+        .rs0(rs0),
+        .rs256(rs256));
 endmodule

@@ -53,6 +53,28 @@ if [ "$1" == "power" ]; then
 fi
 
 
-pcireg 0x1000  $1
-pcireg 0x1004  $2
+ REG_CHIPIO_ADDR=0x1000
+REG_CHIPIO_RDATA=0x1004
+REG_CHIPIO_WDATA=0x1008
+REG_CHIPIO_START=0x100C
 
+
+chip_reg()
+(
+    pcireg $REG_CHIPIO_ADDR $1
+
+    if [ -z $2 ]; then
+        pcireg $REG_CHIPIO_START 1
+    else
+        pcireg $REG_CHIPIO_WDATA $2
+        pcireg $REG_CHIPIO_START 1
+    fi
+
+    while [ $(pcireg $REG_CHIPIO_START -dec) -ne 0 ]; do
+        sleep .001
+    done
+    test -z $2 && pcireg $REG_CHIPIO_RDATA $3 $4 $5
+)
+
+
+chip_reg $1 $2

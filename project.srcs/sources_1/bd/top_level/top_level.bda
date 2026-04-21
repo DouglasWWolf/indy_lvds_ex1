@@ -244,6 +244,24 @@
             },
             "V6": {
                 "VT": "AC",
+                "BA": "0x0000000000003000",
+                "HA": "0x0000000000003FFF",
+                "BP": "C_BASEADDR",
+                "HP": "C_HIGHADDR",
+                "MA": "M_AXI_B",
+                "MX": "/pcie_bridge/pcie_bridge_0",
+                "MI": "M_AXI_B",
+                "MS": "SEG_framegen_ctl_0_reg0",
+                "MV": "xilinx.com:ip:xdma:4.1",
+                "SX": "/framegen_ctl",
+                "SI": "S_AXI",
+                "SS": "reg0",
+                "SV": "xilinx.com:module_ref:framegen_ctl:1.0",
+                "TM": "both",
+                "TU": "register"
+            },
+            "V7": {
+                "VT": "AC",
                 "BA": "0x0000000000004000",
                 "HA": "0x00000000000040FF",
                 "BP": "C_BASEADDR",
@@ -260,7 +278,7 @@
                 "TM": "both",
                 "TU": "register"
             },
-            "V7": {
+            "V8": {
                 "VT": "AC",
                 "BA": "0x0000000000005000",
                 "HA": "0x00000000000050FF",
@@ -310,6 +328,11 @@
             },
             {
                 "src": "V7",
+                "trg": "V2",
+                "EH": "2"
+            },
+            {
+                "src": "V8",
                 "trg": "V2",
                 "EH": "2"
             }

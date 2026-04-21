@@ -18,7 +18,7 @@ module framegen_ctl # (parameter AW=8)
     input clk, resetn,
 
     // pa_sync pulse, asynchronous
-    input async_pa_sync,
+    input pa_sync_raw,
 
     output rs0, rs256,
 
@@ -93,6 +93,16 @@ localparam OKAY   = 0;
 localparam SLVERR = 2;
 localparam DECERR = 3;
 
+reg[1:0] fsm_state;
+
+// The pa_sync_raw signal, synchronized
+wire pa_sync;
+
+// Perform rising edge detection on pa_sync
+reg prior_pa_sync;
+always @(posedge clk) prior_pa_sync <= pa_sync;
+wire rising_edge = (prior_pa_sync == 0) & (pa_sync == 1);
+
 // When this strobes high, we start the state machine that will
 // emit a 128-cycle pulse on either rs0 or rs256
 reg start_frame_stb;
@@ -100,21 +110,51 @@ reg start_frame_stb;
 // 0 = Emit pulse on rs0, 1 = emit pulse on rs256
 reg phase;
 
-reg fsm_state;
+assign rs0   = (fsm_state == 3) & (phase == 0);
+assign rs256 = (fsm_state == 3) & (phase == 1);
+
+
+reg [8:0] timer;
 
 always @(posedge clk) begin
-    
+
+    // This is a countdown timer
+    if (timer) timer <= timer -1;
+
     if (resetn) begin
         fsm_state <= 0;
+        timer     <= 0;
     end
 
     else case(fsm_state)
 
+        // Wait to be told to start
         0:  if (start_frame_stb) begin
                 timer     <= 300;
                 fsm_state <= 1;
             end
-            
+
+
+        // Wait for a rising edge.  If we don't 
+        // see one after 300 clock cycles, give up
+        1:  if (timer == 0)
+                fsm_state <= 0;
+            else if (rising_edge) begin
+                timer     <= 128 + 64;
+                fsm_state <= 2;
+            end
+
+        // We're waiting for roughly 192 clock-cycles
+        // after seeing a rising edge            
+        2:  if (timer == 0) begin
+                timer     <= 128;
+                fsm_state <= 3;
+            end
+
+        // rs0 or rs256 will be asserted for 128 cycles
+        3:  if (timer == 0) begin
+                fsm_state <= 0;
+            end
 
     endcase
 
@@ -197,6 +237,27 @@ always @(posedge clk) begin
     end
 end
 //==========================================================================
+
+
+//=============================================================================
+// Synchronize "pa_sync_raw" into "pa_sync"
+//=============================================================================
+xpm_cdc_single #
+(
+    .DEST_SYNC_FF  (3),
+    .INIT_SYNC_FF  (0),
+    .SIM_ASSERT_CHK(0),
+    .SRC_INPUT_REG (0)
+)
+sync_pa_sync
+(
+    .src_clk (            ),
+    .src_in  (pa_sync_raw ),
+    .dest_clk(clk         ),
+    .dest_out(pa_sync     )
+);
+//=============================================================================
+
 
 
 

@@ -8,6 +8,7 @@
 #define  LVDS_ALIGN_ERR  0x4000000000002048
 #define  LVDS_PRBS_ERR   0x4000000000002050
 
-#define  REG_CHIPIO_ADDR            0x1000
-#define  REG_CHIPIO_DATA            0x1004
-
+#define REG_CHIPIO_ADDR             0x1000
+#define REG_CHIPIO_RDATA            0x1004
+#define REG_CHIPIO_WDATA            0x1008
+#define REG_CHIPIO_START            0x100C
