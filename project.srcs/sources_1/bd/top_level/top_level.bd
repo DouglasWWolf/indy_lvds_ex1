@@ -2456,11 +2456,11 @@
           }
         },
         "ports": {
-          "clk": {
+          "clk_192": {
             "type": "clk",
             "direction": "I"
           },
-          "resetn": {
+          "resetn_192": {
             "type": "rst",
             "direction": "I"
           },
@@ -2915,7 +2915,7 @@
               "cfg_reset_hssio": {
                 "direction": "I"
               },
-              "delay_rd": {
+              "cal_delay_rd": {
                 "direction": "O",
                 "left": "8",
                 "right": "0"
@@ -3210,7 +3210,7 @@
                     "left": "5",
                     "right": "0"
                   },
-                  "delay_rd": {
+                  "cal_delay_rd": {
                     "direction": "O",
                     "left": "8",
                     "right": "0"
@@ -3275,22 +3275,22 @@
               "cal_mask_1": {
                 "ports": [
                   "cal_mask",
-                  "hssio/cal_mask",
-                  "lvds_bitslip/cal_mask"
+                  "lvds_bitslip/cal_mask",
+                  "hssio/cal_mask"
                 ]
               },
               "cal_word_1": {
                 "ports": [
                   "cal_word",
-                  "hssio/cal_word",
-                  "lvds_bitslip/cal_word"
+                  "lvds_bitslip/cal_word",
+                  "hssio/cal_word"
                 ]
               },
               "cal_word_wstb_1": {
                 "ports": [
                   "cal_word_wstb",
-                  "hssio/cal_word_wstb",
-                  "lvds_bitslip/cal_word_wstb"
+                  "lvds_bitslip/cal_word_wstb",
+                  "hssio/cal_word_wstb"
                 ]
               },
               "cfg_reset_hssio_1": {
@@ -3302,10 +3302,10 @@
               "clk_192mhz_clk_192": {
                 "ports": [
                   "clk",
-                  "hssio/clk",
                   "lvds_bitslip/clk",
                   "lvds_prbs15_check/clk",
-                  "lvds_align_detect/clk"
+                  "lvds_align_detect/clk",
+                  "hssio/clk"
                 ]
               },
               "hssio_cal_write_en": {
@@ -3316,8 +3316,8 @@
               },
               "hssio_delay_rd": {
                 "ports": [
-                  "hssio/delay_rd",
-                  "delay_rd"
+                  "hssio/cal_delay_rd",
+                  "cal_delay_rd"
                 ]
               },
               "hssio_lvds_bus": {
@@ -3329,8 +3329,8 @@
               "lane_select_1": {
                 "ports": [
                   "lane_select",
-                  "hssio/lane_select",
-                  "lvds_bitslip/lane_select"
+                  "lvds_bitslip/lane_select",
+                  "hssio/lane_select"
                 ]
               },
               "lvds_align_detect_alignment_err": {
@@ -3374,8 +3374,8 @@
               "sys_192mhz_resetn_192": {
                 "ports": [
                   "resetn",
-                  "hssio/resetn",
-                  "lvds_bitslip/resetn"
+                  "lvds_bitslip/resetn",
+                  "hssio/resetn"
                 ]
               }
             }
@@ -3446,7 +3446,7 @@
           },
           "clk_192mhz_clk_192": {
             "ports": [
-              "clk",
+              "clk_192",
               "system_ila/clk",
               "lvds_datapath/clk",
               "lvds_ctl/clk"
@@ -3460,7 +3460,7 @@
           },
           "hier_0_delay_rd": {
             "ports": [
-              "lvds_datapath/delay_rd",
+              "lvds_datapath/cal_delay_rd",
               "lvds_ctl/cal_delay_rd"
             ]
           },
@@ -3503,8 +3503,8 @@
           "lvds_datapath_align_err": {
             "ports": [
               "lvds_datapath/align_err",
-              "lvds_ctl/align_err",
-              "system_ila/probe2"
+              "system_ila/probe2",
+              "lvds_ctl/align_err"
             ]
           },
           "lvds_datapath_cal_write_en": {
@@ -3527,7 +3527,7 @@
           },
           "sys_192mhz_resetn_192": {
             "ports": [
-              "resetn",
+              "resetn_192",
               "lvds_datapath/resetn",
               "lvds_ctl/resetn"
             ]
@@ -3986,7 +3986,7 @@
         "ports": [
           "sys_192mhz/clk_192",
           "smartconnect/aclk2",
-          "lvds/clk",
+          "lvds/clk_192",
           "framegen_ctl/clk"
         ]
       },
@@ -4091,7 +4091,7 @@
       "sys_192mhz_resetn_192": {
         "ports": [
           "sys_192mhz/resetn_192",
-          "lvds/resetn",
+          "lvds/resetn_192",
           "framegen_ctl/resetn"
         ]
       }

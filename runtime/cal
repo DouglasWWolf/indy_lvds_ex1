@@ -1,0 +1,9 @@
+if [ ! -z $2 ]; then
+    pcireg LVDS_CAL_MASK $(( 1 << $1 ))
+    pcireg LVDS_CAL_WORD $2
+fi
+
+pcireg LVDS_LANE_SELECT $1
+pcireg LVDS_CAL_WORD
+
+

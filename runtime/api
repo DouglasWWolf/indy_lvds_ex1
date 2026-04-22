@@ -31,47 +31,13 @@ get()
 
 
 #==============================================================================
-# Handy method for reading/writing chip registers
+# Handy method for reading/writing chip registers.  Your script must 
+# begin with "source bash_registers chip_reg.h" in order to use this
 #==============================================================================
 chip_reg()
-{
-    local reg=
-    local wdata=
-    local opt=
-
-    # Parse the command options
-    while [ ! -z $1 ]; do
-
-        # Did the caller specify decimal output?
-        if [ $1 == "-dec" ]; then
-            opt+=" -dec"
-            shift
-            continue
-        fi
-    
-        # Did the caller specifiy hexadecimal output?
-        if [ $1 == "-hex" ]; then
-            opt+=" -hex"
-            shift
-            continue
-        fi
-
-        # Is the caller giving us the name/addr of a register?
-        if [ -z $reg ]; then
-            reg=$1
-            shift
-            continue
-        fi
-
-        
-        # Is the caller giving us data to write to the register?
-        if [ -z $wdata ]; then
-            wdata=$1
-            shift
-            continue
-        fi
-   
-    done
+{    
+    # Fetch the name or address of our register
+    local reg=$1
 
     # Convert the register name to an address
     local addr=$(($reg))
@@ -84,21 +50,8 @@ chip_reg()
 
     # Store the chip address we want to read or write
     pcireg REG_CHIPIO_ADDR $addr
-
-    # Start a chip-read or a chip-write
-    if [ -z $wdata ]; then
-        pcireg $REG_CHIPIO_START 1
-    else
-        pcireg $REG_CHIPIO_WDATA $wdata
-        pcireg $REG_CHIPIO_START 2
-    fi
-
-    # Wait for the read or write to complete
-    while [ $(pcireg $REG_CHIPIO_START -dec) -ne 0 ]; do
-        sleep .001
-    done
-
-    # If this was a read, display the resulting data
-    test -z $wdata && pcireg $REG_CHIPIO_RDATA $opt
+ 
+    # Perform the read or write
+    pcireg REG_CHIPIO_DATA $2 $3 $4 $5
 }
 #==============================================================================

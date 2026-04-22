@@ -124,9 +124,6 @@ localparam OKAY   = 0;
 localparam SLVERR = 2;
 localparam DECERR = 3;
 
-// These are the two numbers that we're going to add together
-reg[31:0] addend1, addend2;
-
 //==========================================================================
 // This state machine handles AXI4-Lite write requests
 //==========================================================================

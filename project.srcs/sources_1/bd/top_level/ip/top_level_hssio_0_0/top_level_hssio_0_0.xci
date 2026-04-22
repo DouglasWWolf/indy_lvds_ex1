@@ -52,7 +52,7 @@
         "cal_word_wstb": [ { "direction": "in" } ],
         "cal_write_en": [ { "direction": "out", "size_left": "2", "size_right": "0" } ],
         "lane_select": [ { "direction": "in", "size_left": "5", "size_right": "0" } ],
-        "delay_rd": [ { "direction": "out", "size_left": "8", "size_right": "0" } ],
+        "cal_delay_rd": [ { "direction": "out", "size_left": "8", "size_right": "0" } ],
         "lvds_bus": [ { "direction": "out", "size_left": "511", "size_right": "0" } ]
       },
       "interfaces": {

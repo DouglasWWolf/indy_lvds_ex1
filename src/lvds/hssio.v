@@ -42,7 +42,7 @@ module hssio
 
     // Information reported about each lane
     input      [ 5:0] lane_select,
-    output     [ 8:0] delay_rd,
+    output     [ 8:0] cal_delay_rd,  // rx_cntvalueout[lane]
 
     // The is the LVDS data output from this module
     output[511:0] lvds_bus
@@ -106,8 +106,8 @@ wire       riu_write_en  [0:RIU_COUNT-1];   // To RIU
 wire       riu_rd_valid  [0:RIU_COUNT-1];   // From RIU
 wire[15:0] riu_rd_data   [0:RIU_COUNT-1];   // From RIU
 
-// The delay value we're trying to write is the bottom 9 bits of "cal_word"
-wire[8:0] delay_wr = cal_word[8:0];
+// Extract the "delay taps" portion of the calibration word
+wire[8:0] cal_delay = cal_word[8:0];
 
 // Each RIU nibble feeds us these two "ready" signals.  Bank C is missing a
 // nibble, which is why these wires are 23 bits long instead of 24 bits long.
@@ -144,12 +144,10 @@ reg[LANE_COUNT-1:0] rx_en_vtc;
 wire[LANE_COUNT-1:0] fifo_empty;
 
 // These come from the lvds banks
-wire[8:0] rx_cntvalueout    [0:LANE_COUNT-1];
-wire[8:0] rx_cntvalueout_ext[0:LANE_COUNT-1];
+wire[8:0] rx_cntvalueout[0:LANE_COUNT-1];
 
 // Software selects which lane's information it wants to see
-assign delay_rd = rx_cntvalueout[lane_select];
-
+assign cal_delay_rd = rx_cntvalueout[lane_select];
 
 //=============================================================================
 // Some lanes are inverted.  Here we correct that
@@ -162,7 +160,6 @@ for (lane=0; lane<LANE_COUNT; lane=lane+1) begin
         assign corrected_lvds[lane] =  data_to_fabric[lane];
 end
 //=============================================================================
-
 
 
 //=============================================================================
@@ -282,6 +279,7 @@ assign cal_write_en = {all_dly_rdy, all_vtc_rdy, delay_write_en};
 //=============================================================================
 
 
+
 //=============================================================================
 // Assemble the output bus "lvds_bus" from the corrected lanes
 //=============================================================================
@@ -316,30 +314,30 @@ indy_lvds_bank69 u_lvds_bankA
 (
 
     // The delay (in taps) for each lane
-    .rx_cntvaluein_0 (delay_wr),        .rx_cntvalueout_0 (rx_cntvalueout[LANE_A0 ]),
-    .rx_cntvaluein_2 (delay_wr),        .rx_cntvalueout_2 (rx_cntvalueout[LANE_A2 ]),
-    .rx_cntvaluein_4 (delay_wr),        .rx_cntvalueout_4 (rx_cntvalueout[LANE_A4 ]),
-    .rx_cntvaluein_6 (delay_wr),        .rx_cntvalueout_6 (rx_cntvalueout[LANE_A6 ]),
-    .rx_cntvaluein_8 (delay_wr),        .rx_cntvalueout_8 (rx_cntvalueout[LANE_A8 ]),
-    .rx_cntvaluein_10(delay_wr),        .rx_cntvalueout_10(rx_cntvalueout[LANE_A10]),
-    .rx_cntvaluein_13(delay_wr),        .rx_cntvalueout_13(rx_cntvalueout[LANE_A13]),
-    .rx_cntvaluein_15(delay_wr),        .rx_cntvalueout_15(rx_cntvalueout[LANE_A15]),
-    .rx_cntvaluein_17(delay_wr),        .rx_cntvalueout_17(rx_cntvalueout[LANE_A17]),
-    .rx_cntvaluein_19(delay_wr),        .rx_cntvalueout_19(rx_cntvalueout[LANE_A19]),
-    .rx_cntvaluein_21(delay_wr),        .rx_cntvalueout_21(rx_cntvalueout[LANE_A21]),
-    .rx_cntvaluein_23(delay_wr),        .rx_cntvalueout_23(rx_cntvalueout[LANE_A23]),
-    .rx_cntvaluein_28(delay_wr),        .rx_cntvalueout_28(rx_cntvalueout[LANE_A28]),
-    .rx_cntvaluein_30(delay_wr),        .rx_cntvalueout_30(rx_cntvalueout[LANE_A30]),
-    .rx_cntvaluein_32(delay_wr),        .rx_cntvalueout_32(rx_cntvalueout[LANE_A32]),
-    .rx_cntvaluein_34(delay_wr),        .rx_cntvalueout_34(rx_cntvalueout[LANE_A34]),
-    .rx_cntvaluein_36(delay_wr),        .rx_cntvalueout_36(rx_cntvalueout[LANE_A36]),
-    .rx_cntvaluein_39(delay_wr),        .rx_cntvalueout_39(rx_cntvalueout[LANE_A39]),
-    .rx_cntvaluein_41(delay_wr),        .rx_cntvalueout_41(rx_cntvalueout[LANE_A41]),
-    .rx_cntvaluein_43(delay_wr),        .rx_cntvalueout_43(rx_cntvalueout[LANE_A43]),
-    .rx_cntvaluein_45(delay_wr),        .rx_cntvalueout_45(rx_cntvalueout[LANE_A45]),
-    .rx_cntvaluein_47(delay_wr),        .rx_cntvalueout_47(rx_cntvalueout[LANE_A47]),
-    .rx_cntvaluein_49(delay_wr),        .rx_cntvalueout_49(rx_cntvalueout[LANE_A49]),
-    .rx_cntvaluein_26(0           ),    .rx_cntvalueout_26(),                        
+    .rx_cntvaluein_0 (cal_delay),       .rx_cntvalueout_0 (rx_cntvalueout[LANE_A0 ]),
+    .rx_cntvaluein_2 (cal_delay),       .rx_cntvalueout_2 (rx_cntvalueout[LANE_A2 ]),
+    .rx_cntvaluein_4 (cal_delay),       .rx_cntvalueout_4 (rx_cntvalueout[LANE_A4 ]),
+    .rx_cntvaluein_6 (cal_delay),       .rx_cntvalueout_6 (rx_cntvalueout[LANE_A6 ]),
+    .rx_cntvaluein_8 (cal_delay),       .rx_cntvalueout_8 (rx_cntvalueout[LANE_A8 ]),
+    .rx_cntvaluein_10(cal_delay),       .rx_cntvalueout_10(rx_cntvalueout[LANE_A10]),
+    .rx_cntvaluein_13(cal_delay),       .rx_cntvalueout_13(rx_cntvalueout[LANE_A13]),
+    .rx_cntvaluein_15(cal_delay),       .rx_cntvalueout_15(rx_cntvalueout[LANE_A15]),
+    .rx_cntvaluein_17(cal_delay),       .rx_cntvalueout_17(rx_cntvalueout[LANE_A17]),
+    .rx_cntvaluein_19(cal_delay),       .rx_cntvalueout_19(rx_cntvalueout[LANE_A19]),
+    .rx_cntvaluein_21(cal_delay),       .rx_cntvalueout_21(rx_cntvalueout[LANE_A21]),
+    .rx_cntvaluein_23(cal_delay),       .rx_cntvalueout_23(rx_cntvalueout[LANE_A23]),
+    .rx_cntvaluein_28(cal_delay),       .rx_cntvalueout_28(rx_cntvalueout[LANE_A28]),
+    .rx_cntvaluein_30(cal_delay),       .rx_cntvalueout_30(rx_cntvalueout[LANE_A30]),
+    .rx_cntvaluein_32(cal_delay),       .rx_cntvalueout_32(rx_cntvalueout[LANE_A32]),
+    .rx_cntvaluein_34(cal_delay),       .rx_cntvalueout_34(rx_cntvalueout[LANE_A34]),
+    .rx_cntvaluein_36(cal_delay),       .rx_cntvalueout_36(rx_cntvalueout[LANE_A36]),
+    .rx_cntvaluein_39(cal_delay),       .rx_cntvalueout_39(rx_cntvalueout[LANE_A39]),
+    .rx_cntvaluein_41(cal_delay),       .rx_cntvalueout_41(rx_cntvalueout[LANE_A41]),
+    .rx_cntvaluein_43(cal_delay),       .rx_cntvalueout_43(rx_cntvalueout[LANE_A43]),
+    .rx_cntvaluein_45(cal_delay),       .rx_cntvalueout_45(rx_cntvalueout[LANE_A45]),
+    .rx_cntvaluein_47(cal_delay),       .rx_cntvalueout_47(rx_cntvalueout[LANE_A47]),
+    .rx_cntvaluein_49(cal_delay),       .rx_cntvalueout_49(rx_cntvalueout[LANE_A49]),
+    .rx_cntvaluein_26(0        ),       .rx_cntvalueout_26(),                        
 
 
     // "Load new delay" and "enable voltage/temperature compensation"
@@ -521,30 +519,29 @@ indy_lvds_bank69 u_lvds_bankA
 indy_lvds_bank70 u_lvds_bankB
 (
     // The delay (in taps) for each lane
-    .rx_cntvaluein_0 (delay_wr),        .rx_cntvalueout_0 (rx_cntvalueout[LANE_B0 ]),  
-    .rx_cntvaluein_2 (delay_wr),        .rx_cntvalueout_2 (rx_cntvalueout[LANE_B2 ]),  
-    .rx_cntvaluein_4 (delay_wr),        .rx_cntvalueout_4 (rx_cntvalueout[LANE_B4 ]),  
-    .rx_cntvaluein_6 (delay_wr),        .rx_cntvalueout_6 (rx_cntvalueout[LANE_B6 ]),  
-    .rx_cntvaluein_8 (delay_wr),        .rx_cntvalueout_8 (rx_cntvalueout[LANE_B8 ]),  
-    .rx_cntvaluein_10(delay_wr),        .rx_cntvalueout_10(rx_cntvalueout[LANE_B10]),  
-    .rx_cntvaluein_13(delay_wr),        .rx_cntvalueout_13(rx_cntvalueout[LANE_B13]),  
-    .rx_cntvaluein_15(delay_wr),        .rx_cntvalueout_15(rx_cntvalueout[LANE_B15]),  
-    .rx_cntvaluein_17(delay_wr),        .rx_cntvalueout_17(rx_cntvalueout[LANE_B17]),  
-    .rx_cntvaluein_19(delay_wr),        .rx_cntvalueout_19(rx_cntvalueout[LANE_B19]),  
-    .rx_cntvaluein_21(delay_wr),        .rx_cntvalueout_21(rx_cntvalueout[LANE_B21]),  
-    .rx_cntvaluein_26(delay_wr),        .rx_cntvalueout_26(rx_cntvalueout[LANE_B26]),  
-    .rx_cntvaluein_28(delay_wr),        .rx_cntvalueout_28(rx_cntvalueout[LANE_B28]),  
-    .rx_cntvaluein_30(delay_wr),        .rx_cntvalueout_30(rx_cntvalueout[LANE_B30]),  
-    .rx_cntvaluein_34(delay_wr),        .rx_cntvalueout_34(rx_cntvalueout[LANE_B34]),  
-    .rx_cntvaluein_36(delay_wr),        .rx_cntvalueout_36(rx_cntvalueout[LANE_B36]),  
-    .rx_cntvaluein_39(delay_wr),        .rx_cntvalueout_39(rx_cntvalueout[LANE_B39]),  
-    .rx_cntvaluein_41(delay_wr),        .rx_cntvalueout_41(rx_cntvalueout[LANE_B41]),  
-    .rx_cntvaluein_43(delay_wr),        .rx_cntvalueout_43(rx_cntvalueout[LANE_B43]),  
-    .rx_cntvaluein_45(delay_wr),        .rx_cntvalueout_45(rx_cntvalueout[LANE_B45]),  
-    .rx_cntvaluein_47(delay_wr),        .rx_cntvalueout_47(rx_cntvalueout[LANE_B47]),  
-    .rx_cntvaluein_49(delay_wr),        .rx_cntvalueout_49(rx_cntvalueout[LANE_B49]),  
-    .rx_cntvaluein_32(0           ),    .rx_cntvalueout_32(),                          
-
+    .rx_cntvaluein_0 (cal_delay),           .rx_cntvalueout_0 (rx_cntvalueout[LANE_B0 ]),  
+    .rx_cntvaluein_2 (cal_delay),           .rx_cntvalueout_2 (rx_cntvalueout[LANE_B2 ]),  
+    .rx_cntvaluein_4 (cal_delay),           .rx_cntvalueout_4 (rx_cntvalueout[LANE_B4 ]),  
+    .rx_cntvaluein_6 (cal_delay),           .rx_cntvalueout_6 (rx_cntvalueout[LANE_B6 ]),  
+    .rx_cntvaluein_8 (cal_delay),           .rx_cntvalueout_8 (rx_cntvalueout[LANE_B8 ]),  
+    .rx_cntvaluein_10(cal_delay),           .rx_cntvalueout_10(rx_cntvalueout[LANE_B10]),  
+    .rx_cntvaluein_13(cal_delay),           .rx_cntvalueout_13(rx_cntvalueout[LANE_B13]),  
+    .rx_cntvaluein_15(cal_delay),           .rx_cntvalueout_15(rx_cntvalueout[LANE_B15]),  
+    .rx_cntvaluein_17(cal_delay),           .rx_cntvalueout_17(rx_cntvalueout[LANE_B17]),  
+    .rx_cntvaluein_19(cal_delay),           .rx_cntvalueout_19(rx_cntvalueout[LANE_B19]),  
+    .rx_cntvaluein_21(cal_delay),           .rx_cntvalueout_21(rx_cntvalueout[LANE_B21]),  
+    .rx_cntvaluein_26(cal_delay),           .rx_cntvalueout_26(rx_cntvalueout[LANE_B26]),  
+    .rx_cntvaluein_28(cal_delay),           .rx_cntvalueout_28(rx_cntvalueout[LANE_B28]),  
+    .rx_cntvaluein_30(cal_delay),           .rx_cntvalueout_30(rx_cntvalueout[LANE_B30]),  
+    .rx_cntvaluein_34(cal_delay),           .rx_cntvalueout_34(rx_cntvalueout[LANE_B34]),  
+    .rx_cntvaluein_36(cal_delay),           .rx_cntvalueout_36(rx_cntvalueout[LANE_B36]),  
+    .rx_cntvaluein_39(cal_delay),           .rx_cntvalueout_39(rx_cntvalueout[LANE_B39]),  
+    .rx_cntvaluein_41(cal_delay),           .rx_cntvalueout_41(rx_cntvalueout[LANE_B41]),  
+    .rx_cntvaluein_43(cal_delay),           .rx_cntvalueout_43(rx_cntvalueout[LANE_B43]),  
+    .rx_cntvaluein_45(cal_delay),           .rx_cntvalueout_45(rx_cntvalueout[LANE_B45]),  
+    .rx_cntvaluein_47(cal_delay),           .rx_cntvalueout_47(rx_cntvalueout[LANE_B47]),  
+    .rx_cntvaluein_49(cal_delay),           .rx_cntvalueout_49(rx_cntvalueout[LANE_B49]),  
+    .rx_cntvaluein_32(0        ),           .rx_cntvalueout_32(                        ),                          
 
 
     // "Load new delay" and "enable voltage/temperature compensation"
@@ -720,26 +717,26 @@ indy_lvds_bank70 u_lvds_bankB
 indy_lvds_bank71 u_lvds_bankC
 (
     // The delay (in taps) for each lane
-    .rx_cntvaluein_0 (delay_wr),        .rx_cntvalueout_0 (rx_cntvalueout[LANE_C0 ]),                          
-    .rx_cntvaluein_2 (delay_wr),        .rx_cntvalueout_2 (rx_cntvalueout[LANE_C2 ]),                          
-    .rx_cntvaluein_4 (delay_wr),        .rx_cntvalueout_4 (rx_cntvalueout[LANE_C4 ]),                          
-    .rx_cntvaluein_6 (delay_wr),        .rx_cntvalueout_6 (rx_cntvalueout[LANE_C6 ]),                          
-    .rx_cntvaluein_8 (delay_wr),        .rx_cntvalueout_8 (rx_cntvalueout[LANE_C8 ]),                          
-    .rx_cntvaluein_10(delay_wr),        .rx_cntvalueout_10(rx_cntvalueout[LANE_C10]),                          
-    .rx_cntvaluein_13(delay_wr),        .rx_cntvalueout_13(rx_cntvalueout[LANE_C13]),                          
-    .rx_cntvaluein_15(delay_wr),        .rx_cntvalueout_15(rx_cntvalueout[LANE_C15]),                          
-    .rx_cntvaluein_17(delay_wr),        .rx_cntvalueout_17(rx_cntvalueout[LANE_C17]),                          
-    .rx_cntvaluein_19(delay_wr),        .rx_cntvalueout_19(rx_cntvalueout[LANE_C19]),                          
-    .rx_cntvaluein_23(delay_wr),        .rx_cntvalueout_23(rx_cntvalueout[LANE_C23]),                          
-    .rx_cntvaluein_28(delay_wr),        .rx_cntvalueout_28(rx_cntvalueout[LANE_C28]),                          
-    .rx_cntvaluein_30(delay_wr),        .rx_cntvalueout_30(rx_cntvalueout[LANE_C30]),                          
-    .rx_cntvaluein_32(delay_wr),        .rx_cntvalueout_32(rx_cntvalueout[LANE_C32]),                          
-    .rx_cntvaluein_34(delay_wr),        .rx_cntvalueout_34(rx_cntvalueout[LANE_C34]),                          
-    .rx_cntvaluein_36(delay_wr),        .rx_cntvalueout_36(rx_cntvalueout[LANE_C36]),                          
-    .rx_cntvaluein_39(delay_wr),        .rx_cntvalueout_39(rx_cntvalueout[LANE_C39]),                          
-    .rx_cntvaluein_41(delay_wr),        .rx_cntvalueout_41(rx_cntvalueout[LANE_C41]),                          
-    .rx_cntvaluein_43(delay_wr),        .rx_cntvalueout_43(rx_cntvalueout[LANE_C43]),                          
-    .rx_cntvaluein_26(0           ),    .rx_cntvalueout_26(),                                                  
+    .rx_cntvaluein_0 (cal_delay),        .rx_cntvalueout_0 (rx_cntvalueout[LANE_C0 ]),                          
+    .rx_cntvaluein_2 (cal_delay),        .rx_cntvalueout_2 (rx_cntvalueout[LANE_C2 ]),                          
+    .rx_cntvaluein_4 (cal_delay),        .rx_cntvalueout_4 (rx_cntvalueout[LANE_C4 ]),                          
+    .rx_cntvaluein_6 (cal_delay),        .rx_cntvalueout_6 (rx_cntvalueout[LANE_C6 ]),                          
+    .rx_cntvaluein_8 (cal_delay),        .rx_cntvalueout_8 (rx_cntvalueout[LANE_C8 ]),                          
+    .rx_cntvaluein_10(cal_delay),        .rx_cntvalueout_10(rx_cntvalueout[LANE_C10]),                          
+    .rx_cntvaluein_13(cal_delay),        .rx_cntvalueout_13(rx_cntvalueout[LANE_C13]),                          
+    .rx_cntvaluein_15(cal_delay),        .rx_cntvalueout_15(rx_cntvalueout[LANE_C15]),                          
+    .rx_cntvaluein_17(cal_delay),        .rx_cntvalueout_17(rx_cntvalueout[LANE_C17]),                          
+    .rx_cntvaluein_19(cal_delay),        .rx_cntvalueout_19(rx_cntvalueout[LANE_C19]),                          
+    .rx_cntvaluein_23(cal_delay),        .rx_cntvalueout_23(rx_cntvalueout[LANE_C23]),                          
+    .rx_cntvaluein_28(cal_delay),        .rx_cntvalueout_28(rx_cntvalueout[LANE_C28]),                          
+    .rx_cntvaluein_30(cal_delay),        .rx_cntvalueout_30(rx_cntvalueout[LANE_C30]),                          
+    .rx_cntvaluein_32(cal_delay),        .rx_cntvalueout_32(rx_cntvalueout[LANE_C32]),                          
+    .rx_cntvaluein_34(cal_delay),        .rx_cntvalueout_34(rx_cntvalueout[LANE_C34]),                          
+    .rx_cntvaluein_36(cal_delay),        .rx_cntvalueout_36(rx_cntvalueout[LANE_C36]),                          
+    .rx_cntvaluein_39(cal_delay),        .rx_cntvalueout_39(rx_cntvalueout[LANE_C39]),                          
+    .rx_cntvaluein_41(cal_delay),        .rx_cntvalueout_41(rx_cntvalueout[LANE_C41]),                          
+    .rx_cntvaluein_43(cal_delay),        .rx_cntvalueout_43(rx_cntvalueout[LANE_C43]),                          
+    .rx_cntvaluein_26(0        ),        .rx_cntvalueout_26(                        ),                                                  
 
 
 

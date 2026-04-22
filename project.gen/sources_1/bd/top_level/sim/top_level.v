@@ -2,7 +2,7 @@
 //Copyright 2022-2024 Advanced Micro Devices, Inc. All Rights Reserved.
 //--------------------------------------------------------------------------------
 //Tool Version: Vivado v.2024.2 (lin64) Build 5239630 Fri Nov 08 22:34:34 MST 2024
-//Date        : Tue Apr 21 15:52:18 2026
+//Date        : Wed Apr 22 15:38:52 2026
 //Host        : wolf-super-server running 64-bit Ubuntu 20.04.6 LTS
 //Command     : generate_target top_level.bd
 //Design      : top_level
@@ -288,6 +288,7 @@ module lvds_datapath_imp_QTEW0P
     LVDS_DP,
     align_err,
     bitslip_rd,
+    cal_delay_rd,
     cal_mask,
     cal_word,
     cal_word_wstb,
@@ -296,7 +297,6 @@ module lvds_datapath_imp_QTEW0P
     clear_errors,
     clk,
     dbg_lvds_lane,
-    delay_rd,
     lane_select,
     prbs_err,
     resetn);
@@ -310,6 +310,7 @@ module lvds_datapath_imp_QTEW0P
   input [63:0]LVDS_DP;
   output [63:0]align_err;
   output [2:0]bitslip_rd;
+  output [8:0]cal_delay_rd;
   input [63:0]cal_mask;
   input [11:0]cal_word;
   input cal_word_wstb;
@@ -318,7 +319,6 @@ module lvds_datapath_imp_QTEW0P
   input clear_errors;
   input clk;
   output [7:0]dbg_lvds_lane;
-  output [8:0]delay_rd;
   input [5:0]lane_select;
   output [63:0]prbs_err;
   input resetn;
@@ -333,6 +333,7 @@ module lvds_datapath_imp_QTEW0P
   wire [63:0]LVDS_DP;
   wire [63:0]align_err;
   wire [2:0]bitslip_rd;
+  wire [8:0]cal_delay_rd;
   wire [63:0]cal_mask;
   wire [11:0]cal_word;
   wire cal_word_wstb;
@@ -341,7 +342,6 @@ module lvds_datapath_imp_QTEW0P
   wire clear_errors;
   wire clk;
   wire [7:0]dbg_lvds_lane;
-  wire [8:0]delay_rd;
   wire [511:0]hssio_lvds_bus;
   wire [5:0]lane_select;
   wire [511:0]lvds_bitslip_lvds_bus;
@@ -357,13 +357,13 @@ module lvds_datapath_imp_QTEW0P
         .LVDS_BANKC_CKIN_P(LVDS_BANKC_clk_p),
         .LVDS_DN(LVDS_DN),
         .LVDS_DP(LVDS_DP),
+        .cal_delay_rd(cal_delay_rd),
         .cal_mask(cal_mask),
         .cal_word(cal_word),
         .cal_word_wstb(cal_word_wstb),
         .cal_write_en(cal_write_en),
         .cfg_reset_hssio(cfg_reset_hssio),
         .clk(clk),
-        .delay_rd(delay_rd),
         .lane_select(lane_select),
         .lvds_bus(hssio_lvds_bus),
         .resetn(resetn));
@@ -419,8 +419,8 @@ module lvds_imp_JR8VK
     S_AXI_CTL_wready,
     S_AXI_CTL_wstrb,
     S_AXI_CTL_wvalid,
-    clk,
-    resetn);
+    clk_192,
+    resetn_192);
   input CHIP_PA_SYNC;
   input LVDS_BANKA_clk_n;
   input LVDS_BANKA_clk_p;
@@ -449,8 +449,8 @@ module lvds_imp_JR8VK
   output S_AXI_CTL_wready;
   input [3:0]S_AXI_CTL_wstrb;
   input S_AXI_CTL_wvalid;
-  input clk;
-  input resetn;
+  input clk_192;
+  input resetn_192;
 
   wire CHIP_PA_SYNC_1;
   wire LVDS_BANKA_clk_n;
@@ -493,10 +493,10 @@ module lvds_imp_JR8VK
   wire [2:0]lvds_datapath_cal_write_en;
   wire [7:0]lvds_datapath_dbg_lvds_lane;
   wire [63:0]lvds_prbs15_check_prbs_err;
-  wire resetn;
+  wire resetn_192;
 
   assign CHIP_PA_SYNC_1 = CHIP_PA_SYNC;
-  assign clk_192mhz_clk_192 = clk;
+  assign clk_192mhz_clk_192 = clk_192;
   top_level_lvds_ctl_0_0 lvds_ctl
        (.S_AXI_ARADDR(S_AXI_CTL_araddr),
         .S_AXI_ARPROT(S_AXI_CTL_arprot),
@@ -529,7 +529,7 @@ module lvds_imp_JR8VK
         .lane_select(lvds_ctl_lane_select),
         .prbs_err(lvds_prbs15_check_prbs_err),
         .reset_hssio(lvds_ctl_reset_hssio),
-        .resetn(resetn));
+        .resetn(resetn_192));
   lvds_datapath_imp_QTEW0P lvds_datapath
        (.LVDS_BANKA_clk_n(LVDS_BANKA_clk_n),
         .LVDS_BANKA_clk_p(LVDS_BANKA_clk_p),
@@ -541,6 +541,7 @@ module lvds_imp_JR8VK
         .LVDS_DP(LVDS_DP),
         .align_err(lvds_datapath_align_err),
         .bitslip_rd(hier_0_bitslip_rd),
+        .cal_delay_rd(hier_0_delay_rd),
         .cal_mask(lvds_ctl_cal_mask),
         .cal_word(lvds_ctl_cal_word),
         .cal_word_wstb(lvds_ctl_cal_word_wstb),
@@ -549,10 +550,9 @@ module lvds_imp_JR8VK
         .clear_errors(lvds_ctl_clear_errors_stb),
         .clk(clk_192mhz_clk_192),
         .dbg_lvds_lane(lvds_datapath_dbg_lvds_lane),
-        .delay_rd(hier_0_delay_rd),
         .lane_select(lvds_ctl_lane_select),
         .prbs_err(lvds_prbs15_check_prbs_err),
-        .resetn(resetn));
+        .resetn(resetn_192));
   top_level_system_ila_0_0 system_ila
        (.clk(clk_192mhz_clk_192),
         .probe0(CHIP_PA_SYNC_1),
@@ -848,7 +848,7 @@ module sys_192mhz_imp_1D7MHLQ
         .OBUF_IN(clk_768mhz_clk_768));
 endmodule
 
-(* CORE_GENERATION_INFO = "top_level,IP_Integrator,{x_ipVendor=xilinx.com,x_ipLibrary=BlockDiagram,x_ipName=top_level,x_ipVersion=1.00.a,x_ipLanguage=VERILOG,numBlks=32,numReposBlks=26,numNonXlnxBlks=0,numHierBlks=6,maxHierDepth=2,numSysgenBlks=0,numHlsBlks=0,numHdlrefBlks=14,numPkgbdBlks=0,bdsource=USER,\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"da_axi4_cnt\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"=2,\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"da_bram_cntlr_cnt\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"=2,\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"da_axi4_cnt\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"=1,\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"da_axi4_cnt\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"=1,\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"da_axi4_cnt\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"=1,synth_mode=Hierarchical}" *) (* HW_HANDOFF = "top_level.hwdef" *) 
+(* CORE_GENERATION_INFO = "top_level,IP_Integrator,{x_ipVendor=xilinx.com,x_ipLibrary=BlockDiagram,x_ipName=top_level,x_ipVersion=1.00.a,x_ipLanguage=VERILOG,numBlks=32,numReposBlks=26,numNonXlnxBlks=0,numHierBlks=6,maxHierDepth=2,numSysgenBlks=0,numHlsBlks=0,numHdlrefBlks=14,numPkgbdBlks=0,bdsource=USER,\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"da_axi4_cnt\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"=2,\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"da_bram_cntlr_cnt\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"=2,\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"da_axi4_cnt\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"=1,\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"da_axi4_cnt\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"=1,\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"da_axi4_cnt\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"=1,synth_mode=Hierarchical}" *) (* HW_HANDOFF = "top_level.hwdef" *) 
 module top_level
    (CHIP_HSI_CLK,
     CHIP_PA_SYNC,
@@ -1238,8 +1238,8 @@ module top_level
         .S_AXI_CTL_wready(S_AXI_CTL_1_WREADY),
         .S_AXI_CTL_wstrb(S_AXI_CTL_1_WSTRB),
         .S_AXI_CTL_wvalid(S_AXI_CTL_1_WVALID),
-        .clk(clk_192mhz_clk_192),
-        .resetn(sys_192mhz_resetn_192));
+        .clk_192(clk_192mhz_clk_192),
+        .resetn_192(sys_192mhz_resetn_192));
   pcie_bridge_imp_1AINXYK pcie_bridge
        (.M_AXI_B_araddr(pcie_bridge_M_AXI_B_ARADDR),
         .M_AXI_B_arburst(pcie_bridge_M_AXI_B_ARBURST),

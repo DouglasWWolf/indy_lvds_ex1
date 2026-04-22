@@ -341,7 +341,7 @@
         </spirit:wire>
       </spirit:port>
       <spirit:port>
-        <spirit:name>delay_rd</spirit:name>
+        <spirit:name>cal_delay_rd</spirit:name>
         <spirit:wire>
           <spirit:direction>out</spirit:direction>
           <spirit:vector>
