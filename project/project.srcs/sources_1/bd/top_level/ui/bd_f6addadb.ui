@@ -1,0 +1,87 @@
+{
+   "ActiveEmotionalView":"No Loops",
+   "Default View_ScaleFactor":"1.0",
+   "Default View_TopLeft":"-496,-123",
+   "DisplayTieOff":"1",
+   "ExpandedHierarchyInLayout":"",
+   "No Loops_ExpandedHierarchyInLayout":"",
+   "No Loops_Layout":"# # String gsaved with Nlview 7.8.0 2024-04-26 e1825d835c VDI=44 GEI=38 GUI=JA:21.0 TLS
+#  -string -flagsOSRD
+preplace port port-id_clk -pg 1 -lvl 0 -x 0 -y 280 -defaultsOSRD
+preplace port port-id_resetn -pg 1 -lvl 0 -x 0 -y 300 -defaultsOSRD
+preplace port port-id_clear_errors -pg 1 -lvl 0 -x 0 -y 760 -defaultsOSRD
+preplace port port-id_cal_word_wstb -pg 1 -lvl 0 -x 0 -y 380 -defaultsOSRD
+preplace port port-id_cal_mode -pg 1 -lvl 0 -x 0 -y 340 -defaultsOSRD
+preplace port port-id_LVDS_BANKA_clk_p -pg 1 -lvl 0 -x 0 -y 60 -defaultsOSRD
+preplace port port-id_LVDS_BANKA_clk_n -pg 1 -lvl 0 -x 0 -y 80 -defaultsOSRD
+preplace port port-id_LVDS_BANKB_clk_p -pg 1 -lvl 0 -x 0 -y 100 -defaultsOSRD
+preplace port port-id_LVDS_BANKB_clk_n -pg 1 -lvl 0 -x 0 -y 120 -defaultsOSRD
+preplace port port-id_LVDS_BANKC_clk_p -pg 1 -lvl 0 -x 0 -y 140 -defaultsOSRD
+preplace port port-id_LVDS_BANKC_clk_n -pg 1 -lvl 0 -x 0 -y 160 -defaultsOSRD
+preplace port port-id_cfg_reset_hssio -pg 1 -lvl 0 -x 0 -y 500 -defaultsOSRD
+preplace portBus alignment_err -pg 1 -lvl 3 -x 940 -y 700 -defaultsOSRD
+preplace portBus prbs_err -pg 1 -lvl 3 -x 940 -y 860 -defaultsOSRD
+preplace portBus dbg_lvds_lane -pg 1 -lvl 3 -x 940 -y 640 -defaultsOSRD
+preplace portBus dbg_lvds_data -pg 1 -lvl 3 -x 940 -y 620 -defaultsOSRD
+preplace portBus bitslip_rd -pg 1 -lvl 3 -x 940 -y 600 -defaultsOSRD
+preplace portBus lane_select -pg 1 -lvl 0 -x 0 -y 320 -defaultsOSRD
+preplace portBus cal_word -pg 1 -lvl 0 -x 0 -y 360 -defaultsOSRD
+preplace portBus LVDS_DN -pg 1 -lvl 0 -x 0 -y 180 -defaultsOSRD
+preplace portBus LVDS_DP -pg 1 -lvl 0 -x 0 -y 200 -defaultsOSRD
+preplace portBus delay_rd -pg 1 -lvl 3 -x 940 -y 80 -defaultsOSRD
+preplace portBus cal_write_en -pg 1 -lvl 3 -x 940 -y 60 -defaultsOSRD
+preplace inst lvds_align_detect -pg 1 -lvl 2 -x 740 -y 680 -swap {1 2 0 3 4} -defaultsOSRD -pinDir clk left -pinY clk 40L -pinDir resetn left -pinY resetn 60L -pinBusDir lvds_bus left -pinBusY lvds_bus 20L -pinBusDir alignment_err right -pinBusY alignment_err 20R -pinDir clear_errors left -pinY clear_errors 80L
+preplace inst lvds_prbs15_check -pg 1 -lvl 2 -x 740 -y 840 -swap {1 0 2 3} -defaultsOSRD -pinDir clk left -pinY clk 40L -pinBusDir lvds_bus left -pinBusY lvds_bus 20L -pinDir clear_errors left -pinY clear_errors 60L -pinBusDir prbs_err right -pinBusY prbs_err 20R
+preplace inst lvds_bitslip -pg 1 -lvl 1 -x 280 -y 260 -swap {0 1 2 10 4 5 6 7 3 8 9} -defaultsOSRD -pinDir clk left -pinY clk 20L -pinDir resetn left -pinY resetn 40L -pinBusDir input_bus right -pinBusY input_bus 20R -pinBusDir lvds_bus right -pinBusY lvds_bus 120R -pinBusDir lane_select left -pinBusY lane_select 60L -pinDir cal_mode left -pinY cal_mode 80L -pinBusDir cal_word left -pinBusY cal_word 100L -pinDir cal_word_wstb left -pinY cal_word_wstb 120L -pinBusDir bitslip_rd right -pinBusY bitslip_rd 60R -pinBusDir dbg_lvds_data right -pinBusY dbg_lvds_data 80R -pinBusDir dbg_lvds_lane right -pinBusY dbg_lvds_lane 100R
+preplace inst hssio -pg 1 -lvl 2 -x 740 -y 40 -swap {15 17 0 1 2 3 4 5 6 7 13 8 10 11 14 12 16 9} -defaultsOSRD -pinDir clk left -pinY clk 480L -pinDir resetn left -pinY resetn 500L -pinDir LVDS_BANKA_CKIN_P left -pinY LVDS_BANKA_CKIN_P 20L -pinDir LVDS_BANKA_CKIN_N left -pinY LVDS_BANKA_CKIN_N 40L -pinDir LVDS_BANKB_CKIN_P left -pinY LVDS_BANKB_CKIN_P 60L -pinDir LVDS_BANKB_CKIN_N left -pinY LVDS_BANKB_CKIN_N 80L -pinDir LVDS_BANKC_CKIN_P left -pinY LVDS_BANKC_CKIN_P 100L -pinDir LVDS_BANKC_CKIN_N left -pinY LVDS_BANKC_CKIN_N 120L -pinBusDir LVDS_DN left -pinBusY LVDS_DN 140L -pinBusDir LVDS_DP left -pinBusY LVDS_DP 160L -pinDir cfg_reset_hssio left -pinY cfg_reset_hssio 460L -pinDir cal_mode left -pinY cal_mode 180L -pinBusDir cal_word left -pinBusY cal_word 400L -pinDir cal_word_wstb left -pinY cal_word_wstb 420L -pinBusDir cal_write_en right -pinBusY cal_write_en 20R -pinBusDir lane_select left -pinBusY lane_select 440L -pinBusDir delay_rd right -pinBusY delay_rd 40R -pinBusDir lvds_bus left -pinBusY lvds_bus 240L
+preplace netloc clk_192mhz_clk_192 1 0 2 100 520 520
+preplace netloc sys_192mhz_resetn_192 1 0 2 40 540 540
+preplace netloc lvds_bitslip_lvds_bus 1 1 1 460 380n
+preplace netloc lvds_align_detect_alignment_err 1 2 1 NJ 700
+preplace netloc lvds_ctl_clear_errors_stb 1 0 2 NJ 760 480
+preplace netloc lvds_prbs15_check_prbs_err 1 2 1 NJ 860
+preplace netloc lvds_bitslip_dbg_lvds_lane 1 1 2 480J 640 NJ
+preplace netloc lvds_bitslip_dbg_lvds_data 1 1 2 500J 620 NJ
+preplace netloc lvds_bitslip_bitslip_rd 1 1 2 560J 600 NJ
+preplace netloc lane_select_1 1 0 2 60 480 NJ
+preplace netloc cal_word_wstb_1 1 0 2 20 460 NJ
+preplace netloc cal_word_1 1 0 2 80 440 NJ
+preplace netloc cal_mode_1 1 0 2 80 220 NJ
+preplace netloc LVDS_BANKA_clk_p_1 1 0 2 NJ 60 NJ
+preplace netloc LVDS_BANKA_clk_n_1 1 0 2 NJ 80 NJ
+preplace netloc LVDS_BANKB_clk_p_1 1 0 2 NJ 100 NJ
+preplace netloc LVDS_BANKB_clk_n_1 1 0 2 NJ 120 NJ
+preplace netloc LVDS_BANKC_clk_p_1 1 0 2 NJ 140 NJ
+preplace netloc hssio_lvds_bus 1 1 1 N 280
+preplace netloc LVDS_BANKC_clk_n_1 1 0 2 NJ 160 NJ
+preplace netloc LVDS_DN_1 1 0 2 NJ 180 NJ
+preplace netloc LVDS_DP_1 1 0 2 NJ 200 NJ
+preplace netloc cfg_reset_hssio_1 1 0 2 NJ 500 NJ
+preplace netloc hssio_delay_rd 1 2 1 NJ 80
+preplace netloc hssio_cal_write_en 1 2 1 NJ 60
+levelinfo -pg 1 0 280 740 940
+pagesize -pg 1 -db -bbox -sgen -190 0 1140 960
+",
+   "No Loops_ScaleFactor":"0.587002",
+   "No Loops_TopLeft":"-773,3",
+   "guistr":"# # String gsaved with Nlview 7.8.0 2024-04-26 e1825d835c VDI=44 GEI=38 GUI=JA:21.0 TLS
+#  -string -flagsOSRD
+preplace port port-id_clk -pg 1 -lvl 0 -x 0 -y 50 -defaultsOSRD
+preplace port port-id_resetn -pg 1 -lvl 0 -x 0 -y 210 -defaultsOSRD
+preplace port port-id_clear_errors -pg 1 -lvl 0 -x 0 -y 90 -defaultsOSRD
+preplace portBus lvds_bus -pg 1 -lvl 0 -x 0 -y 70 -defaultsOSRD
+preplace portBus alignment_err -pg 1 -lvl 2 -x 400 -y 220 -defaultsOSRD
+preplace portBus prbs_err -pg 1 -lvl 2 -x 400 -y 70 -defaultsOSRD
+preplace inst lvds_align_detect -pg 1 -lvl 1 -x 210 -y 220 -defaultsOSRD
+preplace inst lvds_prbs15_check -pg 1 -lvl 1 -x 210 -y 70 -defaultsOSRD
+preplace netloc clk_192mhz_clk_192 1 0 1 40 50n
+preplace netloc sys_192mhz_resetn_192 1 0 1 NJ 210
+preplace netloc lvds_bitslip_lvds_bus 1 0 1 30 70n
+preplace netloc lvds_align_detect_alignment_err 1 1 1 NJ 220
+preplace netloc lvds_ctl_clear_errors_stb 1 0 1 20 90n
+preplace netloc lvds_prbs15_check_prbs_err 1 1 1 NJ 70
+levelinfo -pg 1 0 210 400
+pagesize -pg 1 -db -bbox -sgen -160 0 590 300
+"
+}
+

@@ -1,0 +1,75 @@
+{
+   "ActiveEmotionalView":"No Loops",
+   "Default View_ScaleFactor":"1.0",
+   "Default View_TopLeft":"-664,-386",
+   "DisplayTieOff":"1",
+   "ExpandedHierarchyInLayout":"",
+   "No Loops_ExpandedHierarchyInLayout":"",
+   "No Loops_Layout":"# # String gsaved with Nlview 7.8.0 2024-04-26 e1825d835c VDI=44 GEI=38 GUI=JA:21.0 TLS
+#  -string -flagsOSRD
+preplace port AXI_ABM -pg 1 -lvl 3 -x 540 -y 190 -defaultsOSRD -right
+preplace port SYS_AXI_ABM -pg 1 -lvl 0 -x 0 -y 190 -defaultsOSRD -left
+preplace port SYS_AXI_CTL -pg 1 -lvl 0 -x 0 -y 330 -defaultsOSRD
+preplace port AXI_CTL -pg 1 -lvl 3 -x 540 -y 330 -defaultsOSRD
+preplace port AXI_CLOCK_CTL -pg 1 -lvl 0 -x 0 -y 60 -defaultsOSRD
+preplace port port-id_sys_clk -pg 1 -lvl 0 -x 0 -y 80 -defaultsOSRD
+preplace port port-id_sys_resetn -pg 1 -lvl 0 -x 0 -y 100 -defaultsOSRD
+preplace port port-id_sys_update_smem_stb -pg 1 -lvl 0 -x 0 -y 490 -defaultsOSRD
+preplace port port-id_sys_smem_wen -pg 1 -lvl 0 -x 0 -y 510 -defaultsOSRD
+preplace port port-id_load_abm_stb -pg 1 -lvl 3 -x 540 -y 530 -defaultsOSRD -right
+preplace port port-id_load_abm_0 -pg 1 -lvl 3 -x 540 -y 550 -defaultsOSRD -right
+preplace port port-id_load_abm_1 -pg 1 -lvl 3 -x 540 -y 570 -defaultsOSRD -right
+preplace port port-id_sys_load_abm_idle_0 -pg 1 -lvl 0 -x 0 -y 590 -defaultsOSRD
+preplace port port-id_sys_load_abm_idle_1 -pg 1 -lvl 0 -x 0 -y 610 -defaultsOSRD
+preplace port port-id_update_smem_stb -pg 1 -lvl 3 -x 540 -y 490 -defaultsOSRD
+preplace port port-id_smem_wen -pg 1 -lvl 3 -x 540 -y 510 -defaultsOSRD
+preplace port port-id_sys_load_abm_stb -pg 1 -lvl 0 -x 0 -y 530 -defaultsOSRD -left
+preplace port port-id_sys_load_abm_0 -pg 1 -lvl 0 -x 0 -y 550 -defaultsOSRD -left
+preplace port port-id_sys_load_abm_1 -pg 1 -lvl 0 -x 0 -y 570 -defaultsOSRD -left
+preplace port port-id_load_abm_idle_0 -pg 1 -lvl 3 -x 540 -y 590 -defaultsOSRD
+preplace port port-id_load_abm_idle_1 -pg 1 -lvl 3 -x 540 -y 610 -defaultsOSRD
+preplace port port-id_chipif_clk -pg 1 -lvl 3 -x 540 -y 80 -defaultsOSRD
+preplace port port-id_chipif_resetn -pg 1 -lvl 3 -x 540 -y 100 -defaultsOSRD
+preplace portBus abm_host_addr -pg 1 -lvl 3 -x 540 -y 630 -defaultsOSRD -right
+preplace portBus sys_abm_host_addr -pg 1 -lvl 0 -x 0 -y 630 -defaultsOSRD -left
+preplace inst chip_if_cdc -pg 1 -lvl 1 -x 250 -y 450 -defaultsOSRD -pinDir sys_clk left -pinY sys_clk 20L -pinDir chipif_clk right -pinY chipif_clk 20R -pinDir sys_update_smem_stb left -pinY sys_update_smem_stb 40L -pinDir update_smem_stb right -pinY update_smem_stb 40R -pinDir sys_smem_wen left -pinY sys_smem_wen 60L -pinDir smem_wen right -pinY smem_wen 60R -pinDir sys_load_abm_stb left -pinY sys_load_abm_stb 80L -pinDir load_abm_stb right -pinY load_abm_stb 80R -pinDir sys_load_abm_0 left -pinY sys_load_abm_0 100L -pinDir load_abm_0 right -pinY load_abm_0 100R -pinDir sys_load_abm_1 left -pinY sys_load_abm_1 120L -pinDir load_abm_1 right -pinY load_abm_1 120R -pinDir sys_load_abm_idle_0 left -pinY sys_load_abm_idle_0 140L -pinDir load_abm_idle_0 right -pinY load_abm_idle_0 140R -pinDir sys_load_abm_idle_1 left -pinY sys_load_abm_idle_1 160L -pinDir load_abm_idle_1 right -pinY load_abm_idle_1 160R -pinBusDir abm_host_addr right -pinBusY abm_host_addr 180R -pinBusDir sys_abm_host_addr left -pinBusY sys_abm_host_addr 180L
+preplace inst axi_abm_cc -pg 1 -lvl 1 -x 250 -y 170 -defaultsOSRD -pinDir S_AXI right -pinY S_AXI 20R -pinDir M_AXI left -pinY M_AXI 20L -pinDir s_axi_aclk right -pinY s_axi_aclk 40R -pinDir s_axi_aresetn right -pinY s_axi_aresetn 60R -pinDir m_axi_aclk left -pinY m_axi_aclk 40L -pinDir m_axi_aresetn left -pinY m_axi_aresetn 60L
+preplace inst axi_clock_converter_0 -pg 1 -lvl 1 -x 250 -y 310 -defaultsOSRD -pinDir S_AXI left -pinY S_AXI 20L -pinDir M_AXI right -pinY M_AXI 20R -pinDir s_axi_aclk left -pinY s_axi_aclk 40L -pinDir s_axi_aresetn left -pinY s_axi_aresetn 60L -pinDir m_axi_aclk right -pinY m_axi_aclk 40R -pinDir m_axi_aresetn right -pinY m_axi_aresetn 60R
+preplace inst clock_manager -pg 1 -lvl 1 -x 250 -y 40 -swap {0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 23 22} -defaultsOSRD -pinDir AXI_CLOCK_CTL left -pinY AXI_CLOCK_CTL 20L -pinDir clk left -pinY clk 40L -pinDir resetn left -pinY resetn 60L -pinDir chipif_resetn right -pinY chipif_resetn 60R -pinDir chipif_clk right -pinY chipif_clk 40R
+preplace netloc abm_host_addr_1 1 1 2 NJ 630 NJ
+preplace netloc chip_if_cdc_load_abm_idle_0 1 1 2 NJ 590 NJ
+preplace netloc chip_if_cdc_load_abm_idle_1 1 1 2 NJ 610 NJ
+preplace netloc chip_if_cdc_smem_wen 1 1 2 NJ 510 NJ
+preplace netloc chip_if_cdc_sys_abm_host_addr 1 0 1 NJ 630
+preplace netloc chip_if_cdc_sys_load_abm_0 1 0 1 NJ 550
+preplace netloc chip_if_cdc_sys_load_abm_1 1 0 1 NJ 570
+preplace netloc chip_if_cdc_sys_load_abm_stb 1 0 1 NJ 530
+preplace netloc chip_if_cdc_update_smem_stb 1 1 2 NJ 490 NJ
+preplace netloc chipif_clock_chipif_clk 1 1 2 480 80 NJ
+preplace netloc clock_manager_chipif_resetn1 1 1 2 460 100 NJ
+preplace netloc load_abm_0_1 1 1 2 NJ 550 NJ
+preplace netloc load_abm_1_1 1 1 2 NJ 570 NJ
+preplace netloc load_abm_stb_1 1 1 2 NJ 530 NJ
+preplace netloc sys_clk_1 1 0 1 40 80n
+preplace netloc sys_load_abm_idle_0_1 1 0 1 NJ 590
+preplace netloc sys_load_abm_idle_1_1 1 0 1 NJ 610
+preplace netloc sys_resetn_1 1 0 1 20 100n
+preplace netloc sys_smem_wen_1 1 0 1 NJ 510
+preplace netloc sys_update_smem_stb_1 1 0 1 NJ 490
+preplace netloc Conn1 1 0 1 N 60
+preplace netloc SYS_AXI_ABM_1 1 1 2 N 190 NJ
+preplace netloc S_AXI_CTL_1 1 0 1 NJ 330
+preplace netloc axi_clock_converter_0_M_AXI 1 0 1 NJ 190
+preplace netloc axi_clock_converter_0_M_AXI1 1 1 2 N 330 NJ
+levelinfo -pg 1 0 250 500 540
+pagesize -pg 1 -db -bbox -sgen -240 0 750 690
+",
+   "No Loops_ScaleFactor":"1.0",
+   "No Loops_TopLeft":"-493,-50",
+   "guistr":"# # String gsaved with Nlview 7.8.0 2024-04-26 e1825d835c VDI=44 GEI=38 GUI=JA:21.0 TLS
+#  -string -flagsOSRD
+levelinfo -pg 1 0 10
+pagesize -pg 1 -db -bbox -sgen 0 0 10 10
+"
+}
+

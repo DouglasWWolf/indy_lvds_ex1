@@ -1,0 +1,20 @@
+{
+   "ActiveEmotionalView":"Default View",
+   "Default View_ScaleFactor":"1.0",
+   "Default View_TopLeft":"-308,-143",
+   "DisplayTieOff":"1",
+   "ExpandedHierarchyInLayout":"",
+   "guistr":"# # String gsaved with Nlview 7.0r4  2019-12-20 bk=1.5203 VDI=41 GEI=36 GUI=JA:10.0 TLS
+#  -string -flagsOSRD
+preplace port SYSCLK2 -pg 1 -lvl 0 -x -10 -y 60 -defaultsOSRD
+preplace port port-id_QSFP28_0_ACTIVITY_LED -pg 1 -lvl 3 -x 500 -y 70 -defaultsOSRD
+preplace inst clock_buffer -pg 1 -lvl 1 -x 140 -y 60 -defaultsOSRD
+preplace inst blinky -pg 1 -lvl 2 -x 380 -y 60 -defaultsOSRD
+preplace netloc util_ds_buf_1_IBUF_OUT 1 1 1 NJ 60
+preplace netloc blinky_led 1 2 1 460J 60n
+preplace netloc SYSCLK2_1 1 0 1 NJ 60
+levelinfo -pg 1 -10 140 380 500
+pagesize -pg 1 -db -bbox -sgen -130 -10 730 130
+"
+}
+
