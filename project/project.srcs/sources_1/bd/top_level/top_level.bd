@@ -34,12 +34,12 @@
         "clk_192mhz": "",
         "async_resetn": ""
       },
-      "ilconstant_0": "",
       "indy_lvds": "",
-      "ilconstant_1": "",
       "framegen": {
         "framegen_ctl": "",
-        "system_ila": ""
+        "system_ila": "",
+        "ilconstant_1": "",
+        "ilconstant_0": ""
       }
     },
     "interface_ports": {
@@ -2373,14 +2373,6 @@
           }
         }
       },
-      "ilconstant_0": {
-        "vlnv": "xilinx.com:inline_hdl:ilconstant:1.0",
-        "parameters": {
-          "CONST_VAL": {
-            "value": "0"
-          }
-        }
-      },
       "indy_lvds": {
         "parameters": {
           "ACTIVE_SIM_BD": {
@@ -2712,14 +2704,6 @@
           }
         }
       },
-      "ilconstant_1": {
-        "vlnv": "xilinx.com:inline_hdl:ilconstant:1.0",
-        "parameters": {
-          "CONST_VAL": {
-            "value": "1"
-          }
-        }
-      },
       "framegen": {
         "interface_ports": {
           "S_AXI": {
@@ -2745,6 +2729,16 @@
           },
           "rs256": {
             "direction": "O"
+          },
+          "GPIO15_DIR": {
+            "direction": "O",
+            "left": "0",
+            "right": "0"
+          },
+          "GPIO_BYTE_DIR": {
+            "direction": "O",
+            "left": "0",
+            "right": "0"
           }
         },
         "components": {
@@ -3044,7 +3038,23 @@
                 "value": "NATIVE"
               },
               "C_NUM_OF_PROBES": {
-                "value": "3"
+                "value": "5"
+              }
+            }
+          },
+          "ilconstant_1": {
+            "vlnv": "xilinx.com:inline_hdl:ilconstant:1.0",
+            "parameters": {
+              "CONST_VAL": {
+                "value": "1"
+              }
+            }
+          },
+          "ilconstant_0": {
+            "vlnv": "xilinx.com:inline_hdl:ilconstant:1.0",
+            "parameters": {
+              "CONST_VAL": {
+                "value": "0"
               }
             }
           }
@@ -3084,6 +3094,20 @@
               "framegen_ctl/rs256",
               "rs256",
               "system_ila/probe2"
+            ]
+          },
+          "ilconstant_0_gpio_byte_dir": {
+            "ports": [
+              "ilconstant_0/dout",
+              "GPIO_BYTE_DIR",
+              "system_ila/probe4"
+            ]
+          },
+          "ilconstant_1_dout": {
+            "ports": [
+              "ilconstant_1/dout",
+              "GPIO15_DIR",
+              "system_ila/probe3"
             ]
           },
           "sys_192mhz_resetn_192": {
@@ -3256,6 +3280,12 @@
           "framegen/clk"
         ]
       },
+      "framegen_GPIO15_DIR": {
+        "ports": [
+          "framegen/GPIO15_DIR",
+          "GPIO15_DIR"
+        ]
+      },
       "framegen_ctl_0_rs0": {
         "ports": [
           "framegen/rs0",
@@ -3270,16 +3300,10 @@
       },
       "ilconstant_0_dout": {
         "ports": [
-          "ilconstant_0/dout",
+          "framegen/GPIO_BYTE_DIR",
           "GPIO13",
           "GPIO15",
           "GPIO_BYTE_DIR"
-        ]
-      },
-      "ilconstant_1_dout": {
-        "ports": [
-          "ilconstant_1/dout",
-          "GPIO15_DIR"
         ]
       },
       "indy_power_ctl_chip_reset_n": {
