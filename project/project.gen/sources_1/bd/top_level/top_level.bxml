@@ -44,7 +44,7 @@
       </File>
     </FileCollection>
     <BlockContainerCollection>
-      <BlockContainer InstPath="/indy_lvds" IsPR="false" State="Validated">
+      <BlockContainer InstPath="/indy_lvds" IsPR="false" State="Stale">
         <ActiveVariantSynth FileName="bd/indy_lvds_inst_0/indy_lvds_inst_0.bd"/>
         <ActiveVariantSim FileName="bd/indy_lvds_inst_0/indy_lvds_inst_0.bd"/>
         <VariantsCollection>
