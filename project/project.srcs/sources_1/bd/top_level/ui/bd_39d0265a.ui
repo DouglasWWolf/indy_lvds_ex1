@@ -71,7 +71,7 @@ preplace netloc chip_spi_HSI_CLK 1 3 1 NJ 300
 preplace netloc chip_spi_spi_cs_n 1 3 1 NJ 260
 preplace netloc chip_spi_spi_mosi 1 3 1 NJ 280
 preplace netloc chip_spi_spi_pclk 1 3 1 NJ 320
-preplace netloc clk_192mhz_clk_192 1 2 1 630 600n
+preplace netloc clk_192mhz_clk_192 1 2 1 620 600n
 preplace netloc framegen_ctl_0_rs0 1 3 1 N 730
 preplace netloc framegen_ctl_0_rs256 1 3 1 N 710
 preplace netloc ilconstant_0_dout 1 0 1 20 310n
@@ -85,10 +85,10 @@ preplace netloc indy_power_ctl_lvl_trsl_oe_n 1 3 1 NJ 160
 preplace netloc ltc1867l_slave_select 1 3 1 NJ 450
 preplace netloc ltc1867l_spi_mosi 1 3 1 NJ 430
 preplace netloc ltc1867l_spi_sclk 1 3 1 NJ 470
-preplace netloc pcie_bridge_0_axi_aclk 1 1 2 290 40 650
-preplace netloc pcie_bridge_0_axi_aresetn 1 1 2 310 60 590
-preplace netloc source_160mhz_clk_out 1 2 1 610 340n
-preplace netloc sys_192mhz_resetn_192 1 2 1 650 620n
+preplace netloc pcie_bridge_0_axi_aclk 1 1 2 280 40 640
+preplace netloc pcie_bridge_0_axi_aresetn 1 1 2 300 60 580
+preplace netloc source_160mhz_clk_out 1 2 1 600 340n
+preplace netloc sys_192mhz_resetn_192 1 2 1 640 620n
 preplace netloc CLK_IN_D_0_1 1 0 1 NJ 120
 preplace netloc S_AXI_1 1 2 1 N 280
 preplace netloc S_AXI_2 1 2 1 N 430
@@ -122,9 +122,9 @@ pagesize -pg 1 -db -bbox -sgen -120 -290 950 270
 "
 }
 {
-   """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""da_axi4_cnt"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""":"2",
-   """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""da_bram_cntlr_cnt"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""":"2",
-   """"""""""""""""""""""""""""""""""""""""""""""""""""""da_axi4_cnt"""""""""""""""""""""""""""""""""""""""""""""""""""""":"1",
-   """"""""""""""""""""""""""""""""""""""""""""""""""""da_axi4_cnt"""""""""""""""""""""""""""""""""""""""""""""""""""":"1",
-   """"""""""""""""""""""""""""""da_axi4_cnt"""""""""""""""""""""""""""""":"1"
+   """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""da_axi4_cnt""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""":"2",
+   """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""da_bram_cntlr_cnt""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""":"2",
+   """""""""""""""""""""""""""""""""""""""""""""""""""""""da_axi4_cnt""""""""""""""""""""""""""""""""""""""""""""""""""""""":"1",
+   """""""""""""""""""""""""""""""""""""""""""""""""""""da_axi4_cnt""""""""""""""""""""""""""""""""""""""""""""""""""""":"1",
+   """""""""""""""""""""""""""""""da_axi4_cnt""""""""""""""""""""""""""""""":"1"
 }
