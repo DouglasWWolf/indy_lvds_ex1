@@ -44,7 +44,7 @@
       </File>
     </FileCollection>
     <BlockContainerCollection>
-      <BlockContainer InstPath="/indy_lvds" IsPR="false" State="Stale">
+      <BlockContainer InstPath="/" IsPR="false" State="Needs Refresh">
         <ActiveVariantSynth FileName="bd/indy_lvds_inst_0/indy_lvds_inst_0.bd"/>
         <ActiveVariantSim FileName="bd/indy_lvds_inst_0/indy_lvds_inst_0.bd"/>
         <VariantsCollection>
@@ -56,20 +56,6 @@
       <ModuleReference TargetName="indy_lvds" Type="Block Design" SubInstancePath="top_level_indy_lvds_0">
         <TopFile Name="../../../../../bdc/sources_1/bd/indy_lvds/indy_lvds.bd"/>
         <FileCollection>
-          <File Name="../../../../src/common/axi4_lite_slave.v"/>
-          <File Name="../../../../../bdc/sources_1/bd/indy_lvds/src/lvds_ctl.v"/>
-          <File Name="../../../../../bdc/sources_1/bd/indy_lvds/src/lvds_align_detect.v"/>
-          <File Name="../../../../../bdc/sources_1/bd/indy_lvds/src/lvds_prbs_check.v"/>
-          <File Name="../../../../../bdc/sources_1/bd/indy_lvds/src/lvds_bitslip.v"/>
-          <File Name="../../../../../bdc/sources_1/bd/indy_lvds/xcix/indy_lvds_bank71/indy_lvds_bank71.xci"/>
-          <File Name="../../../../../bdc/sources_1/bd/indy_lvds/xcix/indy_lvds_bank70/indy_lvds_bank70.xci"/>
-          <File Name="../../../../../bdc/sources_1/bd/indy_lvds/xcix/indy_lvds_bank69/indy_lvds_bank69.xci"/>
-          <File Name="../../../../../bdc/sources_1/bd/indy_lvds/src/lvds_lane_map.vh"/>
-          <File Name="../../../../../bdc/sources_1/bd/indy_lvds/src/hssio.v"/>
-          <File Name="../../../../../bdc/sources_1/bd/indy_lvds/src/lvds_lane_framer.v"/>
-          <File Name="../../../../../bdc/sources_1/bd/indy_lvds/src/lvds_framer.v"/>
-          <File Name="../../../../../bdc/sources_1/bd/indy_lvds/src/lvds_lane_fifo.v"/>
-          <File Name="../../../../../bdc/sources_1/bd/indy_lvds/src/lvds_lane_sync.v"/>
           <File Name="../../../../../bdc/sources_1/bd/indy_lvds/indy_lvds.bd"/>
         </FileCollection>
       </ModuleReference>
