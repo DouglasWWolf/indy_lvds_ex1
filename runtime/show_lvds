@@ -1,0 +1,13 @@
+source api
+source bash_registers "chip_reg.h"
+
+
+chip_reg B0_LVDSIF_CTRL
+chip_reg B1_LVDSIF_CTRL
+chip_reg B2_LVDSIF_CTRL
+chip_reg B3_LVDSIF_CTRL
+chip_reg B4_LVDSIF_CTRL
+chip_reg B5_LVDSIF_CTRL
+chip_reg B6_LVDSIF_CTRL
+chip_reg B7_LVDSIF_CTRL
+

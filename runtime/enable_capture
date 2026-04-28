@@ -1,0 +1,66 @@
+source api
+source bash_registers chip_reg.h
+
+#
+# Power up all 8 banks.  This must be done *BEFORE* we enable pa_sync.
+# If we do this after enabling pa_sync, the pa_sync waveform is corrupted
+#
+chip_reg LVDSIF_IOCTRL_data_pd 0
+
+#
+# Enable sending the idle pattern on all lanes
+#
+chip_reg B0_LVDSIF_CTRL 0xFFFF
+chip_reg B1_LVDSIF_CTRL 0xFFFF
+chip_reg B2_LVDSIF_CTRL 0xFFFF
+chip_reg B3_LVDSIF_CTRL 0xFFFF
+chip_reg B4_LVDSIF_CTRL 0xFFFF
+chip_reg B5_LVDSIF_CTRL 0xFFFF
+chip_reg B6_LVDSIF_CTRL 0xFFFF
+chip_reg B7_LVDSIF_CTRL 0xFFFF
+
+
+#
+#  Set the band-gap for each lane (whatever that means)
+#
+chip_reg B0_SRDWR_BANK1M_PD 4
+chip_reg B1_SRDWR_BANK1M_PD 4
+chip_reg B2_SRDWR_BANK1M_PD 4
+chip_reg B3_SRDWR_BANK1M_PD 4
+chip_reg B4_SRDWR_BANK1M_PD 4
+chip_reg B5_SRDWR_BANK1M_PD 4
+chip_reg B6_SRDWR_BANK1M_PD 4
+chip_reg B7_SRDWR_BANK1M_PD 4
+
+#
+# Initialize phased-array mode (i.e., enable pa_sync)
+#
+chip_reg GPIO_CTRL_select            0x7E0
+chip_reg GPIO_CTRL_direction         0xFE0
+chip_reg GPIO_SYNC_syncin            0xF002
+chip_reg SRDWR_PA_MODE_pa_mode       1
+chip_reg SRDWR_PA_MODE_src_sel       1
+chip_reg SRDWR_VLIQ_PERIOD_dk_period 0
+chip_reg SRDWR_VLIQ_PERIOD_br_period 0
+
+# Enable headers in all lanes
+chip_reg SRDWR_READ_CONTROL0_header_dis 1
+
+# Set the ADC readout delay
+chip_reg SRDWR_READ_CONTROL0_adc_capture_dly 16
+
+# No idea what this does :-)
+chip_reg SRDWR_READ_CONTROL0_vliq_ext 0
+
+# Set the 32-bit frame-header pattern
+chip_reg SRDWR_HEADER_PATTERN 0x0FAA0FAA
+
+# This ends up embedded in the frame header
+chip_reg SRDWR_VERSION  0xDEADBEEF
+
+# Frame window is 0 thru 255
+chip_reg SRDWR_FRAME_WINDOW_frame_start 0
+chip_reg SRDWR_FRAME_WINDOW_frame_end   255
+
+# Enable reads
+chip_reg SRDWR_READ_ENABLE  1

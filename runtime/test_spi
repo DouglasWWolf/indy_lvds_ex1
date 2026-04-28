@@ -1,0 +1,122 @@
+source api
+source bash_registers "chip_reg.h"
+
+read_only_test()
+{
+    v=$((0xFFFF))
+    chip_reg B0_LVDSIF_CTRL $v
+    while :; do
+       rb=$(chip_reg B0_LVDSIF_CTRL -dec)
+       test $rb -ne $v && echo "Expected $v, got $rb"
+    done
+}
+
+addr_test()
+{
+    i=0;
+    while [ $i -lt 999999 ]; do
+        echo $i
+        pcireg 0x1000 $i
+        rc=$(pcireg -dec 0x1000)
+        if [ $i -ne $rc ]; then
+            echo "Expected $i, saw $rc"
+            exit 1
+        fi
+        i=$((i+1))
+    done
+}
+
+count_test()
+{
+    for i in {1..1000}; do
+        va=1
+        vb=2
+        while [ $vb -lt 65536 ]; do
+
+            chip_reg B1_LVDSIF_CTRL $va
+            chip_reg B2_LVDSIF_CTRL $vb
+
+            rba=$(chip_reg B1_LVDSIF_CTRL -dec)
+            rbb=$(chip_reg B2_LVDSIF_CTRL -dec)
+
+            if [ $rba -ne $va ]; then
+                echo "Expected $va, got $rba"
+                echo "Addr = $(pcireg -dec 0x1000)"
+                exit 1
+            fi
+
+            if [ $rbb -ne $vb ]; then
+                echo "Expected $vb, got $rbb"
+                echo "Addr = $(pcireg -dec 0x1000)"
+                exit 1
+            fi
+
+            va=$((va+2))
+            vb=$((vb+2))
+        done
+    done
+    exit 1
+}
+
+
+read_and_test() 
+{
+    reg=$1
+    expected=$2
+
+    rb=$(chip_reg $reg -dec)
+    if [ $rb -ne $expected ]; then
+        echo "Register" $reg "expected" $expected "saw" $rb
+        exit 1
+    fi
+}
+
+
+read_back()
+{
+    expected=$(($1))
+
+    read_and_test B0_LVDSIF_CTRL $expected
+    read_and_test B1_LVDSIF_CTRL $expected
+    read_and_test B2_LVDSIF_CTRL $expected
+    read_and_test B3_LVDSIF_CTRL $expected
+    read_and_test B4_LVDSIF_CTRL $expected
+    read_and_test B5_LVDSIF_CTRL $expected
+    read_and_test B6_LVDSIF_CTRL $expected
+    read_and_test B7_LVDSIF_CTRL $expected
+}
+
+
+big_loop_test()
+{
+    while :; do
+
+        chip_reg B0_LVDSIF_CTRL 0xFFFF
+        chip_reg B1_LVDSIF_CTRL 0xFFFF
+        chip_reg B2_LVDSIF_CTRL 0xFFFF
+        chip_reg B3_LVDSIF_CTRL 0xFFFF
+        chip_reg B4_LVDSIF_CTRL 0xFFFF
+        chip_reg B5_LVDSIF_CTRL 0xFFFF
+        chip_reg B6_LVDSIF_CTRL 0xFFFF
+        chip_reg B7_LVDSIF_CTRL 0xFFFF
+   
+        read_back 0xFFFF
+
+        chip_reg B0_LVDSIF_CTRL 0
+        chip_reg B1_LVDSIF_CTRL 0
+        chip_reg B2_LVDSIF_CTRL 0
+        chip_reg B3_LVDSIF_CTRL 0
+        chip_reg B4_LVDSIF_CTRL 0
+        chip_reg B5_LVDSIF_CTRL 0
+        chip_reg B6_LVDSIF_CTRL 0
+        chip_reg B7_LVDSIF_CTRL 0   
+
+        read_back 0    
+    done
+}
+
+
+count_test
+
+
+

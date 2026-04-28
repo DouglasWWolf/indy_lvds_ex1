@@ -1,0 +1,27 @@
+source api
+source bash_registers "chip_reg.h"
+
+if [ -z $1 ] || [ "$1" == "on" ] || [ "$1" == 1 ]; then
+    value=0xFFFFFF
+else
+    value=0x00FFFF
+fi
+
+#
+# Enable/Disable PRBS output
+#
+chip_reg B0_LVDSIF_CTRL $value
+chip_reg B1_LVDSIF_CTRL $value
+chip_reg B2_LVDSIF_CTRL $value
+chip_reg B3_LVDSIF_CTRL $value
+chip_reg B4_LVDSIF_CTRL $value
+chip_reg B5_LVDSIF_CTRL $value
+chip_reg B6_LVDSIF_CTRL $value
+chip_reg B7_LVDSIF_CTRL $value
+
+sleep .1
+axi LVDS_CLEAR_ERRORS 1
+sleep 1
+
+printf " PRBS Errors = 0x%016X\n" $(get LVDS_PRBS_ERR)
+printf "Align Errors = 0x%016X\n" $(get LVDS_ALIGN_ERR)

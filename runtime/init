@@ -1,0 +1,5 @@
+test $(pcireg 0x1000 -dec) -eq $((0xFFFFFFFF)) && hot_reset
+./chip on
+./enable_capture
+sudo ./lvds_align
+

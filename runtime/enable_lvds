@@ -1,0 +1,81 @@
+source api
+source bash_registers "chip_reg.h"
+
+enable_all_lanes()
+{
+    chip_reg B0_LVDSIF_CTRL $1
+    chip_reg B1_LVDSIF_CTRL $1
+    chip_reg B2_LVDSIF_CTRL $1
+    chip_reg B3_LVDSIF_CTRL $1
+    chip_reg B4_LVDSIF_CTRL $1
+    chip_reg B5_LVDSIF_CTRL $1
+    chip_reg B6_LVDSIF_CTRL $1
+    chip_reg B7_LVDSIF_CTRL $1
+}
+
+confirm_all_lanes()
+{
+    local v0=$(chip_reg B0_LVDSIF_CTRL -dec)
+    local v1=$(chip_reg B0_LVDSIF_CTRL -dec)
+    local v2=$(chip_reg B0_LVDSIF_CTRL -dec)
+    local v3=$(chip_reg B0_LVDSIF_CTRL -dec)
+    local v4=$(chip_reg B0_LVDSIF_CTRL -dec)
+    local v5=$(chip_reg B0_LVDSIF_CTRL -dec)
+    local v6=$(chip_reg B0_LVDSIF_CTRL -dec)
+    local v7=$(chip_reg B0_LVDSIF_CTRL -dec)                        
+
+    test $v0 -eq $1 && b0=1   || b0=0
+    test $v1 -eq $1 && b1=2   || b1=0
+    test $v2 -eq $1 && b2=4   || b2=0
+    test $v3 -eq $1 && b3=8   || b3=0
+    test $v4 -eq $1 && b4=16  || b4=0
+    test $v5 -eq $1 && b5=32  || b5=0
+    test $v6 -eq $1 && b6=64  || b6=0
+    test $v7 -eq $1 && b7=128 || b7=0                        
+
+    echo $((b0 | b1 | b2 | b3 | b4 | b5 | b6 | b7))
+}
+
+#
+# Power up all 8 banks.  This must be done *BEFORE* we enable pa_sync.
+# If we do this after enabling pa_sync, the pa_sync waveform is corrupted
+#
+chip_reg LVDSIF_IOCTRL  0x0005
+
+#
+#  Enable all LVDS lanes and enable idle-byte output on all lanes
+#
+all_lanes=$((0xFFFF))
+for i in {1..3}; do
+    test $i -ne 1 && echo "Retrying enable_all_lanes()"
+    enable_all_lanes $all_lanes
+    rc=$(confirm_all_lanes $all_lanes)
+    test $rc -eq 255 && break
+done
+
+
+#
+#  Set the band-gap for each lane (whatever that means)
+#
+chip_reg B0_SRDWR_BANK1M_PD 4
+chip_reg B1_SRDWR_BANK1M_PD 4
+chip_reg B2_SRDWR_BANK1M_PD 4
+chip_reg B3_SRDWR_BANK1M_PD 4
+chip_reg B4_SRDWR_BANK1M_PD 4
+chip_reg B5_SRDWR_BANK1M_PD 4
+chip_reg B6_SRDWR_BANK1M_PD 4
+chip_reg B7_SRDWR_BANK1M_PD 4
+
+#
+#  Enable the PA_SYNC output
+#
+chip_reg GPIO_CTRL         0x0FE0_07E0
+chip_reg GPIO_SYNC         0xF002
+chip_reg SRDWR_PA_MODE     0x0401
+chip_reg SRDWR_VLIQ_PERIOD 0
+
+# Are all lanes still enabled?
+rc=$(confirm_all_lanes $all_lanes)
+if [ $rc -ne 255 ]; then
+   printf "Not all lanes are enabled!  Enabled lanes = 0x%02X\n" $rc
+fi
