@@ -28,6 +28,7 @@ for dir in ${folders[@]}; do
 done
 
 
+
 #git add pre_build.sh post_build.sh release_history.txt
 git add .gitignore bdc push runtime README.md grab.sh
 #git add make_fpga_reg xlate_vreg.conf fpga_reg.h
