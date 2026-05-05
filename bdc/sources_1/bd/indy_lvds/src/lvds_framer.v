@@ -14,8 +14,8 @@
     copies of the "lvds_lane_framer" module.
 
     Each lane is independent: The normal case for for some lanes to begin 
-    emitting frame-data before other frames.   The lanes will be synchronized
-    by a downstream module.
+    emitting frame-data before other frames. (This is called "lane skew").
+    The lanes will be synchronized (i.e., deskewed) by a downstream module.
     
     This module:
 
@@ -44,6 +44,9 @@ module lvds_framer #
     parameter FRAME_BYTES  = 32'h40_0000
 )
 (
+
+    output [LANE_COUNT-1:0] dbg_header_detected,
+
     input clk,
     input resetn,
 
@@ -62,13 +65,16 @@ module lvds_framer #
 
     // This stream reports lanes that did not detect a header.  Software uses
     // this to create a report so we can characterize how often this happens.
-    output  [63:0] missing_hdr_tdata,
-    output  [31:0] missing_hdr_tuser,
+    output  [31:0] missing_hdr_tdata,
+    output  [63:0] missing_hdr_tuser,
     output         missing_hdr_tvalid,
     input          missing_hdr_tready,
 
     // We count the number of frames that exhibit missing frame headers
-    output reg[31:0] framing_errors
+    output reg[31:0] framing_errors,
+
+    // Number of clock cycles of skew between the LVDS lanes
+    output reg[7:0] max_lane_skew
 );
 
 genvar lane; 
@@ -95,19 +101,32 @@ wire[LANE_COUNT-1:0] forced = valid & ~header_detected;
 wire framing_error = |forced;
 
 // A count of how many lanes have their "header_detected" bit on
-reg[5:0] header_detected_cnt, prior_header_detected_cnt;
+reg[$clog2(LANE_COUNT):0] header_detected_cnt, prior_header_detected_cnt;
 
 // Keep track of whether all lanes are valid
 wire all_lanes_valid = &valid;
 
+// Keep track of whether any lanes are valid
+wire any_lanes_valid = |valid;
+
 // Keep track of whether all lanes were valid on the previous clock-cycle
 reg  prior_all_lanes_valid;
+
+// Keep track of whether any lanes were valid on the previous clock-cycle
+reg  prior_any_lanes_valid;
 
 // A high going edge here happens once per frame
 wire new_frame_stb = all_lanes_valid & !prior_all_lanes_valid;
 
 // We count frames so we can report a frame number in the error stream
 reg[31:0] frame_number;
+
+// The value of "timer" the first lane or lanes become valid
+reg[TIMER_BITS-1:0] first_valid_time;
+
+// During a frame, this is the number of clock cycles between detecting
+// between the first lane becoming valid and the last lane becoming valid.
+wire[7:0] lane_skew = timer - first_valid_time;
 
 //=============================================================================
 // Here we keep track of how many lanes have detected headers
@@ -132,9 +151,11 @@ always @(posedge clk) begin
     if (resetn == 0) begin
         prior_header_detected_cnt <= 0;
         prior_all_lanes_valid     <= 0;
+        prior_any_lanes_valid     <= 0;
         timer                     <= 0;
         framing_errors            <= 0;
         frame_number              <= 1;
+        max_lane_skew             <= 0;
     end
 
     else begin
@@ -144,6 +165,9 @@ always @(posedge clk) begin
 
         // Always need to know "all_lanes_valid" for two consecutive cycles
         prior_all_lanes_valid <= all_lanes_valid;
+
+        // Always need to know "any_lanes_valid" for two consecutive cycles
+        prior_any_lanes_valid <= any_lanes_valid;
 
         // Advance the free-running timer
         timer <= timer +1;
@@ -155,6 +179,16 @@ always @(posedge clk) begin
             framing_errors <= framing_errors + framing_error;
         end
 
+        // If we just saw the first lane of a frame become valid...
+        if (prior_any_lanes_valid == 0 && any_lanes_valid == 1) begin
+            first_valid_time <= timer;
+        end
+
+        // Otherwise, check to see if all lanes have just become valid
+        else if (prior_all_lanes_valid == 0 && all_lanes_valid == 1) begin
+            if (lane_skew > max_lane_skew) max_lane_skew <= lane_skew;
+        end
+           
     end
 end
 //=============================================================================
@@ -251,6 +285,6 @@ missing_hdr_err_fifo
 );
 //=============================================================================
 
-
+assign dbg_header_detected = header_detected;
 
 endmodule

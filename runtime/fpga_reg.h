@@ -1,8 +1,13 @@
-#define  LVDS_CAL_WEN                0x2000
-#define  LVDS_CAL_WORD               0x2004
-#define  LVDS_LANE_SELECT            0x2008
-#define  LVDS_RESET_HSSIO            0x200C
-#define  LVDS_CLEAR_ERRORS           0x2010
+#define  LVDS_CAL_WEN                     0x2000
+#define  LVDS_CAL_WORD                    0x2004
+#define  LVDS_LANE_SELECT                 0x2008
+#define  LVDS_RESET_HSSIO                 0x200C
+#define  LVDS_CLEAR_ERRORS                0x2010
+#define  LVDS_MAX_LANE_SKEW               0x2020
+#define  LVDS_MISS_HDR_STAT               0x2024
+#define  LVDS_MISS_HDR_FRAME              0x2028
+#define  LVDS_MISS_HDR_LANES  0x400000000000202C
+
 
 #define  LVDS_CAL_MASK   0x4000000000002040
 #define  LVDS_ALIGN_ERR  0x4000000000002048

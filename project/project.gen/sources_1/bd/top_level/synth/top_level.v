@@ -2,7 +2,7 @@
 //Copyright 2022-2024 Advanced Micro Devices, Inc. All Rights Reserved.
 //--------------------------------------------------------------------------------
 //Tool Version: Vivado v.2024.2 (lin64) Build 5239630 Fri Nov 08 22:34:34 MST 2024
-//Date        : Mon Apr 27 18:44:15 2026
+//Date        : Tue May  5 00:23:38 2026
 //Host        : wolf-super-server running 64-bit Ubuntu 20.04.6 LTS
 //Command     : generate_target top_level.bd
 //Design      : top_level
@@ -277,6 +277,8 @@ endmodule
 
 module framegen_imp_1JNDJMY
    (CHIP_PA_SYNC,
+    GPIO15_DIR,
+    GPIO_BYTE_DIR,
     S_AXI_araddr,
     S_AXI_arprot,
     S_AXI_arready,
@@ -301,6 +303,8 @@ module framegen_imp_1JNDJMY
     rs0,
     rs256);
   input CHIP_PA_SYNC;
+  output [0:0]GPIO15_DIR;
+  output [0:0]GPIO_BYTE_DIR;
   input [7:0]S_AXI_araddr;
   input [2:0]S_AXI_arprot;
   output S_AXI_arready;
@@ -348,9 +352,13 @@ module framegen_imp_1JNDJMY
   wire clk_192mhz_clk_192;
   wire framegen_ctl_0_rs0;
   wire framegen_ctl_0_rs256;
+  wire [0:0]ilconstant_0_gpio_byte_dir;
+  wire [0:0]ilconstant_1_dout;
   wire resetn;
 
   assign CHIP_PA_SYNC_1 = CHIP_PA_SYNC;
+  assign GPIO15_DIR[0] = ilconstant_1_dout;
+  assign GPIO_BYTE_DIR[0] = ilconstant_0_gpio_byte_dir;
   assign clk_192mhz_clk_192 = clk;
   assign rs0 = framegen_ctl_0_rs0;
   assign rs256 = framegen_ctl_0_rs256;
@@ -379,11 +387,15 @@ module framegen_imp_1JNDJMY
         .resetn(resetn),
         .rs0(framegen_ctl_0_rs0),
         .rs256(framegen_ctl_0_rs256));
+  assign ilconstant_0_gpio_byte_dir = 1'h0;
+  assign ilconstant_1_dout = 1'h1;
   top_level_system_ila_0_0 system_ila
        (.clk(clk_192mhz_clk_192),
         .probe0(CHIP_PA_SYNC_1),
         .probe1(framegen_ctl_0_rs0),
-        .probe2(framegen_ctl_0_rs256));
+        .probe2(framegen_ctl_0_rs256),
+        .probe3(ilconstant_1_dout),
+        .probe4(ilconstant_0_gpio_byte_dir));
 endmodule
 
 module pcie_bridge_imp_1AINXYK
@@ -660,7 +672,7 @@ module sys_192mhz_imp_1D7MHLQ
         .clk_in1_p(init_clk_clk_p));
 endmodule
 
-(* CORE_GENERATION_INFO = "top_level,IP_Integrator,{x_ipVendor=xilinx.com,x_ipLibrary=BlockDiagram,x_ipName=top_level,x_ipVersion=1.00.a,x_ipLanguage=VERILOG,numBlks=37,numReposBlks=30,numNonXlnxBlks=0,numHierBlks=7,maxHierDepth=2,numSysgenBlks=0,numHlsBlks=0,numHdlrefBlks=16,numPkgbdBlks=1,bdsource=USER,\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"da_axi4_cnt\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"=2,\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"da_bram_cntlr_cnt\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"=2,\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"da_axi4_cnt\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"=1,\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"da_axi4_cnt\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"=1,\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"da_axi4_cnt\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"=1,synth_mode=Hierarchical}" *) (* HW_HANDOFF = "top_level.hwdef" *) 
+(* CORE_GENERATION_INFO = "top_level,IP_Integrator,{x_ipVendor=xilinx.com,x_ipLibrary=BlockDiagram,x_ipName=top_level,x_ipVersion=1.00.a,x_ipLanguage=VERILOG,numBlks=37,numReposBlks=30,numNonXlnxBlks=0,numHierBlks=7,maxHierDepth=2,numSysgenBlks=0,numHlsBlks=0,numHdlrefBlks=16,numPkgbdBlks=1,bdsource=USER,\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"da_axi4_cnt\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"=2,\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"da_bram_cntlr_cnt\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"=2,\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"da_axi4_cnt\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"=1,\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"da_axi4_cnt\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"=1,\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"da_axi4_cnt\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"=1,synth_mode=Hierarchical}" *) (* HW_HANDOFF = "top_level.hwdef" *) 
 module top_level
    (CHIP_HSI_CLK,
     CHIP_PA_SYNC,
@@ -975,6 +987,8 @@ module top_level
         .sys_resetn(pcie_bridge_0_axi_aresetn));
   framegen_imp_1JNDJMY framegen
        (.CHIP_PA_SYNC(CHIP_PA_SYNC),
+        .GPIO15_DIR(GPIO15_DIR),
+        .GPIO_BYTE_DIR(GPIO_BYTE_DIR),
         .S_AXI_araddr(smartconnect_M04_AXI_ARADDR),
         .S_AXI_arprot(smartconnect_M04_AXI_ARPROT),
         .S_AXI_arready(smartconnect_M04_AXI_ARREADY),
@@ -998,8 +1012,6 @@ module top_level
         .resetn(sys_192mhz_resetn_192),
         .rs0(rs0),
         .rs256(rs256));
-  assign GPIO_BYTE_DIR = 1'h0;
-  assign GPIO15_DIR = 1'h1;
   indy_lvds_inst_0 indy_lvds
        (.LVDS_BANKA_clk_n(LVDS_BANKA_clk_n),
         .LVDS_BANKA_clk_p(LVDS_BANKA_clk_p),

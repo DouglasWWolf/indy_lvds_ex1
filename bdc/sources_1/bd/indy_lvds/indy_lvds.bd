@@ -346,6 +346,75 @@
           "boundary_crc": "0x0"
         },
         "interface_ports": {
+          "missing_hdr": {
+            "mode": "Slave",
+            "vlnv_bus_definition": "xilinx.com:interface:axis:1.0",
+            "vlnv": "xilinx.com:interface:axis_rtl:1.0",
+            "parameters": {
+              "TDATA_NUM_BYTES": {
+                "value": "4",
+                "value_src": "constant"
+              },
+              "TDEST_WIDTH": {
+                "value": "0",
+                "value_src": "constant"
+              },
+              "TID_WIDTH": {
+                "value": "0",
+                "value_src": "constant"
+              },
+              "TUSER_WIDTH": {
+                "value": "64",
+                "value_src": "constant"
+              },
+              "HAS_TREADY": {
+                "value": "1",
+                "value_src": "constant"
+              },
+              "HAS_TSTRB": {
+                "value": "0",
+                "value_src": "constant"
+              },
+              "HAS_TKEEP": {
+                "value": "0",
+                "value_src": "constant"
+              },
+              "HAS_TLAST": {
+                "value": "0",
+                "value_src": "constant"
+              },
+              "FREQ_HZ": {
+                "value": "192000000",
+                "value_src": "user_prop"
+              },
+              "CLK_DOMAIN": {
+                "value": "top_level_clk_wiz_0_1_clk_192",
+                "value_src": "user_prop"
+              }
+            },
+            "port_maps": {
+              "TDATA": {
+                "physical_name": "missing_hdr_tdata",
+                "direction": "I",
+                "left": "31",
+                "right": "0"
+              },
+              "TUSER": {
+                "physical_name": "missing_hdr_tuser",
+                "direction": "I",
+                "left": "63",
+                "right": "0"
+              },
+              "TVALID": {
+                "physical_name": "missing_hdr_tvalid",
+                "direction": "I"
+              },
+              "TREADY": {
+                "physical_name": "missing_hdr_tready",
+                "direction": "O"
+              }
+            }
+          },
           "S_AXI": {
             "mode": "Slave",
             "vlnv_bus_definition": "xilinx.com:interface:aximm:1.0",
@@ -573,7 +642,7 @@
             "direction": "I",
             "parameters": {
               "ASSOCIATED_BUSIF": {
-                "value": "S_AXI",
+                "value": "S_AXI:missing_hdr",
                 "value_src": "constant"
               },
               "ASSOCIATED_RESET": {
@@ -663,6 +732,11 @@
           "framing_errors": {
             "direction": "I",
             "left": "31",
+            "right": "0"
+          },
+          "max_lane_skew": {
+            "direction": "I",
+            "left": "7",
             "right": "0"
           }
         }
@@ -788,6 +862,16 @@
           },
           "sync_fifo_overflow": {
             "direction": "O"
+          },
+          "dbg_header_detected": {
+            "direction": "O",
+            "left": "63",
+            "right": "0"
+          },
+          "max_lane_skew": {
+            "direction": "O",
+            "left": "7",
+            "right": "0"
           }
         },
         "components": {
@@ -1083,7 +1167,7 @@
                 "vlnv": "xilinx.com:interface:axis_rtl:1.0",
                 "parameters": {
                   "TDATA_NUM_BYTES": {
-                    "value": "8",
+                    "value": "4",
                     "value_src": "constant"
                   },
                   "TDEST_WIDTH": {
@@ -1095,7 +1179,7 @@
                     "value_src": "constant"
                   },
                   "TUSER_WIDTH": {
-                    "value": "32",
+                    "value": "64",
                     "value_src": "constant"
                   },
                   "HAS_TREADY": {
@@ -1127,13 +1211,13 @@
                   "TDATA": {
                     "physical_name": "missing_hdr_tdata",
                     "direction": "O",
-                    "left": "63",
+                    "left": "31",
                     "right": "0"
                   },
                   "TUSER": {
                     "physical_name": "missing_hdr_tuser",
                     "direction": "O",
-                    "left": "31",
+                    "left": "63",
                     "right": "0"
                   },
                   "TVALID": {
@@ -1148,6 +1232,11 @@
               }
             },
             "ports": {
+              "dbg_header_detected": {
+                "direction": "O",
+                "left": "63",
+                "right": "0"
+              },
               "clk": {
                 "type": "clk",
                 "direction": "I",
@@ -1208,6 +1297,11 @@
               "framing_errors": {
                 "direction": "O",
                 "left": "31",
+                "right": "0"
+              },
+              "max_lane_skew": {
+                "direction": "O",
+                "left": "7",
                 "right": "0"
               }
             }
@@ -1430,8 +1524,8 @@
               "lvds_align_detect/clk",
               "lvds_bitslip/clk",
               "lvds_prbs15_check/clk",
-              "lvds_framer/clk",
-              "lvds_lane_sync/clk"
+              "lvds_lane_sync/clk",
+              "lvds_framer/clk"
             ]
           },
           "frame_header_1": {
@@ -1510,10 +1604,22 @@
               "framing_errors"
             ]
           },
+          "lvds_framer_dbg_header_detected": {
+            "ports": [
+              "lvds_framer/dbg_header_detected",
+              "dbg_header_detected"
+            ]
+          },
           "lvds_framer_lvds_out": {
             "ports": [
               "lvds_framer/lvds_out",
               "lvds_lane_sync/lvds_in"
+            ]
+          },
+          "lvds_framer_max_lane_skew": {
+            "ports": [
+              "lvds_framer/max_lane_skew",
+              "max_lane_skew"
             ]
           },
           "lvds_framer_valid": {
@@ -1539,8 +1645,8 @@
               "resetn",
               "hssio/resetn",
               "lvds_bitslip/resetn",
-              "lvds_framer/resetn",
-              "lvds_lane_sync/resetn"
+              "lvds_lane_sync/resetn",
+              "lvds_framer/resetn"
             ]
           }
         }
@@ -1663,6 +1769,7 @@
       "lvds_datapath_missing_hdr": {
         "interface_ports": [
           "lvds_datapath/missing_hdr",
+          "lvds_ctl/missing_hdr",
           "system_ila/SLOT_1_AXIS"
         ]
       }
@@ -1794,7 +1901,6 @@
       "lvds_datapath_align_err": {
         "ports": [
           "lvds_datapath/align_err",
-          "system_ila/probe0",
           "lvds_ctl/align_err"
         ]
       },
@@ -1802,6 +1908,12 @@
         "ports": [
           "lvds_datapath/cal_write_en",
           "lvds_ctl/cal_write_en"
+        ]
+      },
+      "lvds_datapath_dbg_header_detected": {
+        "ports": [
+          "lvds_datapath/dbg_header_detected",
+          "system_ila/probe0"
         ]
       },
       "lvds_datapath_dbg_lvds_lane": {
@@ -1814,6 +1926,12 @@
         "ports": [
           "lvds_datapath/framing_errors",
           "lvds_ctl/framing_errors"
+        ]
+      },
+      "lvds_datapath_max_lane_skew": {
+        "ports": [
+          "lvds_datapath/max_lane_skew",
+          "lvds_ctl/max_lane_skew"
         ]
       },
       "lvds_prbs15_check_prbs_err": {

@@ -44,6 +44,7 @@
     },
     "boundary": {
       "ports": {
+        "dbg_header_detected": [ { "direction": "out", "size_left": "63", "size_right": "0" } ],
         "clk": [ { "direction": "in" } ],
         "resetn": [ { "direction": "in" } ],
         "frame_header": [ { "direction": "in", "size_left": "31", "size_right": "0" } ],
@@ -51,11 +52,12 @@
         "lvds_in": [ { "direction": "in", "size_left": "511", "size_right": "0" } ],
         "lvds_out": [ { "direction": "out", "size_left": "511", "size_right": "0" } ],
         "valid": [ { "direction": "out", "size_left": "63", "size_right": "0" } ],
-        "missing_hdr_tdata": [ { "direction": "out", "size_left": "63", "size_right": "0" } ],
-        "missing_hdr_tuser": [ { "direction": "out", "size_left": "31", "size_right": "0" } ],
+        "missing_hdr_tdata": [ { "direction": "out", "size_left": "31", "size_right": "0" } ],
+        "missing_hdr_tuser": [ { "direction": "out", "size_left": "63", "size_right": "0" } ],
         "missing_hdr_tvalid": [ { "direction": "out" } ],
         "missing_hdr_tready": [ { "direction": "in", "driver_value": "1" } ],
-        "framing_errors": [ { "direction": "out", "size_left": "31", "size_right": "0" } ]
+        "framing_errors": [ { "direction": "out", "size_left": "31", "size_right": "0" } ],
+        "max_lane_skew": [ { "direction": "out", "size_left": "7", "size_right": "0" } ]
       },
       "interfaces": {
         "missing_hdr": {
@@ -63,10 +65,10 @@
           "abstraction_type": "xilinx.com:interface:axis_rtl:1.0",
           "mode": "master",
           "parameters": {
-            "TDATA_NUM_BYTES": [ { "value": "8", "value_src": "constant", "value_permission": "bd_and_user", "resolve_type": "generated", "format": "long", "is_ips_inferred": true, "is_static_object": false } ],
+            "TDATA_NUM_BYTES": [ { "value": "4", "value_src": "constant", "value_permission": "bd_and_user", "resolve_type": "generated", "format": "long", "is_ips_inferred": true, "is_static_object": false } ],
             "TDEST_WIDTH": [ { "value": "0", "value_src": "constant", "value_permission": "bd_and_user", "resolve_type": "generated", "format": "long", "is_ips_inferred": true, "is_static_object": false } ],
             "TID_WIDTH": [ { "value": "0", "value_src": "constant", "value_permission": "bd_and_user", "resolve_type": "generated", "format": "long", "is_ips_inferred": true, "is_static_object": false } ],
-            "TUSER_WIDTH": [ { "value": "32", "value_src": "constant", "value_permission": "bd_and_user", "resolve_type": "generated", "format": "long", "is_ips_inferred": true, "is_static_object": false } ],
+            "TUSER_WIDTH": [ { "value": "64", "value_src": "constant", "value_permission": "bd_and_user", "resolve_type": "generated", "format": "long", "is_ips_inferred": true, "is_static_object": false } ],
             "HAS_TREADY": [ { "value": "1", "value_src": "constant", "value_permission": "bd_and_user", "resolve_type": "generated", "format": "long", "is_ips_inferred": true, "is_static_object": false } ],
             "HAS_TSTRB": [ { "value": "0", "value_src": "constant", "value_permission": "bd_and_user", "resolve_type": "generated", "format": "long", "is_ips_inferred": true, "is_static_object": false } ],
             "HAS_TKEEP": [ { "value": "0", "value_src": "constant", "value_permission": "bd_and_user", "resolve_type": "generated", "format": "long", "is_ips_inferred": true, "is_static_object": false } ],

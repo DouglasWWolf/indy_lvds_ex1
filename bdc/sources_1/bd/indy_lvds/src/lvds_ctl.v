@@ -15,7 +15,7 @@
 module lvds_ctl # (parameter AW=8)
 (
     (* X_INTERFACE_INFO = "xilinx.com:signal:clock:1.0 clk CLK" *)
-    (* X_INTERFACE_PARAMETER = "ASSOCIATED_BUSIF S_AXI, ASSOCIATED_RESET resetn" *)
+    (* X_INTERFACE_PARAMETER = "ASSOCIATED_BUSIF S_AXI:missing_hdr, ASSOCIATED_RESET resetn" *)
     input clk,
     input resetn,
 
@@ -48,6 +48,14 @@ module lvds_ctl # (parameter AW=8)
 
     // The number of frames that had framing errors
     input [31:0] framing_errors,
+
+    // The number of clock-cycles of skew between the LVDS lanes
+    input [ 7:0] max_lane_skew,
+
+    input [31:0] missing_hdr_tdata,
+    input [63:0] missing_hdr_tuser,
+    input        missing_hdr_tvalid,
+    output reg   missing_hdr_tready,
 
     //================== This is an AXI4-Lite slave interface ==================
         
@@ -85,14 +93,19 @@ module lvds_ctl # (parameter AW=8)
 
 //=========================  AXI Register Map  =============================
 
-localparam REG_CAL_WEN        = 0;
-localparam REG_CAL_WORD       = 1;
-localparam REG_LANE_SELECT    = 2;
-localparam REG_RESET_HSSIO    = 3;
-localparam REG_CLEAR_ERRORS   = 4;
-localparam REG_FRAME_HEADER   = 5;
-localparam REG_HDR_MATCH_BITS = 6;
-localparam REG_FRAMING_ERRS   = 7;
+localparam REG_CAL_WEN         = 0;
+localparam REG_CAL_WORD        = 1;
+localparam REG_LANE_SELECT     = 2;
+localparam REG_RESET_HSSIO     = 3;
+localparam REG_CLEAR_ERRORS    = 4;
+localparam REG_FRAME_HEADER    = 5;
+localparam REG_HDR_MATCH_BITS  = 6;
+localparam REG_FRAMING_ERRS    = 7;
+localparam REG_MAX_LANE_SKEW   = 8;
+localparam REG_MISS_HDR_STAT   = 9;
+localparam REG_MISS_HDR_FRAME  = 10;
+localparam REG_MISS_HDR_LANES_H = 11;
+localparam REG_MISS_HDR_LANES_L = 12;
 
 localparam REG_CAL_MASK_H    = 16;
 localparam REG_CAL_MASK_L    = 17;
@@ -135,6 +148,12 @@ assign ashi_ridle = (ashi_read  == 0) && (ashi_read_state  == 0);
 localparam OKAY   = 0;
 localparam SLVERR = 2;
 localparam DECERR = 3;
+
+// Bitmap of which lanes were missing a frame header
+reg[63:0] missing_hdr_lanes;
+
+// Frame number that "missing_hdr_lanes" applies to
+reg[31:0] missing_hdr_frame;
 
 //==========================================================================
 // This state machine handles AXI4-Lite write requests
@@ -201,12 +220,16 @@ end
 //==========================================================================
 always @(posedge clk) begin
 
+    // This strobes high for a single cycle at a time
+    missing_hdr_tready <= 0;
+
     // If we're in reset, initialize important registers
     if (resetn == 0) begin
         ashi_read_state <= 0;
+    end
     
     // If we're not in reset, and a read-request has occured...        
-    end else if (ashi_read) begin
+    else if (ashi_read) begin
    
         // Assume for the moment that the result will be OKAY
         ashi_rresp <= OKAY;              
@@ -215,20 +238,41 @@ always @(posedge clk) begin
         case (ashi_rindx)
             
             // Allow a read from any valid register                
-            REG_CAL_WEN       : ashi_rdata <= cal_write_en;
-            REG_CAL_WORD      : ashi_rdata <= {cal_bitslip_rd, cal_delay_rd};
-            REG_LANE_SELECT   : ashi_rdata <= lane_select;
-            REG_RESET_HSSIO   : ashi_rdata <= reset_hssio;
-            REG_CLEAR_ERRORS  : ashi_rdata <= 0;
-            REG_CAL_MASK_H    : ashi_rdata <= cal_mask [63:32];
-            REG_CAL_MASK_L    : ashi_rdata <= cal_mask [31:00];
-            REG_ALIGN_ERR_H   : ashi_rdata <= align_err[63:32];
-            REG_ALIGN_ERR_L   : ashi_rdata <= align_err[31:00];
-            REG_PRBS_ERR_H    : ashi_rdata <= prbs_err [63:32];
-            REG_PRBS_ERR_L    : ashi_rdata <= prbs_err [31:00];     
-            REG_FRAME_HEADER  : ashi_rdata <= frame_header;       
-            REG_HDR_MATCH_BITS: ashi_rdata <= hdr_match_bits;
-            REG_FRAMING_ERRS  : ashi_rdata <= framing_errors;
+            REG_CAL_WEN         : ashi_rdata <= cal_write_en;
+            REG_CAL_WORD        : ashi_rdata <= {cal_bitslip_rd, cal_delay_rd};
+            REG_LANE_SELECT     : ashi_rdata <= lane_select;
+            REG_RESET_HSSIO     : ashi_rdata <= reset_hssio;
+            REG_CLEAR_ERRORS    : ashi_rdata <= 0;
+            REG_CAL_MASK_H      : ashi_rdata <= cal_mask [63:32];
+            REG_CAL_MASK_L      : ashi_rdata <= cal_mask [31:00];
+            REG_ALIGN_ERR_H     : ashi_rdata <= align_err[63:32];
+            REG_ALIGN_ERR_L     : ashi_rdata <= align_err[31:00];
+            REG_PRBS_ERR_H      : ashi_rdata <= prbs_err [63:32];
+            REG_PRBS_ERR_L      : ashi_rdata <= prbs_err [31:00];     
+            REG_FRAME_HEADER    : ashi_rdata <= frame_header;       
+            REG_HDR_MATCH_BITS  : ashi_rdata <= hdr_match_bits;
+            REG_FRAMING_ERRS    : ashi_rdata <= framing_errors;
+            REG_MAX_LANE_SKEW   : ashi_rdata <= max_lane_skew;
+            REG_MISS_HDR_FRAME  : ashi_rdata <= missing_hdr_frame;
+            REG_MISS_HDR_LANES_H: ashi_rdata <= missing_hdr_lanes[63:32];
+            REG_MISS_HDR_LANES_L: ashi_rdata <= missing_hdr_lanes[31:00];
+
+            // When the user reads the MISS_HDR_STAT register and there is
+            // data waiting on the "missing_hdr" AXI stream, we fetch the data
+            // from the AXI stream into registers
+            REG_MISS_HDR_STAT : if (missing_hdr_tvalid) begin
+                                    missing_hdr_frame  <= missing_hdr_tdata;
+                                    missing_hdr_lanes  <= missing_hdr_tuser;
+                                    missing_hdr_tready <= 1;
+                                    ashi_rdata         <= 1;
+                                end else begin
+                                    missing_hdr_frame  <= 0;
+                                    missing_hdr_lanes  <= 0;
+                                    missing_hdr_tready <= 0;
+                                    ashi_rdata         <= 0;
+                                end
+
+
 
             // Reads of any other register are a decode-error
             default: ashi_rresp <= DECERR;

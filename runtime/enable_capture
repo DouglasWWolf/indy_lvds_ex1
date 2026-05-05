@@ -7,17 +7,18 @@ source bash_registers chip_reg.h
 #
 chip_reg LVDSIF_IOCTRL_data_pd 0
 
+
 #
-# Enable sending the idle pattern on all lanes
+# Enable all lanes
 #
-chip_reg B0_LVDSIF_CTRL 0xFFFF
-chip_reg B1_LVDSIF_CTRL 0xFFFF
-chip_reg B2_LVDSIF_CTRL 0xFFFF
-chip_reg B3_LVDSIF_CTRL 0xFFFF
-chip_reg B4_LVDSIF_CTRL 0xFFFF
-chip_reg B5_LVDSIF_CTRL 0xFFFF
-chip_reg B6_LVDSIF_CTRL 0xFFFF
-chip_reg B7_LVDSIF_CTRL 0xFFFF
+chip_reg B0_LVDSIF_CTRL 0xFF
+chip_reg B1_LVDSIF_CTRL 0xFF
+chip_reg B2_LVDSIF_CTRL 0xFF
+chip_reg B3_LVDSIF_CTRL 0xFF
+chip_reg B4_LVDSIF_CTRL 0xFF
+chip_reg B5_LVDSIF_CTRL 0xFF
+chip_reg B6_LVDSIF_CTRL 0xFF
+chip_reg B7_LVDSIF_CTRL 0xFF
 
 
 #

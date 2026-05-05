@@ -2,9 +2,9 @@ source api
 source bash_registers "chip_reg.h"
 
 if [ -z $1 ] || [ "$1" == "on" ] || [ "$1" == 1 ]; then
-    value=0xFFFFFF
+    value=0xFF00FF
 else
-    value=0x00FFFF
+    value=0x0000FF
 fi
 
 #
