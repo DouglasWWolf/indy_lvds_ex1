@@ -61,12 +61,12 @@ preplace netloc lvds_datapath_missing_hdr 1 1 1 420 200n
 levelinfo -pg 1 0 210 570 740
 pagesize -pg 1 -db -bbox -sgen -190 0 870 830
 ",
-   "No Loops_ScaleFactor":"0.747573",
-   "No Loops_TopLeft":"-617,3",
+   "No Loops_ScaleFactor":"0.9616",
+   "No Loops_TopLeft":"-532,129",
    "guistr":"# # String gsaved with Nlview 7.8.0 2024-04-26 e1825d835c VDI=44 GEI=38 GUI=JA:21.0 TLS
 #  -string -flagsOSRD
 levelinfo -pg 1 0 10
 pagesize -pg 1 -db -bbox -sgen 0 0 10 10
 "
 }
-
+0

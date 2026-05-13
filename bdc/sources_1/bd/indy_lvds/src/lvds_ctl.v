@@ -52,8 +52,9 @@ module lvds_ctl # (parameter AW=8)
     // The number of clock-cycles of skew between the LVDS lanes
     input [ 7:0] max_lane_skew,
 
-    input [31:0] missing_hdr_tdata,
-    input [63:0] missing_hdr_tuser,
+    // This AXI stream describes lanes that were missing frame headers
+    input [31:0] missing_hdr_tdata,  /* Frame number */
+    input [63:0] missing_hdr_tuser,  /* Bitmap of which lanes were missing frame headers */
     input        missing_hdr_tvalid,
     output reg   missing_hdr_tready,
 
@@ -93,24 +94,129 @@ module lvds_ctl # (parameter AW=8)
 
 //=========================  AXI Register Map  =============================
 
+/*
+    @register Calibration write-enable
+    @rdesc    This must be non-zero before writing to LVDS_CAL_WORD
+    @rtype    ro
+
+*/
 localparam REG_CAL_WEN         = 0;
-localparam REG_CAL_WORD        = 1;
-localparam REG_LANE_SELECT     = 2;
-localparam REG_RESET_HSSIO     = 3;
-localparam REG_CLEAR_ERRORS    = 4;
-localparam REG_FRAME_HEADER    = 5;
-localparam REG_HDR_MATCH_BITS  = 6;
-localparam REG_FRAMING_ERRS    = 7;
-localparam REG_MAX_LANE_SKEW   = 8;
-localparam REG_MISS_HDR_STAT   = 9;
-localparam REG_MISS_HDR_FRAME  = 10;
+
+/*
+    @register Writing to this register writes the specified calibration word to each
+    @rdesc    LVDS lane selected in register LVDS_CAL_MASK.  Do not write to this register
+    @rdesc    unless LVDS_CAL_WEN is non-zero
+    @rdesc
+    @rdesc    Reading from this register returns the calibration word for the lane
+    @rdesc    selected by LVDS_LANE_SELECT
+    @rdesc
+    @rdesc    Valid calibration words are 0 thru 4095 (i.e., 0x0000 thru 0xFFF)
+    @rdesc    
+    @rdesc    > For informational purposes only:  Bits 11:9 are a bitslip value (0 thru 7)
+    @rdesc    >                                   Bits  8:0 are a delay tap (0 thru 0x1FF)
+*/
+localparam REG_CAL_WORD = 1;
+
+
+/*
+    @register Selects the LVDS lane that will be read when reading LVDS_CAL_WORD
+    @rdesc    Valid values are 0 thru 63
+*/
+localparam REG_LANE_SELECT = 2;
+
+/*
+    @register Writing a 1 to this register places the FPGA's "High Speed Serial I/O" logic
+    @rdesc    in reset.    Writing a 0 takes the HSSIO logic out of reset.
+*/
+localparam REG_RESET_HSSIO = 3;
+
+/*
+    @register Writing a 1 clears the error bits in LVDS_ALIGN_ERR and LVDS_PRBS_ERR
+    @rtype    wo
+*/
+localparam REG_CLEAR_ERRORS = 4;
+
+/*
+    @register The four-byte frame-header pattern that the sensor-chip generates.   
+    @rdesc    The value of this register must match the value in sensor-chip register SRDWR_HEADER_PATTERN.
+    @rdesc    Default value is 0x0FAA0FAA
+
+*/
+localparam REG_FRAME_HEADER = 5;
+
+/*
+    @register Defines the number of bits of LVDS_FRAME_HDR that must match the data in the LVDS
+    @rdesc    lane in order for LVDS lane data to be recognized as a frame-header. 
+    @rdesc    Valid values are 1 thru 32.  Default value is 32.
+*/
+localparam REG_HDR_MATCH_BITS = 6;
+
+/*
+    @register Count of the number of LVDS frames in which at least one LVDS lane was
+    @rdesc    missing a frame header.
+    @rdesc    This value is cleared by a full system reset
+    @rtype    ro
+*/
+localparam REG_FRAMING_ERRS = 7;
+
+/*
+    @register The maximum lane-to-lane skew measured during frame-header detection.
+    @rdesc    This value is cleared by a full system reset.
+    @rtype    ro
+*/
+localparam REG_MAX_LANE_SKEW = 8;
+
+/*
+    @register The status of the "missing header" registers LVDS_MISS_HDR_FRAME and
+    @rdesc    LVDS_MISS_HDR_LANES.  Reading this register (when it returns a 1)
+    @rdesc    causes valid data to be latched into the above mentioned registers
+    @rtype    ro
+*/
+localparam REG_REG_MISS_HDR_STATUS = 9;
+
+/*
+    @register If the last read of LVDS_MISS_HDR_STATUS returned a 1, this register
+    @rdesc    contains the frame number of the frame that had missing frame headers
+    @rtype    ro
+*/
+localparam REG_MISS_HDR_FRAME = 10;
+
+/*
+    @register If the last read of LVDS_MISS_HDR_STATUS returned a 1, this register
+    @rdesc    contains a bitmap of which LVDS lanes were missing headers.
+    @rname    REG_MISS_HDR_LANES
+    @rtype    ro
+    @rsize    64
+*/
 localparam REG_MISS_HDR_LANES_H = 11;
 localparam REG_MISS_HDR_LANES_L = 12;
 
+/*
+    @register Determines which LVDS lanes the next write to LVDS_CAL_WORD will affect.
+    @rsize    64
+    @rname    REG_CAL_MASK
+*/
 localparam REG_CAL_MASK_H    = 16;
 localparam REG_CAL_MASK_L    = 17;
+
+
+/*
+    @register A bitmap of which LVDS lanes detected a failure of the LVDS alignment pattern
+    @rdesc    This is cleared by writing a 1 to register LVDS_CLEAR_ERRORS.
+    @rtype    ro
+    @rsize    64
+    @rname    REG_ALIGN_ERR
+*/
 localparam REG_ALIGN_ERR_H   = 18;
 localparam REG_ALIGN_ERR_L   = 19;
+
+/*
+    @register A bitmap of which LVDS lanes detected a failure of PRBS checking
+    @rdesc    This is cleared by writing a 1 to register LVDS_CLEAR_ERRORS.
+    @rtype    ro
+    @rsize    64
+    @rname    REG_PRBS_ERR
+*/
 localparam REG_PRBS_ERR_H    = 20;
 localparam REG_PRBS_ERR_L    = 21;
 
@@ -260,7 +366,7 @@ always @(posedge clk) begin
             // When the user reads the MISS_HDR_STAT register and there is
             // data waiting on the "missing_hdr" AXI stream, we fetch the data
             // from the AXI stream into registers
-            REG_MISS_HDR_STAT : if (missing_hdr_tvalid) begin
+            REG_REG_MISS_HDR_STATUS : if (missing_hdr_tvalid) begin
                                     missing_hdr_frame  <= missing_hdr_tdata;
                                     missing_hdr_lanes  <= missing_hdr_tuser;
                                     missing_hdr_tready <= 1;

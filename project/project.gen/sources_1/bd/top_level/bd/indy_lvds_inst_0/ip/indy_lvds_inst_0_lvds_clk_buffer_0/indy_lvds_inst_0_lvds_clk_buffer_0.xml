@@ -4396,7 +4396,7 @@
         </spirit:parameter>
         <spirit:parameter>
           <spirit:name>CLK_DOMAIN</spirit:name>
-          <spirit:value spirit:resolve="generated" spirit:id="BUSIFPARAM_VALUE.OBUF_IN.CLK_DOMAIN">indy_lvds_inst_0_clk_768mhz_0_clk_768</spirit:value>
+          <spirit:value spirit:resolve="generated" spirit:id="BUSIFPARAM_VALUE.OBUF_IN.CLK_DOMAIN">indy_lvds_clk_768mhz_0_clk_768</spirit:value>
           <spirit:vendorExtensions>
             <xilinx:parameterInfo>
               <xilinx:parameterUsage>none</xilinx:parameterUsage>

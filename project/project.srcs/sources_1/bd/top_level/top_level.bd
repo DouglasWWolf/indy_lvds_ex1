@@ -2477,7 +2477,7 @@
                 "value_src": "strong"
               },
               "NUM_READ_OUTSTANDING": {
-                "value": "8",
+                "value": "1",
                 "value_src": "strong"
               },
               "NUM_READ_THREADS": {
@@ -2485,7 +2485,7 @@
                 "value_src": "strong"
               },
               "NUM_WRITE_OUTSTANDING": {
-                "value": "32",
+                "value": "1",
                 "value_src": "strong"
               },
               "NUM_WRITE_THREADS": {
