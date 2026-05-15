@@ -2695,7 +2695,7 @@
         "variant_info": {
           "indy_lvds.bd": {
             "scoped_diagram": "indy_lvds_inst_0.bd",
-            "design_checksum": "0x9268DF500BF80C1B",
+            "design_checksum": "0x7AE434C0BF80C1B",
             "ref_name": "indy_lvds",
             "ref_subinst_path": "top_level_indy_lvds_0",
             "ref_type": "Block Design",

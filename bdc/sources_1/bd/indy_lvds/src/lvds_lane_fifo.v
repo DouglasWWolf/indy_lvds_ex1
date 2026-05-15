@@ -11,7 +11,7 @@
     A very simple FIFO
 */
 
-module lvds_lane_fifo # (parameter WIDTH=8, parameter DEPTH=8)
+module lvds_lane_fifo # (parameter WIDTH=8, parameter DEPTH=1)
 (
     input   clk,
     input   resetn,
@@ -25,11 +25,11 @@ module lvds_lane_fifo # (parameter WIDTH=8, parameter DEPTH=8)
 
     // Valid and ready for the output side
     output  out_valid,
-    output  out_ready
-);
+    input   out_ready,
 
-// How many items are currently in the FIFO?
-reg[$clog2(DEPTH):0] occupancy;
+    // How many items are currently in the FIFO?
+    output reg[$clog2(DEPTH):0] occupancy
+);
 
 // The index of the next items to be input and output
 reg[$clog2(DEPTH):0] in_idx, out_idx;

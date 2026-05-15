@@ -70,6 +70,8 @@
           <File Name="../../../../../bdc/sources_1/bd/indy_lvds/src/lvds_framer.v"/>
           <File Name="../../../../../bdc/sources_1/bd/indy_lvds/src/lvds_lane_fifo.v"/>
           <File Name="../../../../../bdc/sources_1/bd/indy_lvds/src/lvds_lane_sync.v"/>
+          <File Name="../../../../../bdc/sources_1/bd/indy_lvds/src/lvds_lane_reorder.v"/>
+          <File Name="../../../../../bdc/sources_1/bd/indy_lvds/src/lvds_reorder.v"/>
           <File Name="../../../../../bdc/sources_1/bd/indy_lvds/indy_lvds.bd"/>
         </FileCollection>
       </ModuleReference>

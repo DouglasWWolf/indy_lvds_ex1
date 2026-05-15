@@ -2,7 +2,7 @@
   "schema": "xilinx.com:schema:json_instance:1.0",
   "ip_inst": {
     "xci_name": "indy_lvds_lvds_lane_sync_0_0",
-    "cell_name": "lvds_datapath/lvds_lane_sync",
+    "cell_name": "lvds_datapath/lvds_dp/lvds_lane_sync",
     "component_reference": "xilinx.com:module_ref:lvds_lane_sync:1.0",
     "ip_revision": "1",
     "gen_directory": "../../../../../../project.gen/sources_1/bd/indy_lvds/ip/indy_lvds_lvds_lane_sync_0_0",
