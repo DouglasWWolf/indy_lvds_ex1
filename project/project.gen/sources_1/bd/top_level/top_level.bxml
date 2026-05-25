@@ -58,20 +58,22 @@
         <FileCollection>
           <File Name="../../../../src/common/axi4_lite_slave.v"/>
           <File Name="../../../../../bdc/sources_1/bd/indy_lvds/src/lvds_ctl.v"/>
-          <File Name="../../../../../bdc/sources_1/bd/indy_lvds/src/lvds_align_detect.v"/>
-          <File Name="../../../../../bdc/sources_1/bd/indy_lvds/src/lvds_prbs_check.v"/>
-          <File Name="../../../../../bdc/sources_1/bd/indy_lvds/src/lvds_bitslip.v"/>
           <File Name="../../../../../bdc/sources_1/bd/indy_lvds/xcix/indy_lvds_bank71/indy_lvds_bank71.xci"/>
           <File Name="../../../../../bdc/sources_1/bd/indy_lvds/xcix/indy_lvds_bank70/indy_lvds_bank70.xci"/>
           <File Name="../../../../../bdc/sources_1/bd/indy_lvds/xcix/indy_lvds_bank69/indy_lvds_bank69.xci"/>
           <File Name="../../../../../bdc/sources_1/bd/indy_lvds/src/lvds_lane_map.vh"/>
           <File Name="../../../../../bdc/sources_1/bd/indy_lvds/src/hssio.v"/>
+          <File Name="../../../../../bdc/sources_1/bd/indy_lvds/src/lvds_bitslip.v"/>
+          <File Name="../../../../../bdc/sources_1/bd/indy_lvds/src/sensor_emu_ctl.v"/>
+          <File Name="../../../../../bdc/sources_1/bd/indy_lvds/src/sensor_emu_gen.v"/>
+          <File Name="../../../../../bdc/sources_1/bd/indy_lvds/src/sensor_emu_ctl_axi.v"/>
+          <File Name="../../../../../bdc/sources_1/bd/indy_lvds/src/lvds_switch.v"/>
+          <File Name="../../../../../bdc/sources_1/bd/indy_lvds/src/lvds_align_detect.v"/>
+          <File Name="../../../../../bdc/sources_1/bd/indy_lvds/src/lvds_prbs_check.v"/>
           <File Name="../../../../../bdc/sources_1/bd/indy_lvds/src/lvds_lane_framer.v"/>
           <File Name="../../../../../bdc/sources_1/bd/indy_lvds/src/lvds_framer.v"/>
           <File Name="../../../../../bdc/sources_1/bd/indy_lvds/src/lvds_lane_fifo.v"/>
           <File Name="../../../../../bdc/sources_1/bd/indy_lvds/src/lvds_lane_sync.v"/>
-          <File Name="../../../../../bdc/sources_1/bd/indy_lvds/src/lvds_lane_reorder.v"/>
-          <File Name="../../../../../bdc/sources_1/bd/indy_lvds/src/lvds_reorder.v"/>
           <File Name="../../../../../bdc/sources_1/bd/indy_lvds/indy_lvds.bd"/>
         </FileCollection>
       </ModuleReference>

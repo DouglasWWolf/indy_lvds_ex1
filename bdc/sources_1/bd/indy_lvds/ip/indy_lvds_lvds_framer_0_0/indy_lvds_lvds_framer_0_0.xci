@@ -2,7 +2,7 @@
   "schema": "xilinx.com:schema:json_instance:1.0",
   "ip_inst": {
     "xci_name": "indy_lvds_lvds_framer_0_0",
-    "cell_name": "lvds_datapath/lvds_dp/lvds_framer",
+    "cell_name": "lvds_datapath/lvds_framer",
     "component_reference": "xilinx.com:module_ref:lvds_framer:1.0",
     "ip_revision": "1",
     "gen_directory": "../../../../../../project.gen/sources_1/bd/indy_lvds/ip/indy_lvds_lvds_framer_0_0",

@@ -14,7 +14,7 @@ preplace port port-id_CHIP_PA_SYNC -pg 1 -lvl 0 -x 0 -y 360 -defaultsOSRD
 preplace port port-id_rs0 -pg 1 -lvl 3 -x 540 -y 60 -defaultsOSRD
 preplace port port-id_rs256 -pg 1 -lvl 3 -x 540 -y 80 -defaultsOSRD
 preplace portBus GPIO15_DIR -pg 1 -lvl 3 -x 540 -y 120 -defaultsOSRD
-preplace portBus GPIO13 -pg 1 -lvl 3 -x 540 -y 100 -defaultsOSRD
+preplace portBus GPIO_BYTE_DIR -pg 1 -lvl 3 -x 540 -y 40 -defaultsOSRD
 preplace inst framegen_ctl -pg 1 -lvl 1 -x 160 -y 280 -defaultsOSRD -pinDir S_AXI left -pinY S_AXI 20L -pinDir clk left -pinY clk 40L -pinDir resetn left -pinY resetn 60L -pinDir pa_sync_raw left -pinY pa_sync_raw 80L -pinDir rs0 right -pinY rs0 20R -pinDir rs256 right -pinY rs256 40R
 preplace inst system_ila -pg 1 -lvl 2 -x 430 -y 160 -swap {2 3 4 5 1 0} -defaultsOSRD -pinDir clk left -pinY clk 60L -pinBusDir probe0 left -pinBusY probe0 80L -pinBusDir probe1 left -pinBusY probe1 100L -pinBusDir probe2 left -pinBusY probe2 120L -pinBusDir probe3 left -pinBusY probe3 40L -pinBusDir probe4 left -pinBusY probe4 20L
 preplace inst ilconstant_1 -pg 1 -lvl 1 -x 160 -y 140 -defaultsOSRD -pinBusDir dout right -pinBusY dout 20R
@@ -23,15 +23,15 @@ preplace netloc CHIP_PA_SYNC_1 1 0 2 40 240 NJ
 preplace netloc clk_192mhz_clk_192 1 0 2 20 220 NJ
 preplace netloc framegen_ctl_0_rs0 1 1 2 300 60 NJ
 preplace netloc framegen_ctl_0_rs256 1 1 2 320 80 NJ
-preplace netloc sys_192mhz_resetn_192 1 0 1 NJ 340
+preplace netloc ilconstant_0_gpio_byte_dir 1 1 2 280 40 NJ
 preplace netloc ilconstant_1_dout 1 1 2 340 120 NJ
-preplace netloc ilconstant_0_dout 1 1 2 280 100 NJ
+preplace netloc sys_192mhz_resetn_192 1 0 1 NJ 340
 preplace netloc smartconnect_M04_AXI 1 0 1 NJ 300
 levelinfo -pg 1 0 160 430 540
-pagesize -pg 1 -db -bbox -sgen -160 0 710 420
+pagesize -pg 1 -db -bbox -sgen -160 0 720 420
 ",
    "No Loops_ScaleFactor":"1.0",
-   "No Loops_TopLeft":"-292,-84",
+   "No Loops_TopLeft":"-407,-90",
    "guistr":"# # String gsaved with Nlview 7.8.0 2024-04-26 e1825d835c VDI=44 GEI=38 GUI=JA:21.0 TLS
 #  -string -flagsOSRD
 preplace port S_AXI -pg 1 -lvl 0 -x -10 -y 70 -defaultsOSRD

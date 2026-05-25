@@ -1,7 +1,7 @@
 {
   "design": {
     "design_info": {
-      "boundary_crc": "0xDBB3B6FBC65E199F",
+      "boundary_crc": "0xBB110BB24E584CFB",
       "design_src": "SBD",
       "device": "xcku15p-ffve1517-3-e",
       "name": "bd_4416",
@@ -17,12 +17,6 @@
         "monitor_type": "SlaveType",
         "vlnv_bus_definition": "xilinx.com:interface:axis:1.0",
         "vlnv": "xilinx.com:interface:axis_rtl:1.0"
-      },
-      "SLOT_1_AXIS": {
-        "mode": "Monitor",
-        "monitor_type": "SlaveType",
-        "vlnv_bus_definition": "xilinx.com:interface:axis:1.0",
-        "vlnv": "xilinx.com:interface:axis_rtl:1.0"
       }
     },
     "ports": {
@@ -31,7 +25,7 @@
         "direction": "I",
         "parameters": {
           "ASSOCIATED_BUSIF": {
-            "value": "SLOT_0_AXIS:SLOT_1_AXIS"
+            "value": "SLOT_0_AXIS"
           },
           "ASSOCIATED_RESET": {
             "value": "resetn"

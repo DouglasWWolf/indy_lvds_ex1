@@ -2,7 +2,7 @@
   "schema": "xilinx.com:schema:json_instance:1.0",
   "ip_inst": {
     "xci_name": "indy_lvds_lvds_bitslip_0",
-    "cell_name": "lvds_datapath/lvds_bitslip",
+    "cell_name": "lvds_source/lvds_bitslip",
     "component_reference": "xilinx.com:module_ref:lvds_bitslip:1.0",
     "ip_revision": "1",
     "gen_directory": "../../../../../../project.gen/sources_1/bd/indy_lvds/ip/indy_lvds_lvds_bitslip_0",

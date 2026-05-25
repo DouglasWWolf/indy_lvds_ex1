@@ -730,7 +730,7 @@
             "value": "3"
           },
           "NUM_MI": {
-            "value": "5"
+            "value": "6"
           },
           "NUM_SI": {
             "value": "1"
@@ -754,7 +754,8 @@
               "M01_AXI",
               "M02_AXI",
               "M03_AXI",
-              "M04_AXI"
+              "M04_AXI",
+              "M05_AXI"
             ]
           },
           "M00_AXI": {
@@ -858,6 +859,31 @@
             }
           },
           "M04_AXI": {
+            "mode": "Master",
+            "vlnv_bus_definition": "xilinx.com:interface:aximm:1.0",
+            "vlnv": "xilinx.com:interface:aximm_rtl:1.0",
+            "parameters": {
+              "NUM_READ_OUTSTANDING": {
+                "value": "8"
+              },
+              "NUM_READ_THREADS": {
+                "value": "1"
+              },
+              "NUM_WRITE_OUTSTANDING": {
+                "value": "32"
+              },
+              "NUM_WRITE_THREADS": {
+                "value": "1"
+              },
+              "RUSER_BITS_PER_BYTE": {
+                "value": "0"
+              },
+              "WUSER_BITS_PER_BYTE": {
+                "value": "0"
+              }
+            }
+          },
+          "M05_AXI": {
             "mode": "Master",
             "vlnv_bus_definition": "xilinx.com:interface:aximm:1.0",
             "vlnv": "xilinx.com:interface:aximm_rtl:1.0",
@@ -2650,6 +2676,233 @@
                 "right": "0"
               }
             }
+          },
+          "S_AXI_SENSOR_EMU": {
+            "mode": "Slave",
+            "vlnv_bus_definition": "xilinx.com:interface:aximm:1.0",
+            "vlnv": "xilinx.com:interface:aximm_rtl:1.0",
+            "parameters": {
+              "ADDR_WIDTH": {
+                "value": "32",
+                "value_src": "strong"
+              },
+              "ARUSER_WIDTH": {
+                "value": "0",
+                "value_src": "strong"
+              },
+              "AWUSER_WIDTH": {
+                "value": "0",
+                "value_src": "strong"
+              },
+              "BUSER_WIDTH": {
+                "value": "0",
+                "value_src": "strong"
+              },
+              "CLK_DOMAIN": {
+                "value": "top_level_clk_wiz_0_1_clk_192",
+                "value_src": "default_prop"
+              },
+              "DATA_WIDTH": {
+                "value": "32",
+                "value_src": "strong"
+              },
+              "FREQ_HZ": {
+                "value": "192000000",
+                "value_src": "strong"
+              },
+              "HAS_BRESP": {
+                "value": "1",
+                "value_src": "strong"
+              },
+              "HAS_BURST": {
+                "value": "0",
+                "value_src": "strong"
+              },
+              "HAS_CACHE": {
+                "value": "0",
+                "value_src": "strong"
+              },
+              "HAS_LOCK": {
+                "value": "0",
+                "value_src": "strong"
+              },
+              "HAS_PROT": {
+                "value": "1",
+                "value_src": "strong"
+              },
+              "HAS_QOS": {
+                "value": "0",
+                "value_src": "strong"
+              },
+              "HAS_REGION": {
+                "value": "0",
+                "value_src": "strong"
+              },
+              "HAS_RRESP": {
+                "value": "1",
+                "value_src": "strong"
+              },
+              "HAS_WSTRB": {
+                "value": "1",
+                "value_src": "strong"
+              },
+              "ID_WIDTH": {
+                "value": "0",
+                "value_src": "strong"
+              },
+              "INSERT_VIP": {
+                "value": "0",
+                "value_src": "strong"
+              },
+              "MAX_BURST_LENGTH": {
+                "value": "1",
+                "value_src": "strong"
+              },
+              "NUM_READ_OUTSTANDING": {
+                "value": "1",
+                "value_src": "strong"
+              },
+              "NUM_READ_THREADS": {
+                "value": "1",
+                "value_src": "strong"
+              },
+              "NUM_WRITE_OUTSTANDING": {
+                "value": "1",
+                "value_src": "strong"
+              },
+              "NUM_WRITE_THREADS": {
+                "value": "1",
+                "value_src": "strong"
+              },
+              "PHASE": {
+                "value": "0.0",
+                "value_src": "strong"
+              },
+              "PROTOCOL": {
+                "value": "AXI4LITE",
+                "value_src": "strong"
+              },
+              "READ_WRITE_MODE": {
+                "value": "READ_WRITE",
+                "value_src": "strong"
+              },
+              "RUSER_BITS_PER_BYTE": {
+                "value": "0",
+                "value_src": "strong"
+              },
+              "RUSER_WIDTH": {
+                "value": "0",
+                "value_src": "strong"
+              },
+              "SUPPORTS_NARROW_BURST": {
+                "value": "0",
+                "value_src": "strong"
+              },
+              "WUSER_BITS_PER_BYTE": {
+                "value": "0",
+                "value_src": "strong"
+              },
+              "WUSER_WIDTH": {
+                "value": "0",
+                "value_src": "strong"
+              }
+            },
+            "port_maps": {
+              "AWADDR": {
+                "physical_name": "S_AXI_SENSOR_EMU_awaddr",
+                "direction": "I",
+                "left": "31",
+                "right": "0"
+              },
+              "AWPROT": {
+                "physical_name": "S_AXI_SENSOR_EMU_awprot",
+                "direction": "I",
+                "left": "2",
+                "right": "0"
+              },
+              "AWVALID": {
+                "physical_name": "S_AXI_SENSOR_EMU_awvalid",
+                "direction": "I"
+              },
+              "AWREADY": {
+                "physical_name": "S_AXI_SENSOR_EMU_awready",
+                "direction": "O"
+              },
+              "WDATA": {
+                "physical_name": "S_AXI_SENSOR_EMU_wdata",
+                "direction": "I",
+                "left": "31",
+                "right": "0"
+              },
+              "WSTRB": {
+                "physical_name": "S_AXI_SENSOR_EMU_wstrb",
+                "direction": "I",
+                "left": "3",
+                "right": "0"
+              },
+              "WVALID": {
+                "physical_name": "S_AXI_SENSOR_EMU_wvalid",
+                "direction": "I"
+              },
+              "WREADY": {
+                "physical_name": "S_AXI_SENSOR_EMU_wready",
+                "direction": "O"
+              },
+              "BRESP": {
+                "physical_name": "S_AXI_SENSOR_EMU_bresp",
+                "direction": "O",
+                "left": "1",
+                "right": "0"
+              },
+              "BVALID": {
+                "physical_name": "S_AXI_SENSOR_EMU_bvalid",
+                "direction": "O"
+              },
+              "BREADY": {
+                "physical_name": "S_AXI_SENSOR_EMU_bready",
+                "direction": "I"
+              },
+              "ARADDR": {
+                "physical_name": "S_AXI_SENSOR_EMU_araddr",
+                "direction": "I",
+                "left": "31",
+                "right": "0"
+              },
+              "ARPROT": {
+                "physical_name": "S_AXI_SENSOR_EMU_arprot",
+                "direction": "I",
+                "left": "2",
+                "right": "0"
+              },
+              "ARVALID": {
+                "physical_name": "S_AXI_SENSOR_EMU_arvalid",
+                "direction": "I"
+              },
+              "ARREADY": {
+                "physical_name": "S_AXI_SENSOR_EMU_arready",
+                "direction": "O"
+              },
+              "RDATA": {
+                "physical_name": "S_AXI_SENSOR_EMU_rdata",
+                "direction": "O",
+                "left": "31",
+                "right": "0"
+              },
+              "RRESP": {
+                "physical_name": "S_AXI_SENSOR_EMU_rresp",
+                "direction": "O",
+                "left": "1",
+                "right": "0"
+              },
+              "RVALID": {
+                "physical_name": "S_AXI_SENSOR_EMU_rvalid",
+                "direction": "O"
+              },
+              "RREADY": {
+                "physical_name": "S_AXI_SENSOR_EMU_rready",
+                "direction": "I"
+              }
+            }
           }
         },
         "ports": {
@@ -2688,6 +2941,18 @@
           "resetn_192": {
             "type": "rst",
             "direction": "I"
+          },
+          "rs0": {
+            "direction": "I"
+          },
+          "rs256": {
+            "direction": "I"
+          },
+          "pa_sync_in": {
+            "direction": "I"
+          },
+          "pa_sync_out": {
+            "direction": "O"
           }
         },
         "post_compiled_compname": "indy_lvds_inst_0",
@@ -2695,7 +2960,7 @@
         "variant_info": {
           "indy_lvds.bd": {
             "scoped_diagram": "indy_lvds_inst_0.bd",
-            "design_checksum": "0x7AE434C0BF80C1B",
+            "design_checksum": "0xBD930E4FF73A4BDC",
             "ref_name": "indy_lvds",
             "ref_subinst_path": "top_level_indy_lvds_0",
             "ref_type": "Block Design",
@@ -2721,7 +2986,7 @@
             "type": "rst",
             "direction": "I"
           },
-          "CHIP_PA_SYNC": {
+          "pa_sync": {
             "direction": "I"
           },
           "rs0": {
@@ -3070,7 +3335,7 @@
         "nets": {
           "CHIP_PA_SYNC_1": {
             "ports": [
-              "CHIP_PA_SYNC",
+              "pa_sync",
               "framegen_ctl/pa_sync_raw",
               "system_ila/probe0"
             ]
@@ -3179,13 +3444,19 @@
           "framegen/S_AXI",
           "smartconnect/M04_AXI"
         ]
+      },
+      "smartconnect_M05_AXI": {
+        "interface_ports": [
+          "smartconnect/M05_AXI",
+          "indy_lvds/S_AXI_SENSOR_EMU"
+        ]
       }
     },
     "nets": {
       "CHIP_PA_SYNC_1": {
         "ports": [
           "CHIP_PA_SYNC",
-          "framegen/CHIP_PA_SYNC"
+          "indy_lvds/pa_sync_in"
         ]
       },
       "CHIP_SPI_MISO_1": {
@@ -3289,13 +3560,15 @@
       "framegen_ctl_0_rs0": {
         "ports": [
           "framegen/rs0",
-          "rs0"
+          "rs0",
+          "indy_lvds/rs0"
         ]
       },
       "framegen_ctl_0_rs256": {
         "ports": [
           "framegen/rs256",
-          "rs256"
+          "rs256",
+          "indy_lvds/rs256"
         ]
       },
       "ilconstant_0_dout": {
@@ -3304,6 +3577,12 @@
           "GPIO13",
           "GPIO15",
           "GPIO_BYTE_DIR"
+        ]
+      },
+      "indy_lvds_pa_sync_out": {
+        "ports": [
+          "indy_lvds/pa_sync_out",
+          "framegen/pa_sync"
         ]
       },
       "indy_power_ctl_chip_reset_n": {
@@ -3437,6 +3716,11 @@
                 "address_block": "/indy_lvds/lvds_ctl/S_AXI/reg0",
                 "offset": "0x0000000000002000",
                 "range": "4K"
+              },
+              "SEG_sensor_emu_ctl_axi_reg0": {
+                "address_block": "/indy_lvds/lvds_source/sensor_emu/sensor_emu_ctl_axi/S_AXI/reg0",
+                "offset": "0x0000000000006000",
+                "range": "256"
               }
             }
           }
