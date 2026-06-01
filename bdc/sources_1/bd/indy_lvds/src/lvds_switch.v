@@ -42,7 +42,7 @@ module lvds_switch # (parameter LANE_COUNT = 64)
 );
 
 // Mux for the LVDS output
-assign lvds = (sim_select) ? emulator_lvds : sensor_lvds;
+assign lvds_out = (sim_select) ? emulator_lvds : sensor_lvds;
 
 // This is a synchronized version of "async_pa_sync"
 wire sensor_pa_sync;

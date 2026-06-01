@@ -21,7 +21,8 @@
           "sensor_emu_ctl_axi": "",
           "C_65536": ""
         },
-        "lvds_switch": ""
+        "lvds_switch": "",
+        "system_ila_0": ""
       },
       "clk_768mhz": "",
       "lvds_clk_buffer": "",
@@ -2230,6 +2231,21 @@
                 "direction": "O"
               }
             }
+          },
+          "system_ila_0": {
+            "vlnv": "xilinx.com:ip:system_ila:1.1",
+            "ip_revision": "19",
+            "xci_name": "indy_lvds_system_ila_0_0",
+            "xci_path": "ip/indy_lvds_system_ila_0_0/indy_lvds_system_ila_0_0.xci",
+            "inst_hier_path": "lvds_source/system_ila_0",
+            "parameters": {
+              "C_MON_TYPE": {
+                "value": "NATIVE"
+              },
+              "C_NUM_OF_PROBES": {
+                "value": "2"
+              }
+            }
           }
         },
         "interface_nets": {
@@ -2322,6 +2338,7 @@
               "hssio/clk",
               "lvds_bitslip/clk",
               "sensor_emu/clk",
+              "system_ila_0/clk",
               "lvds_switch/clk"
             ]
           },
@@ -2377,7 +2394,8 @@
           "lvds_switch_0_lvds_out": {
             "ports": [
               "lvds_switch/lvds_out",
-              "lvds_bus"
+              "lvds_bus",
+              "system_ila_0/probe0"
             ]
           },
           "lvds_switch_0_pa_sync_out": {
@@ -2413,6 +2431,7 @@
           "sensor_emu_o_SIM_SELECT": {
             "ports": [
               "sensor_emu/o_SIM_SELECT",
+              "system_ila_0/probe1",
               "lvds_switch/sim_select"
             ]
           },
