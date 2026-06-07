@@ -2,7 +2,7 @@
   "schema": "xilinx.com:schema:json_instance:1.0",
   "ip_inst": {
     "xci_name": "indy_lvds_inst_0_sensor_emu_ctl_axi_0",
-    "cell_name": "indy_lvds/lvds_source/sensor_emu/sensor_emu_ctl_axi",
+    "cell_name": "lvds_source/sensor_emu/sensor_emu_ctl_axi",
     "component_reference": "xilinx.com:module_ref:sensor_emu_ctl_axi:1.0",
     "ip_revision": "1",
     "gen_directory": ".",

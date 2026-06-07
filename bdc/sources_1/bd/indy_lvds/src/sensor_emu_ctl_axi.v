@@ -114,52 +114,139 @@ reg [REGISTER_COUNT-1:0] rstrobe, wstrobe;
 //<><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>
 
 //=========================  AXI Register Map  =============================
-localparam SREG_PATTERN_WIDTH    = 0;  
-localparam SREG_FIFO_STAT        = 1;  
-localparam SREG_F0_COUNT         = 2;  
-localparam SREG_F1_COUNT         = 3;  
-localparam SREG_ACTIVE_FIFO      = 4;
+
+
+/*
+    @register Sensor emulation - specifies the width of the programmable pattern in bits
+    @rtype    ro
+*/
+localparam REG_PATTERN_WIDTH    = 0;  
+
+/*
+    @register Sensor emulation - reports the "ready" status of the pattern FIFOs
+    @rtype ro
+    @field fifo_0 1 0 RO 0 Is FIFO_0 ready for new data? 1 = yes, 0 = no
+    @field fifo_1 1 1 RO 0 Is FIFO_1 ready for new data? 1 = yes, 0 = no    
+*/
+localparam REG_FIFO_STAT        = 1;  
+
+/*
+    @register Sensor emulation - How many patterns are loaded into FIFO_0?
+    @rtype ro
+*/
+localparam REG_F0_COUNT         = 2;  
+
+/*
+    @register Sensor emulation - How many patterns are loaded into FIFO_1?
+    @rtype ro
+*/
+localparam REG_F1_COUNT         = 3;  
+
+
+/*
+    @register Sensor emulation - which FIFO is currently active?
+    @rdesc The two bits can both be off, but they can never both be on
+    @rtype ro
+    @field fifo_0 1 0 RO 0 1 = FIFO_0 is outputting data
+    @field fifo_1 1 1 RO 0 1 = FIFO_1 is outputting data
+*/
+localparam REG_ACTIVE_FIFO      = 4;
     
 // This is an alias for the first control register
-localparam CREG_FIRST            = 5;    
+localparam CTL_REG_FIRST            = 5;    
         
-localparam CREG_SIM_SELECT       = 5;
-localparam CREG_FIFO_CTL         = 6;   
-localparam CREG_UPPER32          = 7; 
-localparam CREG_LOAD_F0          = 8; 
-localparam CREG_LOAD_F1          = 9;  
-localparam CREG_START            = 10;            
-localparam CREG_HARD_STOP        = 11; 
+/*
+    @register Sensor emulation - Is the system in sensor emulation mode?
+    @rdesc  0 = LVDS data and pa_sync come from the senor chip
+    @rdesc  1 = LVDS data and pa_sync come from the sensor emulator
+*/
+localparam REG_SIM_SELECT       = 5;
+
+
+/*
+    @register Sensor emulation - FIFO control : Resets (i.e., clears) the pattern FIFOs
+    @rdesc    >> It is not possible to reset an active FIFO <<
+    @field f0_reset 1 0 RO 0 1 = Hold FIFO_0 in reset (i.e., empty it)
+    @field f1_reset 1 1 RO 0 1 = Hold FIFO_1 in reset (i.e., empty it)
+*/
+localparam REG_FIFO_CTL         = 6;   
+
+
+localparam REG_UPPER32          = 7; 
+
+/*
+    @register Sensor emulation - Writing a value this register writes it to FIFO_0
+    @rdesc    Before writing a value, FIFO_STAT_fifo_0 must be 1
+*/
+localparam REG_LOAD_F0          = 8; 
+
+/*
+    @register Sensor emulation - Writing a value this register writes it to FIFO_1
+    @rdesc    Before writing a value, FIFO_STAT_fifo_1 must be 1
+*/
+localparam REG_LOAD_F1          = 9;  
+
+/*
+    @register Sensor emulation - Starts or stops frame generation
+    @rdesc
+    @rdesc > 0 : If a FIFO is currently active, frame generation continues until
+    @rdesc >     the last frame for that FIFO has been generated, then frame generation
+    @rdesc >     halts.
+    @rdesc >
+    @rdesc > 1 : If FIFO_1 is currently active, frame generation continues until
+    @rdesc >     the last frame for that FIFO has been generated, then frame generation
+    @rdesc >     continues from FIFO_0.   If FIFO_1 is not currently active, then frame
+    @rdesc >     generation commences immediately from FIFO_0.
+    @rdesc >
+    @rdesc > 2 : If FIFO_0 is currently active, frame generation continues until
+    @rdesc >     the last frame for that FIFO has been generated, then frame generation
+    @rdesc >     continues from FIFO_1.   If FIFO_0 is not currently active, then frame
+    @rdesc >     generation commences immediately from FIFO_1
+    @rdesc >
+    @rdesc > Any other value : nothing happens
+    @rdesc
+    @rdesc It is not possible to start frame generation from an empty FIFO
+
+*/
+localparam REG_START            = 10;            
+
+
+/*
+    @register Sensor emulation - Writing any value to this register causes frame generation
+    @rdesc                       to halt immediately after the current frame (if any) has 
+    @rdesc                       been transmitted.
+*/
+localparam REG_HARD_STOP        = 11; 
 //==========================================================================
 
 
 //-------------------------------------------------------
 // Map output ports to registers
 //-------------------------------------------------------
-assign o_SIM_SELECT         = axi_reg[CREG_SIM_SELECT];
-assign o_FIFO_CTL_f0_reset  = axi_reg[CREG_FIFO_CTL  ][0];
-assign o_FIFO_CTL_f1_reset  = axi_reg[CREG_FIFO_CTL  ][1];
-assign o_FIFO_CTL_wstrobe   = wstrobe[CREG_FIFO_CTL  ];
-assign o_UPPER32            = axi_reg[CREG_UPPER32   ];
-assign o_LOAD_F0            = axi_reg[CREG_LOAD_F0   ];
-assign o_LOAD_F0_wstrobe    = wstrobe[CREG_LOAD_F0   ];
-assign o_LOAD_F1            = axi_reg[CREG_LOAD_F1   ];
-assign o_LOAD_F1_wstrobe    = wstrobe[CREG_LOAD_F1   ];
-assign o_START              = axi_reg[CREG_START     ];
-assign o_START_wstrobe      = wstrobe[CREG_START     ];
-assign o_HARD_STOP_wstrobe  = wstrobe[CREG_HARD_STOP ];
+assign o_SIM_SELECT         = axi_reg[REG_SIM_SELECT];
+assign o_FIFO_CTL_f0_reset  = axi_reg[REG_FIFO_CTL  ][0];
+assign o_FIFO_CTL_f1_reset  = axi_reg[REG_FIFO_CTL  ][1];
+assign o_FIFO_CTL_wstrobe   = wstrobe[REG_FIFO_CTL  ];
+assign o_UPPER32            = axi_reg[REG_UPPER32   ];
+assign o_LOAD_F0            = axi_reg[REG_LOAD_F0   ];
+assign o_LOAD_F0_wstrobe    = wstrobe[REG_LOAD_F0   ];
+assign o_LOAD_F1            = axi_reg[REG_LOAD_F1   ];
+assign o_LOAD_F1_wstrobe    = wstrobe[REG_LOAD_F1   ];
+assign o_START              = axi_reg[REG_START     ];
+assign o_START_wstrobe      = wstrobe[REG_START     ];
+assign o_HARD_STOP_wstrobe  = wstrobe[REG_HARD_STOP ];
 //-------------------------------------------------------
 
 
 //-----------------------------------------------------------------
 // Map registers to input ports
 //-----------------------------------------------------------------
-always @* axi_reg[SREG_FIFO_STAT    ][0] = i_FIFO_STAT_f0_ready;
-always @* axi_reg[SREG_FIFO_STAT    ][1] = i_FIFO_STAT_f1_ready;
-always @* axi_reg[SREG_F0_COUNT     ]    = i_F0_COUNT;
-always @* axi_reg[SREG_F1_COUNT     ]    = i_F1_COUNT;
-always @* axi_reg[SREG_ACTIVE_FIFO  ]    = i_ACTIVE_FIFO;
-always @* axi_reg[SREG_PATTERN_WIDTH]    = i_PATTERN_WIDTH;
+always @* axi_reg[REG_FIFO_STAT    ][0] = i_FIFO_STAT_f0_ready;
+always @* axi_reg[REG_FIFO_STAT    ][1] = i_FIFO_STAT_f1_ready;
+always @* axi_reg[REG_F0_COUNT     ]    = i_F0_COUNT;
+always @* axi_reg[REG_F1_COUNT     ]    = i_F1_COUNT;
+always @* axi_reg[REG_ACTIVE_FIFO  ]    = i_ACTIVE_FIFO;
+always @* axi_reg[REG_PATTERN_WIDTH]    = i_PATTERN_WIDTH;
 //-----------------------------------------------------------------
 
 
@@ -224,7 +311,7 @@ always @(posedge clk) begin
         
         0:  if (ashi_write) begin
                   
-                for (i = CREG_FIRST; i < REGISTER_COUNT; i=i+1) begin
+                for (i = CTL_REG_FIRST; i < REGISTER_COUNT; i=i+1) begin
                     if (ashi_windx == i) begin
                         axi_reg[i] <= ashi_wdata;
                         wstrobe[i] <= 1;
@@ -233,7 +320,7 @@ always @(posedge clk) begin
 
                 // The value of ashi_wresp depends on whether the user just 
                 // wrote to a valid register    
-                if (ashi_windx >= CREG_FIRST && ashi_windx < REGISTER_COUNT)
+                if (ashi_windx >= CTL_REG_FIRST && ashi_windx < REGISTER_COUNT)
                     ashi_wresp <= OKAY;
                 else
                     ashi_wresp <= SLVERR;

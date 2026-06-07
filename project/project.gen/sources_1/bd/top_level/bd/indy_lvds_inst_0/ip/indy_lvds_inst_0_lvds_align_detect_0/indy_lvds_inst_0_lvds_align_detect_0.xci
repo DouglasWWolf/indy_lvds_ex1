@@ -2,7 +2,7 @@
   "schema": "xilinx.com:schema:json_instance:1.0",
   "ip_inst": {
     "xci_name": "indy_lvds_inst_0_lvds_align_detect_0",
-    "cell_name": "indy_lvds/lvds_align_detect",
+    "cell_name": "lvds_align_detect",
     "component_reference": "xilinx.com:module_ref:lvds_align_detect:1.0",
     "ip_revision": "1",
     "gen_directory": ".",

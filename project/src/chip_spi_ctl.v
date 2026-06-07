@@ -60,8 +60,21 @@ module chip_spi_ctl # (parameter AW=8)
 );  
 
 //=========================  AXI Register Map  =============================
+
+/*
+    @register Sensor-chip register address
+*/
+
 localparam REG_CHIPIO_ADDR      =  0;
+
+/*
+    @register Sensor-chip register data
+*/
 localparam REG_CHIPIO_DATA      =  1;
+
+/*
+    @register Sensor-chip register data, auto-incrementing
+*/
 localparam REG_CHIPIO_DATA_INCR =  2;
 //==========================================================================
 

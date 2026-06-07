@@ -1489,10 +1489,6 @@
                     "value": "AXI4LITE",
                     "value_src": "constant"
                   },
-                  "FREQ_HZ": {
-                    "value": "160000000",
-                    "value_src": "ip_prop"
-                  },
                   "ID_WIDTH": {
                     "value": "0",
                     "value_src": "constant"
@@ -1576,30 +1572,6 @@
                   "MAX_BURST_LENGTH": {
                     "value": "1",
                     "value_src": "auto"
-                  },
-                  "PHASE": {
-                    "value": "0.0",
-                    "value_src": "ip_prop"
-                  },
-                  "CLK_DOMAIN": {
-                    "value": "top_level_clk_wiz_0_0_clk_out1",
-                    "value_src": "default_prop"
-                  },
-                  "NUM_READ_THREADS": {
-                    "value": "1",
-                    "value_src": "user_prop"
-                  },
-                  "NUM_WRITE_THREADS": {
-                    "value": "1",
-                    "value_src": "user_prop"
-                  },
-                  "RUSER_BITS_PER_BYTE": {
-                    "value": "0",
-                    "value_src": "user_prop"
-                  },
-                  "WUSER_BITS_PER_BYTE": {
-                    "value": "0",
-                    "value_src": "user_prop"
                   }
                 },
                 "memory_map_ref": "S_AXI",
@@ -1713,18 +1685,6 @@
                   "ASSOCIATED_RESET": {
                     "value": "resetn",
                     "value_src": "constant"
-                  },
-                  "FREQ_HZ": {
-                    "value": "160000000",
-                    "value_src": "ip_prop"
-                  },
-                  "PHASE": {
-                    "value": "0.0",
-                    "value_src": "ip_prop"
-                  },
-                  "CLK_DOMAIN": {
-                    "value": "top_level_clk_wiz_0_0_clk_out1",
-                    "value_src": "default_prop"
                   }
                 }
               },
@@ -2960,7 +2920,7 @@
         "variant_info": {
           "indy_lvds.bd": {
             "scoped_diagram": "indy_lvds_inst_0.bd",
-            "design_checksum": "0x5D56B7364968CA08",
+            "design_checksum": "0xBD930E4FF73A4BDC",
             "ref_name": "indy_lvds",
             "ref_subinst_path": "top_level_indy_lvds_0",
             "ref_type": "Block Design",

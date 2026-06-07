@@ -2,7 +2,7 @@
   "schema": "xilinx.com:schema:json_instance:1.0",
   "ip_inst": {
     "xci_name": "indy_lvds_inst_0_lvds_ctl_0",
-    "cell_name": "indy_lvds/lvds_ctl",
+    "cell_name": "lvds_ctl",
     "component_reference": "xilinx.com:module_ref:lvds_ctl:1.0",
     "ip_revision": "1",
     "gen_directory": ".",
