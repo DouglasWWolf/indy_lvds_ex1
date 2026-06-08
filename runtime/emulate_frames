@@ -1,0 +1,60 @@
+#
+#    This script will provide four frame-data patterns to the sensor-emulator,
+#    will place the system in sensor-emulation mode, then will strobe the
+#    emulator's "rs0" pin four times in order to send the four frames
+#
+source api
+
+# Ensure that the sensor emulator is idle
+axi SEMU_HARD_STOP 1
+sleep .2
+
+# Clear both FIFOs   
+axi SEMU_FIFO_CTL 3
+axi SEMU_FIFO_CTL 0
+
+# Wait for both FIFOs to become ready 
+while [ $(get SEMU_FIFO_STAT) -ne 3 ]; do
+    sleep .1
+done
+
+# Place four entries into FIFO_0
+axi SEMU_LOAD_F0 0x01020304
+axi SEMU_LOAD_F0 0x05060708
+axi SEMU_LOAD_F0 0x090A0B0C
+axi SEMU_LOAD_F0 0x0D0E0F10
+
+# Quick test : did our entries all make it into the FIFO?
+count=$(get SEMU_F0_COUNT)
+if [ $count -ne 4 ]; then
+   echo "There should be 4 entries in FIFO_0, not $count !"
+   exit 1
+fi
+
+# Start generating frames from FIFO_0
+axi SEMU_START 1
+
+# Quick test: Is FIFO_0 active?
+if [ $(get SEMU_ACTIVE_FIFO) -ne 1 ]; then
+    echo "FIFO_0 should be active and is not!"
+    exit 1
+fi
+
+# Place the system into sensor-emulation mode
+axi SEMU_SIM_SELECT 1
+
+# Stop sending frames when the entire active FIFO has been sent
+axi SEMU_START 0
+
+# Generate the four frames of data by strobing RS0 and waiting
+# for the frame to be emitted
+for ((i=0; i<4; i++)); do
+    pcireg 0x3000 1
+    sleep .1
+done
+
+# Quick test: Is FIFO_0 active?
+if [ $(get SEMU_ACTIVE_FIFO) -ne 0 ]; then
+    echo "Both FIFOs should be inactive!"
+    exit 1
+fi
