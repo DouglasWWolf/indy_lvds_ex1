@@ -25,12 +25,12 @@
 
 
 //
-// Register:    REG_CHIPIO_DATA_INCR
+// Register:    REG_CHIPIO_CMD
 // Size:        32-bits
 // Type:        Read/Write
-// Description: Sensor-chip register data, auto-incrementing
+// Description: Sensor-chip read/write command and status
 //
-#define REG_CHIPIO_DATA_INCR                                         0x0000000000001008ULL
+#define REG_CHIPIO_CMD                                               0x0000000000001008ULL
 
 
 //

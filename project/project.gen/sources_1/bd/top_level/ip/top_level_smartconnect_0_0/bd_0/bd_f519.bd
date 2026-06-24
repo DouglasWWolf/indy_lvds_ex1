@@ -1,7 +1,7 @@
 {
   "design": {
     "design_info": {
-      "boundary_crc": "0xDEC11907A1FAB783",
+      "boundary_crc": "0xFFE2F2B04B6885BC",
       "design_src": "SBD",
       "device": "xcku15p-ffve1517-3-e",
       "name": "bd_f519",
@@ -333,7 +333,7 @@
           },
           "MAX_BURST_LENGTH": {
             "value": "1",
-            "value_src": "default_prop"
+            "value_src": "default"
           },
           "NUM_READ_OUTSTANDING": {
             "value": "8"
@@ -459,7 +459,7 @@
           },
           "MAX_BURST_LENGTH": {
             "value": "1",
-            "value_src": "default_prop"
+            "value_src": "default"
           },
           "NUM_READ_OUTSTANDING": {
             "value": "8"
@@ -585,7 +585,7 @@
           },
           "MAX_BURST_LENGTH": {
             "value": "1",
-            "value_src": "default_prop"
+            "value_src": "default"
           },
           "NUM_READ_OUTSTANDING": {
             "value": "8"
@@ -711,7 +711,7 @@
           },
           "MAX_BURST_LENGTH": {
             "value": "1",
-            "value_src": "default_prop"
+            "value_src": "default"
           },
           "NUM_READ_OUTSTANDING": {
             "value": "8"
@@ -837,7 +837,7 @@
           },
           "MAX_BURST_LENGTH": {
             "value": "1",
-            "value_src": "default_prop"
+            "value_src": "default"
           },
           "NUM_READ_OUTSTANDING": {
             "value": "8"
@@ -890,8 +890,8 @@
         "vlnv": "xilinx.com:interface:aximm_rtl:1.0",
         "parameters": {
           "ADDR_WIDTH": {
-            "value": "32",
-            "value_src": "default"
+            "value": "8",
+            "value_src": "ip_prop"
           },
           "ARUSER_WIDTH": {
             "value": "0",
@@ -963,7 +963,7 @@
           },
           "MAX_BURST_LENGTH": {
             "value": "1",
-            "value_src": "default_prop"
+            "value_src": "default"
           },
           "NUM_READ_OUTSTANDING": {
             "value": "8"
@@ -10491,7 +10491,7 @@
         "inst_hier_path": "m05_sc2axi",
         "parameters": {
           "AXI_ADDR_WIDTH": {
-            "value": "32"
+            "value": "8"
           },
           "AXI_ID_WIDTH": {
             "value": "1"
@@ -11539,7 +11539,7 @@
             "inst_hier_path": "m05_exit_pipeline/m05_exit",
             "parameters": {
               "ADDR_WIDTH": {
-                "value": "32"
+                "value": "8"
               },
               "ENABLE_PIPELINING": {
                 "value": "0"

@@ -35,9 +35,44 @@ get()
 # begin with "source bash_registers chip_reg.h" in order to use this
 #==============================================================================
 chip_reg()
-{    
-    # Fetch the name or address of our register
-    local reg=$1
+{   
+    local args=
+    local value=
+    local reg=
+    local READ=1
+    local WRITE=2
+
+    # Loop through the command arguments...
+    while [ ! -z $1 ]; do
+
+        # Did the caller specify "-dec"?
+        if [ "$1" == "-dec" ]; then
+            args="${args} $1"
+            shift
+            continue
+        fi
+
+        # Did the caller specify "-wide"?
+        if [ "$1" == "-wide" ]; then
+            args="${args} $1"
+            shift
+            continue
+        fi
+
+        # Did the caller give us a register name/addr?
+        if [ -z $reg ]; then
+            reg=$1
+            shift
+            continue
+        fi
+
+        # This is the value we'll write to the register
+        value=$1
+        shift
+        continue
+
+    done
+
 
     # Convert the register name to a field address/descriptor
     local descriptor=$(($reg))
@@ -53,13 +88,28 @@ chip_reg()
     descriptor=$((descriptor & 0xFFFFFFFF00000000))
 
     # Store the chip address we want to read or write
-    pcireg REG_CHIPIO_ADDR $addr
+    pcireg $REG_CHIPIO_ADDR $addr
 
     # If there's no descriptor, just perform the chip read/write
     if [ $descriptor -eq 0 ]; then
- 
-        # Perform the read or write
-        pcireg REG_CHIPIO_DATA $2 $3 $4 $5
+
+        # Start the read or write
+        if [ -z $value ]; then
+            pcireg $REG_CHIPIO_CMD $READ
+        else  
+            pcireg $REG_CHIPIO_DATA $value
+            pcireg $REG_CHIPIO_CMD  $WRITE
+        fi
+
+        # Wait for the read or write to complete
+        while [ $(pcireg -dec $REG_CHIPIO_CMD ) -ne 0 ]; do
+            sleep .001
+        done
+
+        # If we're reading a register, display its value
+        test -z $value && pcireg $REG_CHIPIO_DATA $args
+
+        # We're done
         return
     fi
 
@@ -68,7 +118,7 @@ chip_reg()
     #--------------------------------------------------
     
     # This is the value we're trying to write into the sub-field
-    local field_value=$2
+    local field_value=$value
 
     # Parse the field width and position from the descriptor
     local width=$(( (descriptor >> 56) & 0xFF ))
@@ -78,13 +128,21 @@ chip_reg()
     local mask=$(( ((1 << width)-1) << pos ))
 
     # Read the current value of the field
-    local current=$(pcireg REG_CHIPIO_DATA -dec)
+    pcireg $REG_CHIPIO_CMD $READ
+    while [ $(pcireg -dec $REG_CHIPIO_CMD ) -ne 0 ]; do
+        sleep .001
+    done
+    local current=$(pcireg $REG_CHIPIO_DATA -dec)
    
     # Compute the new value of the field
     local new_value=$(( (current & ~mask) | (field_value << pos ) ))
 
     # And set the new value of the field
-    pcireg REG_CHIPIO_DATA $new_value
+    pcireg $REG_CHIPIO_DATA $new_value
+    pcireg $REG_CHIPIO_CMD  $WRITE
+    while [ $(pcireg -dec $REG_CHIPIO_CMD ) -ne 0 ]; do
+        sleep .001
+    done
 
 }
 #==============================================================================

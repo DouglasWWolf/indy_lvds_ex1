@@ -57,9 +57,6 @@ wire[511:0]          bank_fifo_tdata[0:BANK_COUNT-1];
 wire[BANK_COUNT-1:0] bank_fifo_tvalid;
 wire[BANK_COUNT-1:0] bank_fifo_tready = (fsm_state << bank_select);
 
-// This strobes high when a complete row has been pushed into the bank FIFOs
-wire[BANK_COUNT-1:0] bank_row_complete_stb;
-
 // When there are at least 32 entries in FIFO 0, there is an entire
 // row of data in the FIFO ready to be read out
 wire row_ready = (bank_fifo_occupancy[0] >= 32);

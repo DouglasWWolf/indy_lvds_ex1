@@ -28,34 +28,34 @@ module chip_spi_ctl # (parameter AW=8)
     //================== This is an AXI4-Lite slave interface ==================
         
     // "Specify write address"              -- Master --    -- Slave --
-    input[AW-1:0]                           S_AXI_AWADDR,   
-    input                                   S_AXI_AWVALID,  
-    input[   2:0]                           S_AXI_AWPROT,
-    output                                                  S_AXI_AWREADY,
+    (* keep = "true" *) input[AW-1:0]                           S_AXI_AWADDR,   
+    (* keep = "true" *) input                                   S_AXI_AWVALID,  
+    (* keep = "true" *) input[   2:0]                           S_AXI_AWPROT,
+    (* keep = "true" *) output                                                  S_AXI_AWREADY,
 
 
     // "Write Data"                         -- Master --    -- Slave --
-    input[31:0]                             S_AXI_WDATA,      
-    input                                   S_AXI_WVALID,
-    input[ 3:0]                             S_AXI_WSTRB,
-    output                                                  S_AXI_WREADY,
+    (* keep = "true" *) input[31:0]                             S_AXI_WDATA,      
+    (* keep = "true" *) input                                   S_AXI_WVALID,
+    (* keep = "true" *) input[ 3:0]                             S_AXI_WSTRB,
+    (* keep = "true" *) output                                                  S_AXI_WREADY,
 
     // "Send Write Response"                -- Master --    -- Slave --
-    output[1:0]                                             S_AXI_BRESP,
-    output                                                  S_AXI_BVALID,
-    input                                   S_AXI_BREADY,
+    (* keep = "true" *) output[1:0]                                             S_AXI_BRESP,
+    (* keep = "true" *) output                                                  S_AXI_BVALID,
+    (* keep = "true" *) input                                   S_AXI_BREADY,
 
     // "Specify read address"               -- Master --    -- Slave --
-    input[AW-1:0]                           S_AXI_ARADDR,     
-    input[   2:0]                           S_AXI_ARPROT,     
-    input                                   S_AXI_ARVALID,
-    output                                                  S_AXI_ARREADY,
+    (* keep = "true" *) input[AW-1:0]                           S_AXI_ARADDR,     
+    (* keep = "true" *) input[   2:0]                           S_AXI_ARPROT,     
+    (* keep = "true" *) input                                   S_AXI_ARVALID,
+    (* keep = "true" *) output                                                  S_AXI_ARREADY,
 
     // "Read data back to master"           -- Master --    -- Slave --
-    output[31:0]                                            S_AXI_RDATA,
-    output                                                  S_AXI_RVALID,
-    output[ 1:0]                                            S_AXI_RRESP,
-    input                                   S_AXI_RREADY
+    (* keep = "true" *) output[31:0]                                            S_AXI_RDATA,
+    (* keep = "true" *) output                                                  S_AXI_RVALID,
+    (* keep = "true" *) output[ 1:0]                                            S_AXI_RRESP,
+    (* keep = "true" *) input                                   S_AXI_RREADY
     //==========================================================================
 );  
 
@@ -65,17 +65,17 @@ module chip_spi_ctl # (parameter AW=8)
     @register Sensor-chip register address
 */
 
-localparam REG_CHIPIO_ADDR      =  0;
+localparam REG_CHIPIO_ADDR    =  0;
 
 /*
     @register Sensor-chip register data
 */
-localparam REG_CHIPIO_DATA      =  1;
+localparam REG_CHIPIO_DATA    =  1;
 
 /*
-    @register Sensor-chip register data, auto-incrementing
+    @register Sensor-chip read/write command and status
 */
-localparam REG_CHIPIO_DATA_INCR =  2;
+localparam  REG_CHIPIO_CMD    =  2;
 //==========================================================================
 
 
@@ -127,9 +127,8 @@ localparam DECERR = 3;
 // This is the address that will used to read/write data to/from the chip
 reg[31:0] chipio_addr;
 
-// If either of these bits are 1, "chipio_addr" will be incremented
-reg[1:0] incr_chipio_addr;
-
+// Bit 0 = Perform chip-read, Bit 1 = Perform chip-write, Bit 2 = auto-inc address
+reg[2:0] chipio_cmd;
 
 //=============================================================================
 // This function swaps big-endian to little-endian or vice-versa
@@ -146,16 +145,9 @@ endfunction
 always @(posedge clk) begin
 
     // These strobes high for a single cycle at a time
-    chipio_write_stb    <= 0;
-    incr_chipio_addr[0] <= 0;
-
-    // If we're told to increment chipio_addr, do so
-    case(incr_chipio_addr)
-        2'b01: chipio_addr <= chipio_addr + 4;
-        2'b10: chipio_addr <= chipio_addr + 4;
-        2'b11: chipio_addr <= chipio_addr + 8;
-    endcase
-
+    chipio_write_stb <= 0;
+    chipio_read_stb  <= 0;
+    
     // If we're in reset, initialize important registers
     if (resetn == 0) begin
         ashi_write_state  <= 0;
@@ -172,14 +164,11 @@ always @(posedge clk) begin
             
                 // ashi_windex = index of register to be written
                 case (ashi_windx)
-              
+             
 
-                    REG_CHIPIO_DATA, REG_CHIPIO_DATA_INCR:
+                    REG_CHIPIO_DATA:
                         begin
-                            chipio_waddr     <= chipio_addr; 
-                            chipio_wdata     <= byte_swap(ashi_wdata);
-                            chipio_write_stb <= 1;
-                            ashi_write_state <= 1;
+                            chipio_wdata <= byte_swap(ashi_wdata);
                         end
 
                     REG_CHIPIO_ADDR:
@@ -187,16 +176,28 @@ always @(posedge clk) begin
                             chipio_addr <= ashi_wdata;
                         end
 
+                    REG_CHIPIO_CMD:
+                        begin
+                            chipio_cmd <= ashi_wdata;
+    
+                            if (ashi_wdata[0]) begin
+                                chipio_raddr     <= chipio_addr;
+                                chipio_read_stb  <= 1;
+                            end else if (ashi_wdata[1]) begin
+                                chipio_waddr     <= chipio_addr;
+                                chipio_write_stb <= 1;
+                            end
+
+                            if (ashi_wdata[2]) chipio_addr <= chipio_addr + 4;
+                        end
+
                     // Writes to any other register are a decode-error
                     default: ashi_wresp <= DECERR;
                 endcase
             end
 
-        // This waits for a write to the sensor-chip to complete
-        1: if (!chipio_write_busy) begin
-            incr_chipio_addr[0] <= (ashi_windx == REG_CHIPIO_DATA_INCR);
-            ashi_write_state    <= 0;
-        end
+        // Dummy state that is never reached
+        1: ashi_write_state <= 0;
 
     endcase
 end
@@ -208,10 +209,6 @@ end
 // World's simplest state machine for handling AXI4-Lite read requests
 //==========================================================================
 always @(posedge clk) begin
-
-    // This strobes high for a single cycle at a time
-    chipio_read_stb     <= 0;
-    incr_chipio_addr[1] <= 0;
 
     // If we're in reset, initialize important registers
     if (resetn == 0) begin
@@ -230,32 +227,28 @@ always @(posedge clk) begin
                 // ashi_rindex = index of register to be read
                 case (ashi_rindx)
             
-                    // Allow a read from any valid register                
+                    // User is reading back the address of the chip-register             
                     REG_CHIPIO_ADDR:
-                        begin
-                            ashi_rdata <= chipio_addr;
-                        end
+                        ashi_rdata <= chipio_addr;
 
-                    // If we're reading from chip SMEM/registers, start
-                    // the SPI transaction
-                    REG_CHIPIO_DATA, REG_CHIPIO_DATA_INCR:
-                        begin
-                            chipio_raddr    <= chipio_addr;
-                            chipio_read_stb <= 1;
-                            ashi_read_state <= 1;
-                        end
+                    // Report the data read or the data written
+                    REG_CHIPIO_DATA:
+                        ashi_rdata <= (chipio_cmd[1]) ? byte_swap(chipio_wdata) : byte_swap(chipio_rdata);
+
+                    // Report 0 when the read or write is complete
+                    REG_CHIPIO_CMD:
+                        if (chipio_read_busy | chipio_write_busy)
+                            ashi_rdata <= chipio_cmd;
+                        else
+                            ashi_rdata <= 0;
 
                     // Reads of any other register are a decode-error
                     default: ashi_rresp <= DECERR;
                 endcase
             end
 
-        // Wait for read-transaction with the sensor-chip to complete
-        1:  if (!chipio_read_busy) begin
-                ashi_rdata          <= byte_swap(chipio_rdata);
-                incr_chipio_addr[1] <= (ashi_rindx == REG_CHIPIO_DATA_INCR);
-                ashi_read_state     <= 0;
-            end
+        // A dummy state that is never reached
+        1:  ashi_read_state <= 0;
     endcase
 end
 //==========================================================================

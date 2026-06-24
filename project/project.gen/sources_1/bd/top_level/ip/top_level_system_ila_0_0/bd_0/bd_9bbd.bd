@@ -1,7 +1,7 @@
 {
   "design": {
     "design_info": {
-      "boundary_crc": "0xBE40664B0EE8F92B",
+      "boundary_crc": "0xF1324B08E1F36477",
       "design_src": "SBD",
       "device": "xcku15p-ffve1517-3-e",
       "name": "bd_9bbd",
@@ -66,11 +66,6 @@
         "direction": "I",
         "left": "0",
         "right": "0"
-      },
-      "probe4": {
-        "direction": "I",
-        "left": "0",
-        "right": "0"
       }
     },
     "components": {
@@ -106,7 +101,7 @@
             "value": "Native"
           },
           "C_NUM_OF_PROBES": {
-            "value": "5"
+            "value": "4"
           },
           "C_PROBE0_MU_CNT": {
             "value": "1"
@@ -142,15 +137,6 @@
             "value": "0"
           },
           "C_PROBE3_WIDTH": {
-            "value": "1"
-          },
-          "C_PROBE4_MU_CNT": {
-            "value": "1"
-          },
-          "C_PROBE4_TYPE": {
-            "value": "0"
-          },
-          "C_PROBE4_WIDTH": {
             "value": "1"
           },
           "C_TRIGIN_EN": {
@@ -194,12 +180,6 @@
         "ports": [
           "probe3",
           "ila_lib/probe3"
-        ]
-      },
-      "probe4_1": {
-        "ports": [
-          "probe4",
-          "ila_lib/probe4"
         ]
       }
     }

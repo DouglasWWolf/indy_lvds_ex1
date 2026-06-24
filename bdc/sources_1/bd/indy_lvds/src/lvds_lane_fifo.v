@@ -60,20 +60,24 @@ always @(posedge clk) begin
         out_idx   <= 0;
         occupancy <= 0;
     end
+    
+    else begin
 
-    // Handle an incoming handshake
-    if (hsk_in) begin
-        fifo[in_idx] <= data_in;
-        in_idx       <= (in_idx == DEPTH-1) ? 0 : in_idx + 1;
+        // Handle an incoming handshake
+        if (hsk_in) begin
+            fifo[in_idx] <= data_in;
+            in_idx       <= (in_idx == DEPTH-1) ? 0 : in_idx + 1;
+        end 
+
+        // Handle an outgoing handshake
+        if (hsk_out) begin
+            out_idx <= (out_idx == DEPTH-1) ? 0 : out_idx + 1;
+        end
+
+        // Keep track of how many items are in the FIFO
+        occupancy <= occupancy + hsk_in - hsk_out;
+        
     end
-
-    // Handle an outgoing handshake
-    if (hsk_out) begin
-        out_idx <= (out_idx == DEPTH-1) ? 0 : out_idx + 1;
-    end
-
-    // Keep track of how many items are in the FIFO
-    occupancy <= occupancy + hsk_in - hsk_out;
 end
 //=============================================================================
 
